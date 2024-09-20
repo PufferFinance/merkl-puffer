@@ -1,22 +1,24 @@
 import type { Config } from "tailwindcss";
+import { generateTailwindConfig } from "dappkit";
 
 export default {
-  content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: [
-          '"Inter"',
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-          '"Apple Color Emoji"',
-          '"Segoe UI Emoji"',
-          '"Segoe UI Symbol"',
-          '"Noto Color Emoji"',
-        ],
-      },
-    },
-  },
-  plugins: [],
+	content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
+	theme: {
+		...generateTailwindConfig(),
+		extend: {
+			fontFamily: {
+				sans: [
+					'"Inter"',
+					"ui-sans-serif",
+					"system-ui",
+					"sans-serif",
+					'"Apple Color Emoji"',
+					'"Segoe UI Emoji"',
+					'"Segoe UI Symbol"',
+					'"Noto Color Emoji"',
+				],
+			},
+		},
+	},
+	plugins: [],
 } satisfies Config;
