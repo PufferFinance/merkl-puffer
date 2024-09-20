@@ -33,11 +33,11 @@ export const config = createConfig({
 
 export default function Index() {
 	return (
-		<div className="flex h-screen items-center justify-center">
-			<DAppProvider config={config}>
+		<div className="bg-main-0 flex h-screen items-center justify-center">
+			{/* <DAppProvider config={config}>
 				<Button className="bg-red-600">Hello</Button>
-			</DAppProvider>
-			<div className="flex bg-red-600 flex-col items-center gap-16">
+			</DAppProvider> */}
+			<div className="flex bg-primary-12 flex-col items-center gap-16">
 				<header className="flex flex-col items-center gap-9">
 					<h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
 						Welcome to <span className="sr-only">Remix</span>

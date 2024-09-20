@@ -6,9 +6,33 @@ import {
 	ScrollRestoration,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-import { DAppProvider } from "dappkit";
 import "./tailwind.css";
-import { config } from "libs/dappkit/src/hooks/useWalletState";
+import styles from "./tailwind.css?url";
+import { http, createConfig, useAccount, useConfig, useConnect, useDisconnect } from "wagmi";
+import { type Chain, mainnet, sepolia } from "wagmi/chains";
+import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
+import { DAppProvider } from "dappkit/src/context/Dapp.context";
+
+export const config = createConfig({
+	chains: [mainnet, sepolia],
+	connectors: [
+	  coinbaseWallet(),
+	  walletConnect({
+		customStoragePrefix: "wagmi",
+		projectId: "26c912aadd2132cd869a5edc00aeea0f",
+		metadata: {
+		  name: "Example",
+		  description: "Example website",
+		  url: "https://example.com",
+		  icons: [],
+		},
+	  }),
+	],
+	transports: {
+	  [mainnet.id]: http(),
+	  [sepolia.id]: http(),
+	},
+  });
 
 export const links: LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -20,6 +44,11 @@ export const links: LinksFunction = () => [
 	{
 		rel: "stylesheet",
 		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+	},
+	{
+		rel: "stylesheet",
+		href: styles,
+		as: "style"
 	},
 ];
 
@@ -42,5 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <Outlet />;
+	return <DAppProvider config={config}>
+	<Outlet />
+	</DAppProvider> 
 }

@@ -1,8 +1,8 @@
+import { generateTailwindConfig } from "dappkit/src/utils/tailwind";
 import type { Config } from "tailwindcss";
-import { generateTailwindConfig } from "dappkit";
 
 export default {
-	content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
+	content: ["./{app,dappkit}/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
 	theme: {
 		...generateTailwindConfig(),
 		extend: {
