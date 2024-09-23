@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import type { Component, Styled } from "../../utils/types";
 import { tv } from "tailwind-variants";
+import type { Component, Styled } from "../../utils/types";
 
 export const textStyles = tv({
   base: "text-main-11 font-default font-normal",

@@ -1,4 +1,4 @@
-import { createColoring, Themes } from "../theming/coloring";
+import { type Themes, createColoring } from "../theming/coloring";
 
 export const demoThemes: Themes = {
   merkl: {

@@ -1,10 +1,10 @@
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { type PropsWithChildren, type ReactNode } from "react";
+import { tv } from "tailwind-variants";
 import Icon from "../../components/primitives/Icon";
+import { useTheme } from "../../context/Theme.context";
 import { mergeClass } from "../../utils/css";
 import type { Component, GetSet, Variant } from "../../utils/types";
-import { tv } from "tailwind-variants";
-import { useTheme } from "../../context/Theme.context";
 import { boxStyles } from "../primitives/Box";
 import List from "../primitives/List";
 
@@ -131,14 +131,7 @@ const SelectItem = React.forwardRef<
   </RadixSelect.Item>
 ));
 
-export default function Select({
-  look,
-  size,
-  state,
-  options,
-  className,
-  ...props
-}: SelectProps<string>) {
+export default function Select({ look, size, state, options, className, ...props }: SelectProps<string>) {
   const { vars } = useTheme();
   const [getter, setter] = state ?? [];
 
@@ -148,15 +141,8 @@ export default function Select({
   });
 
   return (
-    <RadixSelect.Root
-      {...props}
-      value={getter && `${String(getter)}`}
-      onValueChange={(n) => setter?.(n)}
-    >
-      <RadixSelect.Trigger
-        className={mergeClass(base({ look, size }), className)}
-        aria-label="Food"
-      >
+    <RadixSelect.Root {...props} value={getter && `${String(getter)}`} onValueChange={n => setter?.(n)}>
+      <RadixSelect.Trigger className={mergeClass(base({ look, size }), className)} aria-label="Food">
         <div className={value()}>
           <RadixSelect.Value placeholder="Select a fruit" />
         </div>
@@ -172,8 +158,7 @@ export default function Select({
             boxStyles({ size: "xs", content: size }),
             dropdown(),
             "min-w-[var(--radix-select-trigger-width)]",
-          )}
-        >
+          )}>
           <RadixSelect.Viewport>
             <RadixSelect.Group>
               <List look="bold" size={size}>

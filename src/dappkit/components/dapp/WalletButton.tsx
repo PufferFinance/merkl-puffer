@@ -23,8 +23,7 @@ export default function WalletButton(props: ButtonProps) {
             <Text>Choose amongst detected wallets.</Text>
             <WalletConnectors />
           </>
-        }
-      >
+        }>
         <Button {...props}>{"Connect"}</Button>
       </Dropdown>
     );
@@ -54,8 +53,7 @@ export default function WalletButton(props: ButtonProps) {
               </Button>
             </Group>
           </>
-        }
-      >
+        }>
         <Button look="tint" size="sm">
           {Format.address(address, "short")}
         </Button>

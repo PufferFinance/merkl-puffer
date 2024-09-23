@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 export default function Page({ children }: PropsWithChildren) {
-	return <div className="mx-auto max-w-[1280px]">{children}</div>;
+  return <div className="mx-auto max-w-[1280px]">{children}</div>;
 }

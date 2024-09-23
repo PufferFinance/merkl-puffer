@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
-import { mergeClass } from "../../utils/css";
-import type { Component, Styled, Themable } from "../../utils/types";
 import { tv } from "tailwind-variants";
 import useThemedVariables from "../../hooks/theming/useThemedVariables";
+import { mergeClass } from "../../utils/css";
+import type { Component, Styled, Themable } from "../../utils/types";
 
 export const buttonStyles = tv({
   base: "text-main-11 flex items-center outline-offset-0 outline-0 text-nowrap font-main font-bold",
@@ -43,13 +43,9 @@ export default function Button({
     return (
       <Link
         {...{ size, look }}
-        className={mergeClass(
-          buttonStyles({ look: look ?? "base", size: size ?? "md" }),
-          className,
-        )}
+        className={mergeClass(buttonStyles({ look: look ?? "base", size: size ?? "md" }), className)}
         to={to}
-        type="button"
-      >
+        type="button">
         {children}
       </Link>
     );
@@ -60,8 +56,7 @@ export default function Button({
       style={themeVars}
       className={mergeClass(buttonStyles({ look: look ?? "base", size: size ?? "md" }), className)}
       {...props}
-      type="button"
-    >
+      type="button">
       {children}
     </button>
   );

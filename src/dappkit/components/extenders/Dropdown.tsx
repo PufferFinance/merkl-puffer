@@ -11,16 +11,13 @@ export default function Dropdown({ state, content, children }: DropdownProps) {
   const [internalState, setInternalState] = useState<boolean>(false);
 
   return (
-    <Popover.Root
-      open={!state ? internalState : state?.[0]}
-      onOpenChange={!state ? setInternalState : state?.[1]}
-    >
+    <Popover.Root open={!state ? internalState : state?.[0]} onOpenChange={!state ? setInternalState : state?.[1]}>
       <Popover.Trigger>{children}</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content asChild style={vars} className="">
           <Box size="md" content="sm" className="mx-lg shadow-md animate-drop">
             {content}
-            <Popover.Arrow  className="fill-main-6 border-main-6" />
+            <Popover.Arrow className="fill-main-6 border-main-6" />
           </Box>
         </Popover.Content>
       </Popover.Portal>

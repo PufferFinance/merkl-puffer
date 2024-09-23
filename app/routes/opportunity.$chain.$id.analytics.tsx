@@ -1,20 +1,13 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import Dropdown from "dappkit/components/extenders/Dropdown";
-import Group from "dappkit/components/extenders/Group";
-import Box from "dappkit/components/primitives/Box";
-import Space from "dappkit/components/primitives/Space";
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import Text from "dappkit/components/primitives/Text";
-import Title from "dappkit/components/primitives/Title";
-import { Button } from "dappkit/index";
-import Heading from "src/components/composite/Heading";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-	return json({ chain: params.chain });
+  return json({ chain: params.chain });
 }
 
 export default function Index() {
-	const opportunity = useLoaderData<typeof loader>();
+  const opportunity = useLoaderData<typeof loader>();
 
-	return <Text>Analytics</Text>;
+  return <Text>Analytics</Text>;
 }

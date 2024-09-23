@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Component } from "../../utils/types";
 import Divider from "./Divider";
 
@@ -12,14 +12,8 @@ export type BlockProps = { [Part in BlockExtension]?: ReactNode } & {
 /**
  * Wraps a children of a component into a extendable block
  */
-export default function Block({
-  id,
-  children,
-  divide,
-  dividerClassName,
-  ...props
-}: Component<BlockProps>) {
-  const hasExtensions = extensions.some((extension) => props?.[extension]);
+export default function Block({ id, children, divide, dividerClassName, ...props }: Component<BlockProps>) {
+  const hasExtensions = extensions.some(extension => props?.[extension]);
 
   const componentOf = (extension: BlockExtension) => props?.[extension];
 

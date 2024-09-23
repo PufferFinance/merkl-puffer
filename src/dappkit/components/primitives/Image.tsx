@@ -13,10 +13,7 @@ export default function Image({ fallback, className, ...props }: ImageProps) {
   return (
     <Avatar.Root className={mergeClass("flex items-center", className)}>
       <Avatar.Image {...props} className={className} />
-      <Avatar.Fallback
-        className="bg-main-2 h-full w-full justify-center flex items-center rounded-md"
-        delayMs={100}
-      >
+      <Avatar.Fallback className="bg-main-2 h-full w-full justify-center flex items-center rounded-md" delayMs={100}>
         {fallback}
       </Avatar.Fallback>
     </Avatar.Root>

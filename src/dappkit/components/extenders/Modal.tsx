@@ -21,17 +21,11 @@ export default function Modal({ state, title, description, content, children }: 
   const [internalState, setInternalState] = useState<boolean>(false);
 
   return (
-    <Dialog.Root
-      open={!state ? internalState : state?.[0]}
-      onOpenChange={!state ? setInternalState : state?.[1]}
-    >
+    <Dialog.Root open={!state ? internalState : state?.[0]} onOpenChange={!state ? setInternalState : state?.[1]}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay style={vars} className="bg-main-1 opacity-[0.75] fixed inset-0" />
-        <Dialog.Content
-          style={vars}
-          className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-        >
+        <Dialog.Content style={vars} className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <Box className="shadow-md">
             <Dialog.Title asChild={!!title}>
               {typeof title === "string" ? <Title h={2}>{title}</Title> : title}

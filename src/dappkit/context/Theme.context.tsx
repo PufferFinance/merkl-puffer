@@ -1,5 +1,5 @@
 import { type PropsWithChildren, createContext, useContext, useMemo, useState } from "react";
-import { reduceColorIntoVariables, Theme, Themes } from "../theming/coloring";
+import { type Theme, type Themes, reduceColorIntoVariables } from "../theming/coloring";
 import { reduceSpacingIntoVariables } from "../theming/spacing";
 
 const ThemeContext = createContext<ReturnType<typeof useThemeState> | null>(null);
@@ -14,8 +14,7 @@ function useThemeState(themes: Themes) {
         (o, [label, theme]) =>
           Object.assign(o, {
             [label]: Object.entries(theme ?? {}).reduce(
-              (_o, [state, coloring]) =>
-                Object.assign(_o, { [state]: reduceColorIntoVariables(coloring) }),
+              (_o, [state, coloring]) => Object.assign(_o, { [state]: reduceColorIntoVariables(coloring) }),
               {} as { [S in keyof Theme]: ReturnType<typeof reduceColorIntoVariables> },
             ),
           }),
@@ -42,7 +41,7 @@ function useThemeState(themes: Themes) {
     themes,
     mode,
     setMode,
-    toggleMode: () => setMode((m) => (m === "dark" ? "light" : "dark")),
+    toggleMode: () => setMode(m => (m === "dark" ? "light" : "dark")),
   };
 }
 

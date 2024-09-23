@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "biome check --fix ./src ./app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
@@ -51,7 +51,9 @@
     "wagmi": "^2.12.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.2",
     "@remix-run/dev": "^2.11.2",
+    "@types/bun": "latest",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
@@ -66,8 +68,7 @@
     "postcss": "^8.4.38",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
-    "vite-tsconfig-paths": "^4.2.1",
-    "@types/bun": "latest"
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "engines": {
     "node": ">=20.0.0"

@@ -1,7 +1,7 @@
 import { type PropsWithChildren, createContext, useContext } from "react";
 import type { ResolvedRegister } from "wagmi";
-import ThemeProvider from "./Theme.context";
 import { demoThemes } from "../config/themes";
+import ThemeProvider from "./Theme.context";
 import { WalletProvider } from "./Wallet.context";
 
 export type DAppContextType = { flag?: string };

@@ -5,13 +5,13 @@ export const radiusScale = [2, 4, 8, 12, 16, 24];
 export const sizeScale = ["xs", "sm", "md", "lg", "xl"] as const;
 export const lookScale = ["soft", "base", "bold", "tint", "hype"] as const;
 
-export const variableConfig = generateVariableAssigners()
+export const variableConfig = generateVariableAssigners();
 
 export const generateTailwindConfig = () => ({
   ...variableConfig,
   extend: {},
   colors: {
-    ...variableConfig?.colors
+    ...variableConfig?.colors,
   },
   keyframes: {
     drop: {
@@ -30,7 +30,7 @@ export const generateTailwindConfig = () => ({
   borderRadius: {
     0: "0",
     full: "100vmax",
-    ...variableConfig?.borderRadius
+    ...variableConfig?.borderRadius,
   },
   boxShadow: {
     md: "0 2px 4px -2px rgba(0, 0, 0, 0.3)",
