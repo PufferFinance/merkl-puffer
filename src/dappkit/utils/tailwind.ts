@@ -36,6 +36,14 @@ export const generateTailwindConfig = () => ({
     md: "0 2px 4px -2px rgba(0, 0, 0, 0.3)",
     "3xl": "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
   },
+  height: {
+    full: "100%",
+    ...variableConfig?.height
+  },
+  width: {
+    full: "100%",
+    ...variableConfig?.width
+  },
   padding: {
     0: "0px",
     ...variableConfig?.padding,

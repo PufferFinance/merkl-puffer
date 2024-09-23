@@ -32,7 +32,7 @@ export default function Heading({ title, description, tags, tabs, children }: He
             ))}
           </Group>
         </Group>
-        <Group size="xl" className="grid grid-cols-3 grow max-w-[50%]">
+        {/* <Group size="xl" className="grid grid-cols-3 grow max-w-[50%]">
           <Group className="flex-col" look="base">
             <Group className="gap-xl">
               <Title h={3}>APR</Title>
@@ -54,7 +54,7 @@ export default function Heading({ title, description, tags, tabs, children }: He
             </Group>
             <Box className="grow">graph</Box>
           </Group>
-        </Group>
+        </Group> */}
       </Group>
       <Divider className="border-main-4" horizontal />
       <div>{children}</div>

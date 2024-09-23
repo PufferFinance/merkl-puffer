@@ -15,5 +15,7 @@ export function generateVariableAssigners(): TailwindConfig["theme"] {
     padding: generateSpacingScale("spacing"),
     margin: generateSpacingScale("spacing"),
     gap: generateSpacingScale("spacing"),
+    width: generateSpacingScale("spacing"),
+    height: generateSpacingScale("spacing"),
   };
 }

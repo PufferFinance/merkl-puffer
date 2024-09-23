@@ -1,8 +1,11 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useLocation, useParams } from "@remix-run/react";
+import Icon from "dappkit/components/primitives/Icon";
 import { Button } from "dappkit/index";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
+import Tag from "src/components/element/Tag";
+import { chains } from "src/config/chains";
 
 export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
   const chainId = 1;
@@ -17,6 +20,7 @@ export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
   return json({
     ...opportunity,
     tags: [
+      { type: "chain", value: opportunity.chainId },
       { type: "action", value: opportunity.action },
       { type: "platform", value: opportunity.platform },
       ...opportunity.tokenIcons.map(t => ({ type: "tokens", value: t })),
@@ -40,9 +44,7 @@ export default function Index() {
           { label: "Analytics", link: `/opportunity/${chain}/${id}/analytics` },
         ]}
         tags={opportunity.tags.map(tag => (
-          <Button key={tag.value} look="bold" size="sm">
-            {tag.value}
-          </Button>
+          <Tag key={`${tag.type}_${tag.value}`} {...tag} size="sm" look="bold" />
         ))}>
         <Outlet />
       </Heading>
