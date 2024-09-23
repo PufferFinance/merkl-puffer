@@ -15,8 +15,6 @@ export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
 
   const opportunity = Object.values(opportunities ?? {})?.[0];
 
-  console.log(opportunity);
-
   return json({
     ...opportunity,
     tags: [
