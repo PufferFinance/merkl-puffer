@@ -11,7 +11,9 @@ import styles from "./tailwind.css?url";
 import { http, createConfig, useAccount, useConfig, useConnect, useDisconnect } from "wagmi";
 import { type Chain, mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
-import { DAppProvider } from "dappkit/src/context/Dapp.context";
+import { DAppProvider } from "dappkit/context/Dapp.context";
+import Group from "dappkit/components/extenders/Group";
+import Header from "src/components/layout/Header";
 
 export const config = createConfig({
 	chains: [mainnet, sepolia],
@@ -71,7 +73,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+	// return <Outlet/>;
 	return <DAppProvider config={config}>
-	<Outlet />
+				<Group size='xl' className="bg-main-2 h-full bg-gradient-to-b via-main-1 via-30% from-main-3 to-main-1 p-md flex-col">
+			<Header/>
+			<div><Outlet/></div>
+		</Group>
 	</DAppProvider> 
 }

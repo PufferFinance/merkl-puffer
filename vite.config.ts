@@ -17,7 +17,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      dappkit: path.resolve(__dirname, "./dappkit/"),
+      dappkit: path.resolve(__dirname, "./src/dappkit")
     }
   }
 });

@@ -2,7 +2,6 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "dappkit/**/*.tsx",
     "**/.server/**/*.ts",
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
@@ -24,7 +23,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "dappkit/*": ["./src/dappkit/*"]
     },
 
     // Vite takes care of building everything, not tsc.
