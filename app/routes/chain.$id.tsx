@@ -20,6 +20,7 @@ export default function Index() {
   return (
     <Page>
       <Heading
+        navigation={{ label: "Back to opportunities", link: "/" }}
         icons={[{ chain: chain.id }]}
         title={chain.label}
         description={"Chain on Merkl."}

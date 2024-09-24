@@ -67,3 +67,9 @@ export const chains = {
 };
 
 export type ChainId = keyof typeof chains;
+
+export function getChainId(labelOrShort: string): ChainId | undefined {
+  for (const [chainId, {label, short}] of Object.entries(chains)) {
+    if (label?.toLowerCase() === labelOrShort?.toLowerCase() ||  short?.toLocaleLowerCase() === labelOrShort?.toLowerCase()) return chainId
+  }
+}

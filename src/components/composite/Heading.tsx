@@ -1,5 +1,6 @@
 import { useLocation } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
+import Icons from "dappkit/components/extenders/Icons";
 import Box from "dappkit/components/primitives/Box";
 import Divider from "dappkit/components/primitives/Divider";
 import Icon, { IconProps } from "dappkit/components/primitives/Icon";
@@ -9,23 +10,36 @@ import { Button } from "dappkit/index";
 import type { PropsWithChildren, ReactNode } from "react";
 
 export type HeadingProps = PropsWithChildren<{
-  icons: IconProps[],
+  icons: IconProps[];
   title: ReactNode;
+  navigation: { label: ReactNode; link: string };
   description: ReactNode;
   tags: ReactNode[];
   tabs: { label: ReactNode; link: string }[];
 }>;
 
-export default function Heading({ icons, title, description, tags, tabs, children }: HeadingProps) {
+export default function Heading({ navigation, icons, title, description, tags, tabs, children }: HeadingProps) {
   const location = useLocation();
 
   return (
     <>
       <Group className="flex-row justify-between pb-md">
-        <Group size="sm" className="flex-col">
+        <Group size="sm" className="mt-xl flex-col">
+          {navigation && (
+            <Group>
+              <Button to={navigation.link} look="soft" size="sm">
+                <Icon size="sm" remix="RiArrowLeftSLine" />
+                {navigation.label}
+              </Button>
+            </Group>
+          )}
           <Group>
-          {icons?.map((icon) => <Icon key={`${Object.values(icon)}`} size="md" {...icon}/>)}
-          <Title h={1}>{title}</Title>
+          <Icons size="lg">
+            {icons?.map(icon => (
+              <Icon key={`${Object.values(icon)}`} {...icon} />
+            ))}
+          </Icons>
+            <Title h={1}>{title}</Title>
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}
           <Text>{description}</Text>

@@ -1,8 +1,49 @@
-import { PropsWithChildren } from "react";
+import { Children, cloneElement, PropsWithChildren, ReactElement } from "react";
 import Icon from "../primitives/Icon";
+import Group from "./Group";
+import { mergeClass } from "dappkit/utils/css";
+import { tv } from "tailwind-variants";
+import { Component, Styled } from "dappkit/utils/types";
 
-export default function Icons({children}: PropsWithChildren) {
-    return <div>
-        <Icon remix="Ri24HoursFill"/>
-    </div>
+export const iconsStyles = tv({
+  base: "",
+  slots: {
+    container: "min-w-fit max-w-fit",
+    item: "",
+  },
+  variants: {
+    size: {
+      xs: { container: "", item: "-ml-xs*2 " },
+      sm: { container: "", item: "-ml-sm*2" },
+      md: { container: "", item: "-ml-md*2" },
+      lg: { container: "", item: "-ml-lg*2" },
+      xl: { container: "", item: "-ml-xl*2" },
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+});
+
+type ListElement = ReactElement<{ look: unknown; size: unknown; className?: string; style: unknown }>;
+export type IconsProps = Component<Styled<typeof iconsStyles> & { children: ListElement }, HTMLDivElement>;
+
+export default function Icons({ size, children, className, ...props }: IconsProps) {
+  const {container, item} = iconsStyles({ size });
+
+  return (
+    <Group size={size} className={mergeClass(container())} {...props}>
+      {Children.map(
+        children as ListElement | ListElement[],
+        (child, index) =>
+          child &&
+          cloneElement(child, {
+            size: size,
+            style: { zIndex: Children.count(children) - index },
+            className: mergeClass(index && item(), child.props.className),
+          }),
+      )}
+      {/* <Icon remix="Ri24HoursFill"/> */}
+    </Group>
+  );
 }
