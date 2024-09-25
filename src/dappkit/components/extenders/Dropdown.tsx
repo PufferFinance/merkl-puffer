@@ -11,8 +11,8 @@ export default function Dropdown({ state, content, children }: DropdownProps) {
   const [internalState, setInternalState] = useState<boolean>(false);
 
   return (
-    <Popover.Root open={!state ? internalState : state?.[0]} onOpenChange={!state ? setInternalState : state?.[1]}>
-      <Popover.Trigger>{children}</Popover.Trigger>
+    <Popover.Root open={!state ? internalState : state?.[0]}  onOpenChange={!state ? setInternalState : state?.[1]}>
+      <Popover.Trigger onClick={(e) => {e.preventDefault(); setInternalState(r => !r)}}>{children}</Popover.Trigger>
       <Popover.Portal>
         <Popover.Content asChild style={vars} className="">
           <Box size="md" content="sm" className="mt-md mx-lg shadow-md animate-drop">

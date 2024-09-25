@@ -51,7 +51,7 @@ export default function ThemeProvider({ themes, children }: ThemeProviderProps) 
 
   return (
     <ThemeContext.Provider value={value}>
-      <div style={value?.vars} className="bg-main-1 h-full overflow-hidden">
+      <div style={value?.vars} className="bg-main-1 h-full">
         {children}
       </div>
     </ThemeContext.Provider>

@@ -9,7 +9,7 @@ import Title from "dappkit/components/primitives/Title";
 import { Token } from "src/api/fetch/fetchTokens";
 import { Action, actions } from "src/config/actions";
 import { ChainId, chains } from "src/config/chains";
-import { getProtocol, Protocol, protocols } from "src/config/protocols";
+import { getProtocol, getProtocolInfo, Protocol, protocols } from "src/config/protocols";
 
 export type TagTypes = {
   chain: ChainId;
@@ -55,6 +55,8 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     case "action": {
       const action = actions[value as TagTypes["action"]];
 
+      if (!action) return <Button {...props}>{value}</Button>;
+
       return (
         <Dropdown
           content={
@@ -85,6 +87,8 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
     case "token": {
       const token = value as TagTypes["token"];
+
+      if (!token) return <Button {...props}>{value}</Button>;
 
       return (
         <Dropdown
@@ -123,7 +127,9 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "protocol": {
-      const protocol = protocols[value as TagTypes["protocol"]];
+      const protocol = getProtocolInfo(value as string)
+
+      if (!protocol) return <Button {...props}>{value}</Button>
 
       return (
         <Dropdown

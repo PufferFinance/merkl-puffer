@@ -71,7 +71,7 @@ export default function App() {
     <DAppProvider config={config}>
       <Group
         size="xl"
-        className="bg-main-2 h-full bg-gradient-to-b via-main-1 via-[15em] from-main-3 to-main-1 p-md flex-col">
+        className="bg-main-1 min-h-[100vh] via-main-1 via-[15em] from-main-3 to-main-1 p-md flex-col">
         <Header />
         <div>
           <Outlet />

@@ -2,32 +2,34 @@ import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
 import Icon from "dappkit/components/primitives/Icon";
+import { fetchOpportunities } from "src/api/fetch/fetchOpportunities";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import { chains } from "src/config/chains";
+import { chains, getChainId } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const chain = Object.entries(chains).find(([chainId, { label, short }]) =>
-    [chainId, label, short].map(v => v?.toLowerCase?.() ?? v).some(v => v === (id?.toLowerCase?.() ?? id)),
-  );
+  const chainId = getChainId(id ?? "");
 
-  return json({ id: Number.parseInt(chain?.[0] ?? "0"), ...chain?.[1] });
+  if (!chainId) throw "";
+
+  return json({ chainId });
 }
 
 export default function Index() {
-  const chain = useLoaderData<typeof loader>();
+  const { chainId } = useLoaderData<typeof loader>();
+  const chain = chains[chainId];
 
   return (
     <Page>
       <Heading
+        icons={[{ chain: chainId }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
-        icons={[{ chain: chain.id }]}
         title={chain.label}
-        description={"Chain on Merkl."}
+        description={"A new era for ethereum apps"}
         tabs={[
-          { label: "Overview", link: `/chain/${chain}` },
-          { label: "Leaderboard", link: `/chain/${chain}/leaderboard` },
-          { label: "Analytics", link: `/chain/${chain}/analytics` },
+          { label: "Opportunities", link: `/chain/${chain.label?.toLowerCase()}` },
+          { label: "Leaderboard", link: `/chain/${chain.label?.toLowerCase()}/leaderboard` },
+          { label: "Analytics", link: `/chain/${chain.label?.toLowerCase()}/analytics` },
         ]}>
         <Outlet />
       </Heading>

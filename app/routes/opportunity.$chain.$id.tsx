@@ -23,10 +23,6 @@ export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
 
   const { res: tokens } = await fetchTokens({ chainIds: [opportunity?.chainId], symbols: opportunity.tokenIcons });
 
-  console.log(tokens);
-  console.log(opportunity?.platform, getProtocol(opportunity?.platform));
-  
-
   return json({
     ...opportunity,
     tags: [
@@ -57,7 +53,7 @@ export default function Index() {
     <Page>
       <Meta />
       <Heading
-        icons={opportunity.tags.filter(({type}) => type === "token").map((token) => ({src: (token?.value as TagTypes["token"]).logoURI}))}
+        icons={opportunity.tags.filter(({type}) => type === "token").map((token) => ({src: (token?.value as TagTypes["token"])?.logoURI}))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={opportunity.name}
         description={"Earn rewards by providing liquidity to this pool directly on USDC/USDT/FRAX or through one of the supported Automated Liquidity Managers."}

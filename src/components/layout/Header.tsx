@@ -8,12 +8,13 @@ import { Button } from "dappkit/index";
 
 export default function Header() {
   const { mode, toggleMode } = useTheme();
+
   return (
     <header className="flex flex-nowrap justify-center items-center w-full">
       <Group>
         <Title h={3}>Merkl</Title>
       </Group>
-      <Group className="grow flex justify-center">
+      <Group className="grow flex justify-center">  
         <Input look="base" placeholder="Search Merkl" />
       </Group>
       <Group>
