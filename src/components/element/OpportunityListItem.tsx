@@ -38,8 +38,7 @@ export default function OpportunityListItem({ hideTags, opportunity, className, 
         <Group>1</Group>
       </Group>
       <Group className="flex-col w-full">
-        <Title h={3}>APR</Title>
-        <Group>2</Group>
+        <Group>{opportunity.apr}</Group>
       </Group>
       <Group className="flex-col w-full">
         <Title h={3}>APR</Title>
