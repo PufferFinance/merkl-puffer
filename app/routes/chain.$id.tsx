@@ -1,16 +1,18 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
+import Select from "dappkit/components/extenders/Select";
 import Icon from "dappkit/components/primitives/Icon";
-import { fetchOpportunities } from "src/api/fetch/fetchOpportunities";
+import Title from "dappkit/components/primitives/Title";
+import { type ReactNode, useMemo } from "react";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import { chains, getChainId } from "src/config/chains";
+import { type ChainId, chains, getChainId } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const chainId = getChainId(id ?? "");
 
-  if (!chainId) throw "";
+  if (!chainId) throw new Error("Unsupported Chain");
 
   return json({ chainId });
 }
@@ -34,5 +36,42 @@ export default function Index() {
         <Outlet />
       </Heading>
     </Page>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  const navigate = useNavigate();
+
+  const networks = useMemo(() => {
+    const a = Object.keys(chains);
+    return Object.entries(chains).reduce(
+      (supported, [chainId, chain]) => {
+        supported[chainId] = (
+          <Group>
+            <Icon size="sm" chain={chainId} />
+            {chain.label}
+          </Group>
+        );
+        return supported;
+      },
+      {} as { [C in ChainId]?: ReactNode },
+    );
+  }, []);
+
+  return (
+    <>
+      <Group className="mx-auto my-auto flex-col p-xl*2 [&>*]:text-center max-w-fit justify-center">
+        <Title h={3}>{error?.message ?? "Error"}</Title>
+        {/* <Text h={3}>We don't support this chain</Text> */}
+        <div>
+          <Select
+            state={[undefined, c => navigate(`/chain/${chains?.[c]?.label}`)]}
+            placeholder="Supported Chains"
+            options={networks}
+          />
+        </div>
+      </Group>
+    </>
   );
 }

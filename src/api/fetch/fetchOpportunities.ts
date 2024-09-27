@@ -1,7 +1,7 @@
-import { ChainId } from "src/config/chains";
+import type { Action } from "src/config/actions";
+import type { ChainId } from "src/config/chains";
 import { API, query } from "../endpoint";
 import { createCall } from "./call";
-import { Action } from "src/config/actions";
 
 export type FetchedOpportunity = {
   id: string;
@@ -47,7 +47,7 @@ export const fetchOpportunities = createCall<
   },
   reducer(fetched, { chainId }) {
     console.log("opps", fetched);
-    
+
     return fetched;
   },
 });

@@ -1,9 +1,8 @@
-import { Children, cloneElement, PropsWithChildren, ReactElement } from "react";
-import Icon from "../primitives/Icon";
-import Group from "./Group";
 import { mergeClass } from "dappkit/utils/css";
+import type { Component, Styled } from "dappkit/utils/types";
+import { Children, type ReactElement, cloneElement } from "react";
 import { tv } from "tailwind-variants";
-import { Component, Styled } from "dappkit/utils/types";
+import Group from "./Group";
 
 export const iconsStyles = tv({
   base: "",
@@ -29,7 +28,7 @@ type ListElement = ReactElement<{ look: unknown; size: unknown; className?: stri
 export type IconsProps = Component<Styled<typeof iconsStyles> & { children: ListElement }, HTMLDivElement>;
 
 export default function Icons({ size, children, className, ...props }: IconsProps) {
-  const {container, item} = iconsStyles({ size });
+  const { container, item } = iconsStyles({ size });
 
   return (
     <Group size={size} className={mergeClass(container())} {...props}>

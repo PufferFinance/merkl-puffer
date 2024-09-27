@@ -1,42 +1,27 @@
-import { type LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useLocation, useParams } from "@remix-run/react";
-import Icon from "dappkit/components/primitives/Icon";
-import { Button } from "dappkit/index";
 import { fetchOpportunity } from "src/api/fetch/fetchOpportunity";
 import { fetchTokens } from "src/api/fetch/fetchTokens";
+import { tagOpportunity } from "src/api/utils/opportunity";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import Tag, { TagTypes } from "src/components/element/Tag";
-import { ChainId, chains, getChainId } from "src/config/chains";
-import { getProtocol } from "src/config/protocols";
+import Tag, { type TagTypes } from "src/components/element/Tag";
+import { getChainId } from "src/config/chains";
 
 export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
-  const chainId = getChainId(chain ?? "")
+  const chainId = getChainId(chain ?? "");
 
   console.log("chainId", chainId, id);
-  
+
   if (!chainId) throw "";
 
   const { res: opportunity } = await fetchOpportunity({ chainId: chainId, mainParameter: id ?? "" });
-  
+
   if (!opportunity) throw "";
 
   const { res: tokens } = await fetchTokens({ chainIds: [opportunity?.chainId], symbols: opportunity.tokenIcons });
 
-  return json({
-    ...opportunity,
-    tags: [
-      { type: "chain", value: opportunity.chainId },
-      { type: "action", value: opportunity.action },
-      { type: "protocol", value: getProtocol(opportunity?.platform) },
-      ...(opportunity?.tokenIcons?.map(t => ({
-        type: "token",
-        value: Object.values(tokens?.[opportunity.chainId] ?? {}).find(
-          ({ symbol }) => symbol?.toLowerCase() === t?.toLowerCase(),
-        ),
-      })) ?? []),
-    ],
-  });
+  return json(tagOpportunity(opportunity, tokens));
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -53,16 +38,22 @@ export default function Index() {
     <Page>
       <Meta />
       <Heading
-        icons={opportunity.tags.filter(({type}) => type === "token").map((token) => ({src: (token?.value as TagTypes["token"])?.logoURI}))}
+        icons={opportunity.contextTag
+          .filter(({ type }) => type === "token")
+          .map(token => ({ src: (token?.value as TagTypes["token"])?.logoURI }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={opportunity.name}
-        description={"Earn rewards by providing liquidity to this pool directly on USDC/USDT/FRAX or through one of the supported Automated Liquidity Managers."}
+        description={
+          "Earn rewards by providing liquidity to this pool directly on USDC/USDT/FRAX or through one of the supported Automated Liquidity Managers."
+        }
         tabs={[
           { label: "Overview", link: `/opportunity/${chain}/${id}` },
           { label: "Leaderboard", link: `/opportunity/${chain}/${id}/leaderboard` },
           { label: "Analytics", link: `/opportunity/${chain}/${id}/analytics` },
         ]}
-        tags={opportunity.tags.map((tag) => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />)}>
+        tags={opportunity.contextTag.map(tag => (
+          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
+        ))}>
         <Outlet />
       </Heading>
     </Page>

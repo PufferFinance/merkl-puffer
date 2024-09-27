@@ -14,11 +14,13 @@ export default function Header() {
       <Group>
         <Title h={3}>Merkl</Title>
       </Group>
-      <Group className="grow flex justify-center">  
+      <Group className="grow flex justify-center">
         <Input look="base" placeholder="Search Merkl" />
       </Group>
       <Group>
-        <Button size='md' onClick={toggleMode}><Icon size="sm" remix={mode ==="dark" ? "RiMoonClearFill" : "RiSunFill"}/></Button>
+        <Button size="md" onClick={toggleMode}>
+          <Icon size="sm" remix={mode === "dark" ? "RiMoonClearFill" : "RiSunFill"} />
+        </Button>
         <WalletButton look="hype">Connect</WalletButton>
       </Group>
     </header>

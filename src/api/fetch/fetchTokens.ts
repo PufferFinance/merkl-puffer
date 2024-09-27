@@ -1,7 +1,6 @@
-import { ChainId } from "src/config/chains";
+import type { ChainId } from "src/config/chains";
 import { API, query } from "../endpoint";
 import { createCall } from "./call";
-import { Action } from "src/config/actions";
 
 export type FetchedToken = {
   address: string;

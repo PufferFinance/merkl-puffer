@@ -19,7 +19,7 @@ export const chains = {
     short: "pol",
     asset: (await import("../assets/chains/polygon.svg?url")).default,
   },
-  1313161554: { label: "AURORA", short: "AURORA", asset: (await import("../assets/chains/aurora.svg?url")).default },
+  1313161554: { label: "AURORA", short: "aurora", asset: (await import("../assets/chains/aurora.svg?url")).default },
   43114: { label: "Avalance", short: "avalanche", asset: (await import("../assets/chains/avalanche.svg?url")).default },
   8453: { label: "Base", short: "base", asset: (await import("../assets/chains/base.svg?url")).default },
   56: { label: "Binance Smart Chain", short: "bsc", asset: (await import("../assets/chains/bsc.svg?url")).default },
@@ -64,12 +64,16 @@ export const chains = {
   2046399126: { label: "Skale", short: "skale", asset: (await import("../assets/chains/skale.png?url")).default },
   252: { label: "Fraxtal", short: "fraxtal", asset: (await import("../assets/chains/fraxtal.svg?url")).default },
   60808: { label: "BOB", short: "bib", asset: (await import("../assets/chains/bob.svg?url")).default },
-};
+} as const;
 
 export type ChainId = keyof typeof chains;
 
 export function getChainId(labelOrShort: string): ChainId | undefined {
-  for (const [chainId, {label, short}] of Object.entries(chains)) {
-    if (label?.toLowerCase() === labelOrShort?.toLowerCase() ||  short?.toLocaleLowerCase() === labelOrShort?.toLowerCase()) return chainId
+  for (const [chainId, { label, short }] of Object.entries(chains)) {
+    if (
+      label?.toLowerCase() === labelOrShort?.toLowerCase() ||
+      short?.toLocaleLowerCase() === labelOrShort?.toLowerCase()
+    )
+      return chainId;
   }
 }

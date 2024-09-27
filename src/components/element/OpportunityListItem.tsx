@@ -1,13 +1,12 @@
-import Group from "dappkit/components/extenders/Group";
-import Box, { BoxProps } from "dappkit/components/primitives/Box";
-import Title from "dappkit/components/primitives/Title";
-import { FetchedOpportunity } from "src/api/fetch/fetchOpportunity";
-import Tag, { TagTypes } from "./Tag";
-import { getProtocol } from "src/config/protocols";
-import { Button } from "dappkit/index";
-import { chains } from "src/config/chains";
 import Card from "dappkit/components/extenders/Card";
+import Group from "dappkit/components/extenders/Group";
+import type { BoxProps } from "dappkit/components/primitives/Box";
+import Title from "dappkit/components/primitives/Title";
+import Value from "dappkit/components/primitives/Value";
 import { mergeClass } from "dappkit/utils/css";
+import type { FetchedOpportunity } from "src/api/fetch/fetchOpportunity";
+import { chains } from "src/config/chains";
+import Tag, { type TagTypes } from "./Tag";
 
 export type OpportunityListItemProps = { hideTags?: (keyof TagTypes)[]; opportunity: FetchedOpportunity } & BoxProps;
 
@@ -22,27 +21,21 @@ export default function OpportunityListItem({ hideTags, opportunity, className, 
       <Group className="flex-col w-full">
         <Title h={3}>{opportunity.name}</Title>
         <Group>
-          {[
-            { type: "chain", value: opportunity.chainId },
-            { type: "action", value: opportunity.action },
-            { type: "protocol", value: getProtocol(opportunity?.platform) ?? opportunity?.platform },
-          ]
-            .filter(({ type }) => !hideTags || !hideTags.includes(type))
+          {opportunity?.contextTag
+            ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
             .map(tag => (
               <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
             ))}
         </Group>
       </Group>
-      <Group className="flex-col w-full">
-        <Title h={3}>TVL</Title>
-        <Group>1</Group>
+      <Group>
+        <Value format="0.00a">{opportunity.apr}</Value>
       </Group>
-      <Group className="flex-col w-full">
-        <Group>{opportunity.apr}</Group>
+      <Group>
+        <Value format="0.00a">{opportunity.tvl}</Value>
       </Group>
-      <Group className="flex-col w-full">
-        <Title h={3}>APR</Title>
-        <Group>3</Group>
+      <Group>
+        <Value format="0.00a">{opportunity.dailyrewards}</Value>
       </Group>
     </Card>
   );

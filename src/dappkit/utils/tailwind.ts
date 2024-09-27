@@ -38,11 +38,11 @@ export const generateTailwindConfig = () => ({
   },
   height: {
     full: "100%",
-    ...variableConfig?.height
+    ...variableConfig?.height,
   },
   width: {
     full: "100%",
-    ...variableConfig?.width
+    ...variableConfig?.width,
   },
   padding: {
     0: "0px",

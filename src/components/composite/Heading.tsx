@@ -1,9 +1,8 @@
 import { useLocation } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
 import Icons from "dappkit/components/extenders/Icons";
-import Box from "dappkit/components/primitives/Box";
 import Divider from "dappkit/components/primitives/Divider";
-import Icon, { IconProps } from "dappkit/components/primitives/Icon";
+import Icon, { type IconProps } from "dappkit/components/primitives/Icon";
 import Text from "dappkit/components/primitives/Text";
 import Title from "dappkit/components/primitives/Title";
 import { Button } from "dappkit/index";
@@ -34,11 +33,11 @@ export default function Heading({ navigation, icons, title, description, tags, t
             </Group>
           )}
           <Group>
-          <Icons size="lg">
-            {icons?.map(icon => (
-              <Icon key={`${Object.values(icon)}`} {...icon} />
-            ))}
-          </Icons>
+            <Icons size="lg">
+              {icons?.map(icon => (
+                <Icon key={`${Object.values(icon)}`} {...icon} />
+              ))}
+            </Icons>
             <Title h={1}>{title}</Title>
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}

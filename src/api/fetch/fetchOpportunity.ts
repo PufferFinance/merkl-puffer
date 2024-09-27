@@ -1,7 +1,7 @@
-import { ChainId } from "src/config/chains";
+import type { Action } from "src/config/actions";
+import type { ChainId } from "src/config/chains";
 import { API, query } from "../endpoint";
 import { createCall } from "./call";
-import { Action } from "src/config/actions";
 
 export type FetchedOpportunity = {
   id: string;
@@ -44,7 +44,7 @@ export const fetchOpportunity = createCall<
     };
   },
   reducer(fetched, { mainParameter }) {
-    const oppKey = Object.keys(fetched).find((key) => key.includes(mainParameter)) as `${number}_${string}` | undefined;
+    const oppKey = Object.keys(fetched).find(key => key.includes(mainParameter)) as `${number}_${string}` | undefined;
     const opp = oppKey ? fetched[oppKey] : undefined;
 
     if (oppKey) return opp;

@@ -69,11 +69,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <DAppProvider config={config}>
-      <Group
-        size="xl"
-        className="bg-main-1 min-h-[100vh] via-main-1 via-[15em] from-main-3 to-main-1 p-md flex-col">
+      <Group size="xl" className="bg-main-1 min-h-[100vh] via-main-1 via-[15em] from-main-3 to-main-1 p-md flex-col">
         <Header />
-        <div>
+        <div className="grow h-full">
           <Outlet />
         </div>
       </Group>

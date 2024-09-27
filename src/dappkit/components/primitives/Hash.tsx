@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import Text, { TextProps } from "./Text";
 import { mergeClass } from "dappkit/utils/css";
+import { useMemo } from "react";
+import Text, { type TextProps } from "./Text";
 
 export type HashProps = Omit<TextProps, "children"> & { format: "full" | "short" | "prefix"; children: string };
 
@@ -16,5 +16,9 @@ export default function Hash({ format, children: hash, className, ...props }: Ha
     }
   }, [hash, format]);
 
-  return <Text {...props} className={mergeClass("hover:underline cursor-pointer", className)}>{formatted}</Text>;
+  return (
+    <Text {...props} className={mergeClass("hover:underline cursor-pointer", className)}>
+      {formatted}
+    </Text>
+  );
 }

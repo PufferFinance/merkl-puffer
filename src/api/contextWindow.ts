@@ -1,3 +1,3 @@
 export type ContextWindow = {
-    tokens: {[chain in ChainId]}
-}
+  tokens: { [chain in ChainId] };
+};

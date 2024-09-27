@@ -14,11 +14,11 @@ export function createCall<T, R, Q>({
 }: {
   fetcher: (params: Q) => Promise<T>;
   reducer: (fetched: T, params: Q) => R | undefined;
-}): (params: Q) => Promise<{res?: R, err?: string}> {
+}): (params: Q) => Promise<{ res?: R; err?: string }> {
   return async (params: Q) => {
     const fetched = await fetcher(params);
 
     //TODO: handle error cases
-    return {res: reducer(fetched, params)};
+    return { res: reducer(fetched, params) };
   };
 }

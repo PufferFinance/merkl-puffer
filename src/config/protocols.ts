@@ -36,6 +36,7 @@ export function getProtocolInfo(labelOrShort: string): (typeof protocols)[Protoc
 
   if (!protocol) return;
 
-  if (protocols[protocol]?.extends) return Object.assign({}, protocols[protocols[protocol]?.extends], protocols[protocol]);
+  if (protocols[protocol]?.extends)
+    return Object.assign({}, protocols[protocols[protocol]?.extends], protocols[protocol]);
   return protocols[protocol];
 }

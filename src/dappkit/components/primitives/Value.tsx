@@ -1,5 +1,6 @@
 import { mergeClass } from "dappkit/utils/css";
-import { Component, Styled } from "dappkit/utils/types";
+import type { Component, Styled } from "dappkit/utils/types";
+import { format } from "numerable";
 import { tv } from "tailwind-variants";
 
 export const valueStyles = tv({
@@ -26,8 +27,13 @@ export const valueStyles = tv({
   },
 });
 
-export type ValueProps = Component<Styled<typeof valueStyles>, HTMLDivElement>;
+export type ValueFormatProps = { children?: number; format: string };
+export type ValueProps = Component<Styled<typeof valueStyles> & ValueFormatProps, HTMLDivElement>;
 
-export default function Value({ look, size, value, className, ...props }: ValueProps) {
-  return <div className={mergeClass(valueStyles({ size, look }))} {...props} />;
+export default function Value({ look, size, value, className, format: _format, children, ...props }: ValueProps) {
+  return (
+    <div className={mergeClass(valueStyles({ size, look }))} {...props}>
+      {format(children, _format)}
+    </div>
+  );
 }

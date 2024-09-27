@@ -116,6 +116,7 @@ export type SelectProps<Value extends string | number | symbol = string> = Compo
   size?: Variant<typeof selectStyles, "size">;
   look?: Variant<typeof selectStyles, "look">;
   value?: Value;
+  placeholder?: string;
   state?: GetSet<Value>;
   options?: { [key: string | number | symbol]: ReactNode };
 }> &
@@ -131,7 +132,7 @@ const SelectItem = React.forwardRef<
   </RadixSelect.Item>
 ));
 
-export default function Select({ look, size, state, options, className, ...props }: SelectProps<string>) {
+export default function Select({ look, size, state, options, placeholder, className, ...props }: SelectProps<string>) {
   const { vars } = useTheme();
   const [getter, setter] = state ?? [];
 
@@ -144,7 +145,7 @@ export default function Select({ look, size, state, options, className, ...props
     <RadixSelect.Root {...props} value={getter && `${String(getter)}`} onValueChange={n => setter?.(n)}>
       <RadixSelect.Trigger className={mergeClass(base({ look, size }), className)} aria-label="Food">
         <div className={value()}>
-          <RadixSelect.Value placeholder="Select a fruit" />
+          <RadixSelect.Value placeholder={placeholder ?? "Select"} />
         </div>
         <div className={icon()}>
           <Icon remix="RiArrowDropDownLine" />
@@ -160,8 +161,8 @@ export default function Select({ look, size, state, options, className, ...props
             "min-w-[var(--radix-select-trigger-width)]",
           )}>
           <RadixSelect.Viewport>
-            <RadixSelect.Group>
-              <List look="bold" size={size}>
+            <RadixSelect.Group className="max-h-[400px]">
+              <List look="soft" size={size}>
                 {Object.entries(options ?? {}).map(([value, label]) => {
                   return (
                     <SelectItem className={item()} key={value} value={value}>

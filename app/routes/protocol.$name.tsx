@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, useParams } from "@remix-run/react";
 
 export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {}
@@ -27,7 +27,7 @@ export default function Index() {
         tags={opportunity.tags.map(tag => (
           <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
         ))}
-        >
+      >
         <Outlet />
       </Heading>
     </Page>

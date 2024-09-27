@@ -1,9 +1,9 @@
 import * as RemixIcon from "@remixicon/react";
 import { mergeClass } from "dappkit/utils/css";
-import { Component, Styled } from "dappkit/utils/types";
+import type { Component, Styled } from "dappkit/utils/types";
 import { useMemo } from "react";
-import { Action, actions } from "src/config/actions";
-import { ChainId, chains } from "src/config/chains";
+import { type Action, actions } from "src/config/actions";
+import { type ChainId, chains } from "src/config/chains";
 import { tv } from "tailwind-variants";
 
 export const iconStyles = tv({
@@ -33,12 +33,14 @@ export type IconProps = Component<
 >;
 
 export default function Icon({ size, remix, action, chain, src, alt, className, ...props }: IconProps) {
-  const styles = useMemo(() => iconStyles({size}), [size]);
+  const styles = useMemo(() => iconStyles({ size }), [size]);
 
   const Component = useMemo(() => {
     if (remix) return RemixIcon[remix];
-    if (chain) return () => <img className={mergeClass(styles, className)} alt={alt} src={chains[chain]?.asset} {...props} />
-    if (action) return () => <img className={mergeClass(styles, className)} alt={alt} src={actions[action]?.asset} {...props} />
+    if (chain)
+      return () => <img className={mergeClass(styles, className)} alt={alt} src={chains[chain]?.asset} {...props} />;
+    if (action)
+      return () => <img className={mergeClass(styles, className)} alt={alt} src={actions[action]?.asset} {...props} />;
     return () => <img className={mergeClass(styles, className)} alt={alt} src={src} {...props} />;
   }, [remix, chain, alt, src, props]);
 

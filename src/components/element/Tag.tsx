@@ -1,15 +1,15 @@
 import Dropdown from "dappkit/components/extenders/Dropdown";
 import Group from "dappkit/components/extenders/Group";
-import Button, { ButtonProps } from "dappkit/components/primitives/Button";
+import Button, { type ButtonProps } from "dappkit/components/primitives/Button";
 import Divider from "dappkit/components/primitives/Divider";
 import Hash from "dappkit/components/primitives/Hash";
 import Icon from "dappkit/components/primitives/Icon";
 import Text from "dappkit/components/primitives/Text";
 import Title from "dappkit/components/primitives/Title";
-import { Token } from "src/api/fetch/fetchTokens";
-import { Action, actions } from "src/config/actions";
-import { ChainId, chains } from "src/config/chains";
-import { getProtocol, getProtocolInfo, Protocol, protocols } from "src/config/protocols";
+import type { Token } from "src/api/fetch/fetchTokens";
+import { type Action, actions } from "src/config/actions";
+import { type ChainId, chains } from "src/config/chains";
+import { type Protocol, getProtocolInfo } from "src/config/protocols";
 
 export type TagTypes = {
   chain: ChainId;
@@ -18,6 +18,7 @@ export type TagTypes = {
   action: Action;
 };
 
+export type TagType<T extends keyof TagTypes = keyof TagTypes> = { type: T; value: TagTypes[T] };
 export type TagProps<T extends keyof TagTypes> = ButtonProps & { type: T; value: TagTypes[T] };
 
 export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
@@ -127,9 +128,9 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "protocol": {
-      const protocol = getProtocolInfo(value as string)
+      const protocol = getProtocolInfo(value as string);
 
-      if (!protocol) return <Button {...props}>{value}</Button>
+      if (!protocol) return <Button {...props}>{value}</Button>;
 
       return (
         <Dropdown
