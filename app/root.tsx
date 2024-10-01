@@ -8,6 +8,7 @@ import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import styles from "./tailwind.css?url";
+import Footer from "src/components/layout/Footer";
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
@@ -74,6 +75,7 @@ export default function App() {
         <div className="grow h-full">
           <Outlet />
         </div>
+        <Footer />
       </Group>
     </DAppProvider>
   );
