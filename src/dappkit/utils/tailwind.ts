@@ -91,5 +91,12 @@ export const generateTailwindConfig = () => ({
         fontVariationSettings: '"opsz" 32',
       },
     ],
+    mono: [
+      '"Space Mono", sans-serif',
+      {
+        fontFeatureSettings: '"cv11", "ss01"',
+        fontVariationSettings: '"opsz" 32',
+      },
+    ],
   },
 });

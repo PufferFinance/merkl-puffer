@@ -7,6 +7,8 @@ import Box from "dappkit/components/primitives/Box";
 import Icon from "dappkit/components/primitives/Icon";
 import Input from "dappkit/components/primitives/Input";
 import List from "dappkit/components/primitives/List";
+import Space from "dappkit/components/primitives/Space";
+import { createTable } from "dappkit/components/primitives/Table";
 import Text from "dappkit/components/primitives/Text";
 import Title from "dappkit/components/primitives/Title";
 import { Button } from "dappkit/index";
@@ -15,7 +17,15 @@ import { fetchOpportunities } from "src/api/fetch/fetchOpportunities";
 import { fetchTokens } from "src/api/fetch/fetchTokens";
 import { tagOpportunities } from "src/api/utils/opportunity";
 import OpportunityListItem from "src/components/element/OpportunityListItem";
+import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
 import { type ChainId, chains, getChainId } from "src/config/chains";
+
+const [OpportunityTable, OpportunityRow] = createTable({
+  opportunity: ["Opportunity", "1fr"],
+  apr: ["APR", "minmax(100px,150px)"],
+  tvl: ["TVL", "minmax(100px,150px)"],
+  rewards: ["Daily Rewards", "minmax(100px,150px)"],
+});
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const chainId = getChainId(id ?? "");
@@ -35,20 +45,23 @@ export default function Index() {
 
   return (
     <>
-      <Group size="sm" className="flex-col mt-xl">
-        <Group className="w-full justify-between">
-          <Box className="flex-row" content="sm" size="md">
-            <Input size="sm" placeholder="search" />
-            <Select size="sm" placeholder="search" />
-            <Select size="sm" placeholder="search" />
-          </Box>
-          <Box className="flex-row" content="xs" size="md">
-            <Input size="xs" placeholder="search" />
-            <Select size="xs" placeholder="search" />
-            <Select size="xs" placeholder="search" />
-          </Box>
-        </Group>
+      <Space size="md" />
+      <OpportunityLibrary opportunities={Object.values(opportunities)} />
+
+      {/* <Group size="sm" className="flex-col mt-xl">
         <List className="flex-col" look="bold">
+          <Box look="base" className="w-full flex-row justify-between">
+            <Group content="sm" size="md">
+              <Input size="sm" placeholder="search" />
+              <Select size="sm" placeholder="search" />
+              <Select size="sm" placeholder="search" />
+            </Group>
+            <Group content="xs" size="xs">
+              <Button size="sm" look="soft">
+                d
+              </Button>
+            </Group>
+          </Box>
           <Card look="bold">
             <Group>
               <Button></Button>
@@ -59,7 +72,7 @@ export default function Index() {
             <OpportunityListItem opportunity={o} hideTags={["chain"]} className="flex-col" />
           ))}
         </List>
-      </Group>
+      </Group> */}
     </>
   );
 }

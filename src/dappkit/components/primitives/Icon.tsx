@@ -7,7 +7,7 @@ import { type ChainId, chains } from "src/config/chains";
 import { tv } from "tailwind-variants";
 
 export const iconStyles = tv({
-  base: "flex flex-col border-0 gap-1 self-center aspect-square",
+  base: "flex flex-col border-0 gap-1 self-center aspect-square rounded-sm",
   variants: {
     size: {
       xs: "h-sm*2 w-sm*2",

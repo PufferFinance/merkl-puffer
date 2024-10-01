@@ -23,9 +23,9 @@ export const listStyles = tv({
     look: {
       soft: { base: "bg-main-0 border-main-0" },
       base: {
-        base: "border-main-6 border-main-6  text-main-12",
+        base: "border-main-0 border-main-0  text-main-12",
         item: "border-main-0",
-        divider: "bg-main-6",
+        divider: "bg-main-0 border-main-0",
       },
       bold: {
         base: "bg-main-0 border-main-0 text-main-12",

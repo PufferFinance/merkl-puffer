@@ -36,7 +36,7 @@ export const fetchOpportunities = createCall<
   {
     [opportunityId: `${number}_${string}`]: FetchedOpportunity;
   },
-  { chainId: ChainId }
+  { chainId?: ChainId }
 >({
   async fetcher({ chainId }) {
     const { res, err } = await query(API, "/v3/opportunity", { chainId });
