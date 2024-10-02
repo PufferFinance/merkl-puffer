@@ -10,6 +10,7 @@ import Title from "dappkit/components/primitives/Title";
 import { Button } from "dappkit/index";
 import { createColoring } from "dappkit/theming/coloring";
 import type { Coloring } from "dappkit/theming/variables";
+import Page from "src/components/composite/layout/Page";
 // import { Button, DAppProvider, Dropdown } from "dappkit";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
@@ -51,77 +52,13 @@ const testThemes: { [name: string]: Coloring } = {
 
 export default function Index() {
   return (
-    <Group size="xl" className="m-xl flex-col !p-xl">
-      <Group className="flex-row justify-between">
-        <Group size="sm" className="flex-col">
-          <Title h={1}>USDC/WETH</Title>
-          <Group className="mb-lg">
-            <Button size="sm" look="bold">
-              Uniswap V3
-            </Button>
-            <Dropdown
-              content={
-                <Group size="xs" className="flex-col max-w-[200px]">
-                  <Text size="xs">Earn on this opportunity by providing liquidity in this pool and earn rewards.</Text>
-                  <Space size="md" />
-                  <Button className="justify-center" look="bold" size="xs">
-                    All pools
-                  </Button>
-                  <Button className="justify-center" look="bold" size="xs">
-                    Learn more
-                  </Button>
-                </Group>
-              }>
-              <Button size="sm" look="bold">
-                Liquidity
-              </Button>
-            </Dropdown>
-            <Button size="sm" look="bold">
-              Optimism
-            </Button>
-            <Button size="sm" look="bold">
-              WETH
-            </Button>
-            <Button size="sm" look="bold">
-              USDC
-            </Button>
-          </Group>
-          <Text>Earn by providing liquidity</Text>
-          <Group className="mt-xl*2">
-            <Button look="tint">Overview</Button>
-            <Button>Leaderboard</Button>
-            <Button>Analytics</Button>
-          </Group>
-        </Group>
-        <Group size="xl" className="grid grid-cols-3 grow max-w-[50%]">
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>APR</Title>
-              <Title h={3}>129%</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>TVL</Title>
-              <Title h={3}>129$</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>APR</Title>
-              <Title h={3}>129%</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-        </Group>
+    <Page>
+      <Group>
+        <Title h={1}>Merkl</Title>
       </Group>
-      <Divider className="border-main-4" horizontal />
-
       <div>
         <Outlet />
       </div>
-    </Group>
+    </Page>
   );
 }

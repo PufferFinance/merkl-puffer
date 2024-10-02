@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";
 import { tv } from "tailwind-variants";
+import * as Avatar from '@radix-ui/react-avatar';
+import Image from "./Image";
 
 export const iconStyles = tv({
   base: "flex flex-col border-0 gap-1 self-center aspect-square rounded-sm",
@@ -16,9 +18,14 @@ export const iconStyles = tv({
       lg: "h-xl*2 w-xl*2",
       xl: "h-xl*4 w-xl*4",
     },
+    rounded: {
+      true: "rounded-full",
+      false: "",
+    }
   },
   defaultVariants: {
     size: "md",
+    rounded: false
   },
 });
 
@@ -32,8 +39,8 @@ export type IconProps = Component<
   HTMLImageElement
 >;
 
-export default function Icon({ size, remix, action, chain, src, alt, className, ...props }: IconProps) {
-  const styles = useMemo(() => iconStyles({ size }), [size]);
+export default function Icon({ size, rounded, remix, action, chain, src, alt, className, ...props }: IconProps) {
+  const styles = useMemo(() => iconStyles({ size, rounded }), [size, rounded]);
 
   const Component = useMemo(() => {
     if (remix) return RemixIcon[remix];

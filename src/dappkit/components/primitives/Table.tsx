@@ -6,6 +6,7 @@ import { mergeClass } from "dappkit/utils/css";
 import List from "./List";
 import Box from "./Box";
 import Text from "./Text";
+import { useMediaQuery } from "react-responsive";
 
 export const tableStyles = tv({
   base: "",
@@ -46,7 +47,7 @@ const orders = ["descending", "ascending"] as const;
 
 export type Order = (typeof orders)[number];
 export type Columns = {
-  [id: string]: [name: ReactNode, size?: string, className?: string];
+  [id: string]: { name: ReactNode; size?: string; compactSize?: string; className?: string; main?: boolean };
 };
 export type TableColumns<T extends Columns> = {
   readonly [C in `${Extract<keyof T, string>}Column`]: ReactNode;
@@ -60,19 +61,27 @@ export type RowProps<T extends Columns> = Component<
 >;
 
 export function Row<T extends Columns>({ columns, exclude, children, ...props }: RowProps<T>) {
-  const [ids, grid] = useMemo(() => {
+  const isScreenSmall = useMediaQuery({ maxWidth: 600 });
+  const [ids, grid, compact] = useMemo(() => {
     const cols = Object.keys(columns ?? {}) as (keyof T)[];
     const style: { display: "grid"; gridTemplateColumns: string } = {
       display: "grid",
       gridTemplateColumns: cols
         .map(id => {
           if (exclude?.includes(id)) return;
-          return columns?.[id]?.[1] ?? "1fr";
+          return columns?.[id]?.size ?? "1fr";
         })
         .join(" ") as string,
     };
+    const compactStyle: { display: "grid"; gridTemplateColumns: string } = {
+      display: "grid",
+      gridTemplateColumns: cols
+        .filter(id => !columns?.[id]?.main)
+        .map(id => columns?.[id]?.compactSize ?? "1fr")
+        .join(" "),
+    };
 
-    return [cols, style];
+    return [cols, style, compactStyle];
   }, [columns, exclude]);
 
   const divProps = { ...props };
@@ -80,16 +89,22 @@ export function Row<T extends Columns>({ columns, exclude, children, ...props }:
     Object.keys(divProps)?.includes(`${String(id)}Column`) && delete divProps[`${id}Column`];
   }
 
+  // TODO: add headers to wrapped table when isScreenSmall
+  // const headers = useHeaders(columns);
+
   return (
-    <Box style={grid} {...divProps}>
+    <Box style={isScreenSmall ? compact : grid} {...divProps}>
       {ids?.map(id => {
         const element = props[`${String(id)}Column`] as ReactNode;
-        const [_title, _, className] = columns[id];
+        const { className, main } = columns[id];
 
         if (exclude?.includes(id)) return;
 
         return (
-          <div key={String(id)} className={[className, "inline-flex items-center"].join(" ")}>
+          <div
+            style={main && isScreenSmall ? { gridColumn: `span ${ids?.length - 1} / span ${ids?.length - 1}` } : {}}
+            key={String(id)}
+            className={[className, "inline-flex items-center"].join(" ")}>
             {element}
           </div>
         );
@@ -110,24 +125,22 @@ export type TableProps<T extends Columns> = Component<
   },
   HTMLDivElement
 >;
-export function Table<T extends Columns>({ look, sortable, columns, header, className, children, ...props }: TableProps<T>) {
-  const ids = Object.keys(columns);
-  const [order, setOrder] = useState<"ascending" | "descending">("descending");
-  const [sortBy, setSortBy] = useState<keyof T | undefined>(sortable?.[0]);
 
-  function onHeaderClick(id: (typeof ids)[number]) {
-    setOrder(a => (a === "ascending" || id !== sortBy ? "descending" : "ascending"));
-    setSortBy(id);
-  }
-
-  const headers = useMemo(() => {
+export function useHeaders<T extends Columns>(
+  columns: T,
+  sortable?: (keyof T)[],
+  onHeaderClick?: (id: keyof T) => void,
+  sortBy?: keyof T,
+  order?: Order,
+) {
+  return useMemo(() => {
     const ids = Object.keys(columns ?? {});
     const head = {};
 
     for (const id of ids) {
-      const [title, _, className] = columns[id];
+      const { name: title, className } = columns[id];
       const isSortable = sortable?.includes(id);
-      const handler = title && isSortable ? () => onHeaderClick(id) : undefined;
+      const handler = title && isSortable ? () => onHeaderClick?.(id) : undefined;
 
       head[`${id}Column`] = (
         <Text className="relative" size="xs" interactable={isSortable} onKeyDown={handler} onClick={handler}>
@@ -147,12 +160,33 @@ export function Table<T extends Columns>({ look, sortable, columns, header, clas
     return head as {
       [C in keyof TableColumns<Columns>]: ReactNode;
     };
-  }, [columns, onHeaderClick, order]);
+  }, [columns, onHeaderClick, sortBy, order]);
+}
+
+export function Table<T extends Columns>({
+  look,
+  sortable,
+  columns,
+  header,
+  className,
+  children,
+  ...props
+}: TableProps<T>) {
+  const isScreenSmall = useMediaQuery({ maxWidth: 600 });
+  const [order, setOrder] = useState<"ascending" | "descending">("descending");
+  const [sortBy, setSortBy] = useState<keyof T | undefined>(sortable?.[0]);
+
+  function onHeaderClick(id: keyof T) {
+    setOrder(a => (a === "ascending" || id !== sortBy ? "descending" : "ascending"));
+    setSortBy(id);
+  }
+
+  const headers = useHeaders(columns, sortable, onHeaderClick, sortBy, order);
 
   return (
     <List look={"base"} className={mergeClass(className)} {...props}>
       {header && <Box>{header}</Box>}
-      <Row columns={columns} {...headers}></Row>
+      {!isScreenSmall && <Row columns={columns} {...headers}></Row>}
       {children}
     </List>
   );

@@ -6,6 +6,7 @@ import Input from "dappkit/components/primitives/Input";
 import Select from "dappkit/components/extenders/Select";
 import Group from "dappkit/components/extenders/Group";
 import { Button } from "dappkit/index";
+import Icon from "dappkit/components/primitives/Icon";
 
 export type OpportunityLibrary = {
   opportunities: FetchedOpportunity[];
@@ -28,11 +29,13 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
             <Select size="sm" placeholder="TVL" />
           </Group>
           <Group>
-            <Input size="sm" placeholder="Search" />
-            <Select size="sm" placeholder="Action" />
-            <Select size="sm" placeholder="Chain" />
-            <Select size="sm" placeholder="TVL" />
-            <Button size="sm" look="base">dsq</Button>
+            <Button size="sm" look="base">
+              Sort
+              <Icon size="sm" remix="RiSortDesc" />
+            </Button>
+            <Button size="sm" look="base">
+              <Icon size="sm" remix="RiGridFill" />
+            </Button>
           </Group>
         </Group>
       }
