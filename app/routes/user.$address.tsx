@@ -1,6 +1,7 @@
 import { Outlet, useParams } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
 import Hash from "dappkit/components/primitives/Hash";
+import Icon from "dappkit/components/primitives/Icon";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
 
@@ -19,9 +20,33 @@ export default function Index() {
         }
         description={"Inspect rewards, balances and positions."}
         tabs={[
-          { label: "Rewards", link: `/user/${address}` },
-          { label: "Liquidity", link: `/user/${address}/liquidity` },
-          { label: "Claims", link: `/user/${address}/claims` },
+          {
+            label: (
+              <>
+                <Icon size="sm" remix="RiGift2Fill" />
+                Rewards
+              </>
+            ),
+            link: `/user/${address}`,
+          },
+          {
+            label: (
+              <>
+                <Icon size="sm" remix="RiDropFill" />
+                Liquidity
+              </>
+            ),
+            link: `/user/${address}/liquidity`,
+          },
+          {
+            label: (
+              <>
+                <Icon size="sm" remix="RiListCheck3" />
+                Claims
+              </>
+            ),
+            link: `/user/${address}/claims`,
+          },
         ]}>
         <Outlet />
       </Heading>

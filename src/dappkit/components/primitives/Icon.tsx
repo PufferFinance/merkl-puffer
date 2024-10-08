@@ -48,7 +48,7 @@ export default function Icon({ size, rounded, remix, action, chain, src, alt, cl
       return () => <img className={mergeClass(styles, className)} alt={alt} src={chains[chain]?.asset} {...props} />;
     if (action)
       return () => <img className={mergeClass(styles, className)} alt={alt} src={actions[action]?.asset} {...props} />;
-    return () => <img className={mergeClass(styles, className)} alt={alt} src={src} {...props} />;
+    return () => <Image className={mergeClass(styles, className)} alt={alt} src={src} {...props} />;
   }, [remix, chain, alt, src, props]);
 
   return <Component className={mergeClass(styles, className)} />;
