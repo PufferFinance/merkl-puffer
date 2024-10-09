@@ -8,7 +8,7 @@ import Group from "dappkit/components/extenders/Group";
 import { Button } from "dappkit/index";
 import Icon from "dappkit/components/primitives/Icon";
 import { Order } from "dappkit/components/primitives/Table";
-import SelectMultiple from "dappkit/components/extenders/SelectMultiple";
+import { chains } from "src/config/chains";
 
 export type OpportunityLibrary = {
   opportunities: FetchedOpportunity[];
@@ -27,6 +27,7 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
   }
 
   const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon size="sm" remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon size="sm" remix="Ri24HoursFill"/> Test</>}
+  const chainOptions = Object.entries(chains).reduce((obj, [id, chain]) => Object.assign(obj, {[id]: <><Icon size="sm" chain={id}/>{chain.label}</>}), {})
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
 
   return (
@@ -37,9 +38,9 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
         <Group className="justify-between w-full">
           <Group>
             <Input size="sm" placeholder="Search" />
-            <Select multiple options={actions} size="sm" placeholder="Action" />
-            <Select size="sm" placeholder="Chain" />
-            <Select size="sm" placeholder="TVL" />
+            {/* <Select multiple options={actions} size="sm" placeholder="Action" /> */}
+            <Select search options={chainOptions} size="sm" placeholder="Chain" />
+            {/* <Select size="sm" placeholder="TVL" /> */}
           </Group>
           <Group>
             <Button size="sm" look="base">

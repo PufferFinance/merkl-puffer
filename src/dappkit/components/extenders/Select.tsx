@@ -1,5 +1,5 @@
 import * as RadixSelect from "@radix-ui/react-select";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet, Variant } from "../../utils/types";
@@ -130,7 +130,7 @@ export type SelectProps<Value> = Component<{
 
 type MaybeArray<T, IsArray extends undefined | boolean> = IsArray extends true ? T[] : T  
 
-export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, placeholder, className, ...props }: SelectProps<Value> & {multiple: Multiple}) {
+export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, placeholder, className, ...props }: SelectProps<Value> & {multiple?: Multiple}) {
   const { vars } = useTheme();
   const [internal, setInternal] = useState<Value>();
   const [getter, setter] = state ?? [];
@@ -143,8 +143,18 @@ export default function Select<T extends string | number | symbol, Multiple exte
   const [searchInput, setSearch] = useState<string>();
   
   const matches = useMemo(() => {
-    return matchSorter(Object.keys(options ?? {}), searchInput ?? "")
-  }, [searchInput]);
+    // const textToMatch = Object.keys(options ?? {}).map(option => `${option}_${options[option]?.props?.children?.filter(a => typeof a !== "object").join(" ")}`)
+    const textToMatch = Object.keys(options ?? {}).reduce((matches, option) => Object.assign(matches, {[`${option}`]: option}, {[`${options[option]?.props?.children?.filter(a => typeof a !== "object").join(" ")}`]: option}), {})
+    const searchMatches = matchSorter(Object.keys(textToMatch), searchInput ?? "").map((key) => textToMatch[key])
+    const uniqueOptionMatches = Array.from(searchMatches.reduce((set, option) => {set.add(option); return set}, new Set()))
+
+    return uniqueOptionMatches;
+  }, [options, searchInput]);
+
+  useEffect(() => {
+    console.log('matches', matches);
+    
+  }, [matches])
 
   return (
     <Ariakit.ComboboxProvider
@@ -172,15 +182,15 @@ export default function Select<T extends string | number | symbol, Multiple exte
             />
         </div>}
         <Ariakit.ComboboxList>
-        {matches.map((value) => (
-            <Ariakit.SelectItem
-            key={value}
-            value={value}
-            className={mergeClass(item())}
-            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !internal?.includes(value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
-            />
-          ))}
-        </Ariakit.ComboboxList>
+    {matches.map((value) => (
+        <Ariakit.SelectItem
+        key={value}
+        value={value}
+        className={mergeClass(item())}
+        render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !internal?.includes(value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
+        />
+      ))}
+    </Ariakit.ComboboxList>
           </Box>
       </Ariakit.SelectPopover>
     </Ariakit.SelectProvider>
