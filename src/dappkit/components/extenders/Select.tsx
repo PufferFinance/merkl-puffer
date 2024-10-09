@@ -1,13 +1,13 @@
 import * as RadixSelect from "@radix-ui/react-select";
-import React, { useMemo, useState, type PropsWithChildren, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet, Variant } from "../../utils/types";
 import * as Ariakit from "@ariakit/react";
 import { matchSorter } from "match-sorter";
-import Button from "../primitives/Button";
-import Input, { inputStyles } from "../primitives/Input";
-import Box, { boxStyles } from "../primitives/Box";
+import Group from "../extenders/Group";
+import { inputStyles } from "../primitives/Input";
+import Box from "../primitives/Box";
 import { mergeClass } from "dappkit/utils/css";
 import Icon from "../primitives/Icon";
 
@@ -16,10 +16,11 @@ export const selectStyles = tv({
     "text-main-11 flex items-center justify-between gap-1 border-1 outline-offset-0 outline-0 text-nowrap font-main font-medium",
   ],
   slots: {
-    dropdown: "z-50 animate-drop mt-sm",
-    item: "flex items-center gap-sm cursor-pointer select-none p-sm outline-offset-0 outline-0 text-nowrap",
+    dropdown: "z-50 animate-drop mt-sm min-w-[var(--popover-anchor-width)]",
+    item: "flex justify-between items-center gap-lg cursor-pointer select-none p-sm outline-offset-0 outline-0 text-nowrap",
     icon: "border-l-1 h-full flex items-center",
     value: "flex gap-sm items-center",
+    check: "",
   },
   variants: {
     look: {
@@ -32,6 +33,7 @@ export const selectStyles = tv({
         base: "bg-main-2 border-main-6 hover:bg-main-4 active:bg-main-3 hover:text-main-12  focus-visible:border-main-9",
         icon: "border-main-6",
         item: "hover:bg-main-5 data-[active-item]:bg-main-5 active:bg-main-4 text-main-12 focus-visible:border-main-8",
+        check: "text-accent-10"
       },
       bold: {
         base: "bg-main-4 border-main-4 hover:bg-main-5 active:bg-main-3 text-main-12 focus-visible:border-main-9",
@@ -115,7 +117,7 @@ export const selectStyles = tv({
   ],
 });
 
-export type SelectProps<Value extends string | number | symbol = string> = Component<{
+export type SelectProps<Value> = Component<{
   size?: Variant<typeof selectStyles, "size">;
   look?: Variant<typeof selectStyles, "look">;
   value?: Value;
@@ -126,22 +128,14 @@ export type SelectProps<Value extends string | number | symbol = string> = Compo
 }> &
   RadixSelect.SelectProps;
 
-const SelectItem = React.forwardRef<
-  HTMLDivElement,
-  PropsWithChildren<{ className: string } & RadixSelect.SelectItemProps>
->(({ children, ...props }, forwardedRef) => (
-  <RadixSelect.Item {...props} ref={forwardedRef}>
-    <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
-    <RadixSelect.ItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center" />
-  </RadixSelect.Item>
-));
+type MaybeArray<T, IsArray extends undefined | boolean> = IsArray extends true ? T[] : T  
 
-export default function Select<Value extends string | number | symbol = string>({ look, size, state, options, search, placeholder, className, ...props }: SelectProps<Value>) {
+export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, placeholder, className, ...props }: SelectProps<Value> & {multiple: Multiple}) {
   const { vars } = useTheme();
   const [internal, setInternal] = useState<Value>();
   const [getter, setter] = state ?? [];
 
-  const { base, dropdown, item, icon, value: valueStyle } = selectStyles({
+  const { base, dropdown, item, icon, value: valueStyle, check } = selectStyles({
     look: look ?? "base",
     size: size ?? "md",
   });
@@ -152,9 +146,6 @@ export default function Select<Value extends string | number | symbol = string>(
     return matchSorter(Object.keys(options ?? {}), searchInput ?? "")
   }, [searchInput]);
 
-  console.log("??", options, options?.[internal]);
-
-
   return (
     <Ariakit.ComboboxProvider
     resetValueOnHide
@@ -162,7 +153,7 @@ export default function Select<Value extends string | number | symbol = string>(
         setSearch(value);
     }}
   >
-    <Ariakit.SelectProvider setValue={setInternal} value={internal} defaultValue="Apple">
+    <Ariakit.SelectProvider setValue={setInternal} value={internal} defaultValue={multiple ? [] : undefined}>
       <Ariakit.Select className={base()}>
       <div className={valueStyle()}>
         {options?.[internal] ?? placeholder}
@@ -171,7 +162,7 @@ export default function Select<Value extends string | number | symbol = string>(
           <Icon remix="RiArrowDropDownLine" />
         </div>
       </Ariakit.Select>
-      <Ariakit.SelectPopover gutter={4} sameWidth className={dropdown()}>
+      <Ariakit.SelectPopover gutter={4} className={dropdown()}>
         <Box look='bold' size="sm" content="sm">
         {search && <div className="combobox-wrapper">
           <Ariakit.Combobox
@@ -181,12 +172,12 @@ export default function Select<Value extends string | number | symbol = string>(
             />
         </div>}
         <Ariakit.ComboboxList>
-          {matches.map((value) => (
+        {matches.map((value) => (
             <Ariakit.SelectItem
             key={value}
             value={value}
-            className={item()}
-            render={<Ariakit.ComboboxItem children={options?.[value]} />}
+            className={mergeClass(item())}
+            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !internal?.includes(value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
             />
           ))}
         </Ariakit.ComboboxList>

@@ -26,7 +26,7 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
     console.log("SORT", column, order);
   }
 
-  const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon remix="Ri24HoursFill"/> Test</>}
+  const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon size="sm" remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon size="sm" remix="Ri24HoursFill"/> Test</>}
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
 
   return (
@@ -37,8 +37,7 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
         <Group className="justify-between w-full">
           <Group>
             <Input size="sm" placeholder="Search" />
-            <Select options={actions} size="sm" placeholder="Action" />
-            <SelectMultiple options={actions} size="sm" placeholder="Action Multiple" />
+            <Select multiple options={actions} size="sm" placeholder="Action" />
             <Select size="sm" placeholder="Chain" />
             <Select size="sm" placeholder="TVL" />
           </Group>
