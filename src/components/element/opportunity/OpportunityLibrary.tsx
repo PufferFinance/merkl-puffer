@@ -7,8 +7,9 @@ import Select from "dappkit/components/extenders/Select";
 import Group from "dappkit/components/extenders/Group";
 import { Button } from "dappkit/index";
 import Icon from "dappkit/components/primitives/Icon";
-import { Order } from "dappkit/components/primitives/Table";
+import type { Order } from "dappkit/components/primitives/Table";
 import { chains } from "src/config/chains";
+import List from "dappkit/components/primitives/List";
 
 export type OpportunityLibrary = {
   opportunities: FetchedOpportunity[];
@@ -27,8 +28,8 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
   }
 
   const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon size="sm" remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon size="sm" remix="Ri24HoursFill"/> Test</>}
+  const statusOptions = {live: <><Icon size="sm" remix="Ri24HoursFill"/> Live</>, soon: <><Icon size="sm" remix="Ri24HoursFill"/> Soon</>, past: <><Icon size="sm" remix="Ri24HoursFill"/> Past</>}
   const chainOptions = Object.entries(chains).reduce((obj, [id, chain]) => Object.assign(obj, {[id]: <><Icon size="sm" chain={id}/>{chain.label}</>}), {})
-  const [selectedActions, setSelectedActions] = useState<string[]>([]);
 
   return (
     <OpportunityTable
@@ -37,10 +38,13 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
       header={
         <Group className="justify-between w-full">
           <Group>
-            <Input size="sm" placeholder="Search" />
-            {/* <Select multiple options={actions} size="sm" placeholder="Action" /> */}
-            <Select search options={chainOptions} size="sm" placeholder="Chain" />
-            {/* <Select size="sm" placeholder="TVL" /> */}
+            <List flex="row" size="sm" content="sm" look="bold">
+              <Input placeholder="Search" />
+              <Button><Icon size="sm" remix="RiSearchLine"/></Button>
+            </List>
+            <Select allOption={"All actions"} multiple options={actions} size="sm" placeholder="Actions" />
+            <Select allOption={"All status"} multiple options={statusOptions} size="sm" placeholder="Status" />
+            <Select allOption={"All chains"} multiple search options={chainOptions} size="sm" placeholder="Chains" />
           </Group>
           <Group>
             <Button size="sm" look="base">

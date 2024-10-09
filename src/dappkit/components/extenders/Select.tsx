@@ -10,13 +10,14 @@ import { inputStyles } from "../primitives/Input";
 import Box from "../primitives/Box";
 import { mergeClass } from "dappkit/utils/css";
 import Icon from "../primitives/Icon";
+import Text from "../primitives/Text";
 
 export const selectStyles = tv({
   base: [
     "text-main-11 flex items-center justify-between gap-1 border-1 outline-offset-0 outline-0 text-nowrap font-main font-medium",
   ],
   slots: {
-    dropdown: "z-50 animate-drop mt-sm min-w-[var(--popover-anchor-width)]",
+    dropdown: "outline-0 z-50 animate-drop mt-sm min-w-[var(--popover-anchor-width)]",
     item: "flex justify-between items-center gap-lg cursor-pointer select-none p-sm outline-offset-0 outline-0 text-nowrap",
     icon: "border-l-1 h-full flex items-center",
     value: "flex gap-sm items-center",
@@ -124,13 +125,14 @@ export type SelectProps<Value> = Component<{
   placeholder?: string;
   state?: GetSet<Value>;
   search?: boolean,
+  allOption?: ReactNode,
   options?: { [key: string | number | symbol]: ReactNode };
 }> &
   RadixSelect.SelectProps;
 
 type MaybeArray<T, IsArray extends undefined | boolean> = IsArray extends true ? T[] : T  
 
-export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, placeholder, className, ...props }: SelectProps<Value> & {multiple?: Multiple}) {
+export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, allOption, placeholder, className, ...props }: SelectProps<Value> & {multiple?: Multiple}) {
   const { vars } = useTheme();
   const [internal, setInternal] = useState<Value>();
   const [getter, setter] = state ?? [];
@@ -151,10 +153,11 @@ export default function Select<T extends string | number | symbol, Multiple exte
     return uniqueOptionMatches;
   }, [options, searchInput]);
 
-  useEffect(() => {
-    console.log('matches', matches);
-    
-  }, [matches])
+  const label = useMemo(() => {
+    if (options?.[internal]) return options?.[internal];
+    if (internal?.length > 0) return <><Text size="xs" className="rounded-full w-md*2 h-md*2 bg-accent-12 text-main-2">{internal.length}</Text> {placeholder}</>;
+    return placeholder
+  }, [options, internal, placeholder]);
 
   return (
     <Ariakit.ComboboxProvider
@@ -166,7 +169,7 @@ export default function Select<T extends string | number | symbol, Multiple exte
     <Ariakit.SelectProvider setValue={setInternal} value={internal} defaultValue={multiple ? [] : undefined}>
       <Ariakit.Select className={base()}>
       <div className={valueStyle()}>
-        {options?.[internal] ?? placeholder}
+        {label}
         </div>
         <div className={icon()}>
           <Icon remix="RiArrowDropDownLine" />
@@ -174,20 +177,25 @@ export default function Select<T extends string | number | symbol, Multiple exte
       </Ariakit.Select>
       <Ariakit.SelectPopover gutter={4} className={dropdown()}>
         <Box look='bold' size="sm" content="sm">
-        {search && <div className="combobox-wrapper">
+        {<div className="combobox-wrapper">
           <Ariakit.Combobox
             autoSelect
             placeholder="Search..."
-            className={mergeClass(inputStyles({size: "sm", look: "bold"}), "w-full")}
+            className={mergeClass(inputStyles({size: "sm", look: "bold"}), "w-full", !search && "hidden")}
             />
         </div>}
         <Ariakit.ComboboxList>
-    {matches.map((value) => (
-        <Ariakit.SelectItem
-        key={value}
-        value={value}
-        className={mergeClass(item())}
-        render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !internal?.includes(value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
+        {allOption && !searchInput && <Ariakit.SelectItem
+            className={mergeClass(item())}
+            onClick={() => setInternal(multiple ? [] : undefined)}
+            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{allOption}</Group>, <Icon key="select" className={mergeClass(check(), !(internal?.length === 0 || internal === undefined) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
+        />}
+        {matches.map((value) => (
+          <Ariakit.SelectItem
+            key={value}
+            value={value}
+            className={mergeClass(item())}
+            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !(internal?.includes(value) || internal === value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
         />
       ))}
     </Ariakit.ComboboxList>
