@@ -1,6 +1,6 @@
 import { createTable } from "dappkit/components/primitives/Table";
 
-export const [OpportunityTable, OpportunityRow] = createTable({
+export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTable({
   opportunity: {
     name: "OPPORTUNITY",
     size: "minmax(350px,1fr)",

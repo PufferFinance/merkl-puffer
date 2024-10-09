@@ -1,5 +1,7 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useLocation, useParams } from "@remix-run/react";
+import { Opportunity } from "merkl-api";
+import { api } from "src/api";
 import { fetchOpportunity } from "src/api/fetch/fetchOpportunity";
 import { fetchTokens } from "src/api/fetch/fetchTokens";
 import { tagOpportunity } from "src/api/utils/opportunity";
@@ -16,6 +18,7 @@ export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
   if (!chainId) throw "";
 
   const { res: opportunity } = await fetchOpportunity({ chainId: chainId, mainParameter: id ?? "" });
+  const a = await api.v4.opportunity({chainId})({id: id!}).get();
 
   if (!opportunity) throw "";
 

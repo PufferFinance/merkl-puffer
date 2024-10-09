@@ -6,6 +6,7 @@ import type { Component, GetSet, Variant } from "../../utils/types";
 import * as Ariakit from "@ariakit/react";
 import { matchSorter } from "match-sorter";
 import Button from "../primitives/Button";
+import Select from "./Select";
 import Input, { inputStyles } from "../primitives/Input";
 import Box, { boxStyles } from "../primitives/Box";
 import { mergeClass } from "dappkit/utils/css";
@@ -19,7 +20,7 @@ export const selectStyles = tv({
     dropdown: "z-50 animate-drop mt-sm",
     item: "flex items-center gap-sm cursor-pointer select-none p-sm outline-offset-0 outline-0 text-nowrap",
     icon: "border-l-1 h-full flex items-center",
-    value: "flex gap-sm items-center",
+    value: "flex",
   },
   variants: {
     look: {
@@ -120,7 +121,7 @@ export type SelectProps<Value extends string | number | symbol = string> = Compo
   look?: Variant<typeof selectStyles, "look">;
   value?: Value;
   placeholder?: string;
-  state?: GetSet<Value>;
+  state?: GetSet<Value[]>;
   search?: boolean,
   options?: { [key: string | number | symbol]: ReactNode };
 }> &
@@ -136,9 +137,8 @@ const SelectItem = React.forwardRef<
   </RadixSelect.Item>
 ));
 
-export default function Select<Value extends string | number | symbol = string>({ look, size, state, options, search, placeholder, className, ...props }: SelectProps<Value>) {
+export default function SelectMultiple({ look, size, state, options, search, placeholder, className, ...props }: SelectProps<string>) {
   const { vars } = useTheme();
-  const [internal, setInternal] = useState<Value>();
   const [getter, setter] = state ?? [];
 
   const { base, dropdown, item, icon, value: valueStyle } = selectStyles({
@@ -152,9 +152,6 @@ export default function Select<Value extends string | number | symbol = string>(
     return matchSorter(Object.keys(options ?? {}), searchInput ?? "")
   }, [searchInput]);
 
-  console.log("??", options, options?.[internal]);
-
-
   return (
     <Ariakit.ComboboxProvider
     resetValueOnHide
@@ -162,24 +159,24 @@ export default function Select<Value extends string | number | symbol = string>(
         setSearch(value);
     }}
   >
-    <Ariakit.SelectProvider setValue={setInternal} value={internal} defaultValue="Apple">
+    <Ariakit.SelectProvider defaultValue="Apple">
       <Ariakit.Select className={base()}>
       <div className={valueStyle()}>
-        {options?.[internal] ?? placeholder}
+        Action
         </div>
         <div className={icon()}>
           <Icon remix="RiArrowDropDownLine" />
         </div>
       </Ariakit.Select>
-      <Ariakit.SelectPopover gutter={4} sameWidth className={dropdown()}>
+      <Ariakit.SelectPopover gutter={4} className={dropdown()}>
         <Box look='bold' size="sm" content="sm">
-        {search && <div className="combobox-wrapper">
+        <div className="combobox-wrapper">
           <Ariakit.Combobox
             autoSelect
             placeholder="Search..."
             className={mergeClass(inputStyles({size: "sm", look: "bold"}), "w-full")}
             />
-        </div>}
+        </div>
         <Ariakit.ComboboxList>
           {matches.map((value) => (
             <Ariakit.SelectItem

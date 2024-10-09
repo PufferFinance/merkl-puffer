@@ -1,12 +1,14 @@
 import { FetchedOpportunity } from "src/api/fetch/fetchOpportunities";
-import { OpportunityTable } from "./OpportunityTable";
-import { useMemo } from "react";
+import { opportunityColumns, OpportunityTable } from "./OpportunityTable";
+import { useMemo, useState } from "react";
 import OpportunityTableRow from "./OpportunityTableRow";
 import Input from "dappkit/components/primitives/Input";
 import Select from "dappkit/components/extenders/Select";
 import Group from "dappkit/components/extenders/Group";
 import { Button } from "dappkit/index";
 import Icon from "dappkit/components/primitives/Icon";
+import { Order } from "dappkit/components/primitives/Table";
+import SelectMultiple from "dappkit/components/extenders/SelectMultiple";
 
 export type OpportunityLibrary = {
   opportunities: FetchedOpportunity[];
@@ -17,14 +19,26 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
     () => opportunities.map(o => <OpportunityTableRow key={o.id} opportunity={o} />),
     [opportunities],
   );
+  
+  const sortable = ["apr", "tvl", "rewards"] as const satisfies (typeof opportunityColumns)
+
+  function onSort(column: (typeof opportunityColumns)[number] , order: Order) {
+    console.log("SORT", column, order);
+  }
+
+  const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon remix="Ri24HoursFill"/> Test</>}
+  const [selectedActions, setSelectedActions] = useState<string[]>([]);
 
   return (
     <OpportunityTable
+      sortable={sortable}
+      onSort={onSort}
       header={
         <Group className="justify-between w-full">
           <Group>
             <Input size="sm" placeholder="Search" />
-            <Select size="sm" placeholder="Action" />
+            <Select options={actions} size="sm" placeholder="Action" />
+            <SelectMultiple options={actions} size="sm" placeholder="Action Multiple" />
             <Select size="sm" placeholder="Chain" />
             <Select size="sm" placeholder="TVL" />
           </Group>
@@ -39,7 +53,7 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
           </Group>
         </Group>
       }
-      sortable={["apr", "tvl", "rewards"]}>
+      >
       {rows}
     </OpportunityTable>
   );
