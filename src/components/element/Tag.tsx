@@ -10,12 +10,15 @@ import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";
 import { type Protocol, getProtocolInfo } from "src/config/protocols";
+import {Opportunity} from "merkl-api";
+import { statuses } from "src/config/status";
 
 export type TagTypes = {
   chain: ChainId;
   token: Token;
   protocol: Protocol;
   action: Action;
+  status: Opportunity["status"]
 };
 
 export type TagType<T extends keyof TagTypes = keyof TagTypes> = { type: T; value: TagTypes[T] };
@@ -23,6 +26,37 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & { type: T; value:
 
 export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
   switch (type) {
+    case "status": {
+      
+      const status = statuses[value as TagTypes["status"]] ?? statuses["LIVE"];
+
+      return (
+        <Dropdown
+          content={
+            <>
+              <Group size="xs" className="flex-col">
+                <Group className="justify-between">
+                  <Text size="xs">Status</Text>
+                </Group>
+                <Group size="sm">
+                  <Icon size={props?.size} {...status.icon} />
+                  <Title h={4}>{status?.label}</Title>
+                </Group>
+              </Group>
+              <Divider className="border-main-6" horizontal />
+              <Text size="xs">{status?.description}</Text>
+              <Button to={`/status/${status?.label}`} size="sm" look="bold">
+                Open
+              </Button>
+            </>
+          }>
+          <Button key={value} {...props}>
+            <Icon size={props?.size} {...status.icon} />
+            {status?.label}
+          </Button>
+        </Dropdown>
+      );
+    }
     case "chain": {
       const chain = chains[value as TagTypes["chain"]];
 
@@ -67,19 +101,19 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   <Text size="xs">Action</Text>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} action={value} />
+                  <Icon size={props?.size} {...action.icon} />
                   <Title h={4}>{action?.label}</Title>
                 </Group>
               </Group>
               <Divider className="border-main-6" horizontal />
               <Text size="xs">{action?.description}</Text>
-              <Button size="sm" look="bold">
+              <Button to={`/action/${action?.label}`} size="sm" look="bold">
                 Open
               </Button>
             </>
           }>
-          <Button key={value} {...props}>
-            <Icon size={props?.size} action={value} />
+          <Button  key={value} {...props}>
+            <Icon size={props?.size} {...action.icon} />
             {action?.label}
           </Button>
         </Dropdown>
@@ -110,7 +144,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider className="border-main-6" horizontal />
               {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="sm">
-                <Button size="sm" look="bold">
+                <Button to={`/token/${token?.symbol}`} size="sm" look="bold">
                   {token?.symbol} on Merkl
                 </Button>
                 <Button size="sm" look="bold">
@@ -128,7 +162,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "protocol": {
-      const protocol = getProtocolInfo(value as string);
+      const protocol = value
 
       if (!protocol) return <Button {...props}>{value}</Button>;
 
@@ -139,30 +173,27 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Group size="xs" className="flex-col">
                 <Group className="justify-between">
                   <Text size="xs">Protocol</Text>
-                  {/* <Hash format="short" size="xs">
-                    {protocol?.label}
-                  </Hash> */}
                 </Group>
                 <Group size="sm">
                   <Icon size={props?.size} src={protocol?.asset} />
-                  <Title h={4}>{protocol?.label}</Title>
+                  <Title h={4}>{value?.name}</Title>
                 </Group>
               </Group>
               <Divider className="border-main-6" horizontal />
               {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="sm">
-                <Button size="sm" look="bold">
-                  {protocol?.label} on Merkl
+                <Button to={`/protocol/${protocol?.name}`} size="sm" look="bold">
+                  {protocol?.name} on Merkl
                 </Button>
                 <Button size="sm" look="bold">
-                  {protocol?.label} on Etherscan
+                  {protocol?.name}
                 </Button>
               </Group>
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} src={protocol?.asset} />
-            {protocol?.label}
+            <Icon size={props?.size} src={protocol?.icon} />
+            {value?.name}
           </Button>
         </Dropdown>
       );

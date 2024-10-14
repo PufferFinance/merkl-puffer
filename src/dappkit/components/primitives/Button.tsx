@@ -15,11 +15,11 @@ export const buttonStyles = tv({
       hype: "bg-accent-9 border-accent-9 hover:bg-accent-10 active:bg-accent-8 text-main-1 focus-visible:border-accent-10",
     },
     size: {
-      xs: "px-xs*2 py-xs text-xs rounded-xs gap-xs",
-      sm: "px-sm*2 py-sm/2 text-sm rounded-sm gap-sm",
-      md: "px-md*2 py-md/2 text-md rounded-md gap-md",
-      lg: "px-lg*2 py-lg/2 text-lg rounded-lg gap-lg",
-      xl: "px-xl*2 py-xl/2 text-xl rounded-xl gap-xl",
+      xs: "px-xs py-xs text-xs rounded-xs gap-xs",
+      sm: "px-sm py-sm/2 text-sm rounded-sm gap-sm",
+      md: "px-md py-md/2 text-md rounded-md gap-md",
+      lg: "px-lg py-lg/2 text-lg rounded-lg gap-lg",
+      xl: "px-xl py-xl/2 text-xl rounded-xl gap-xl",
     },
   },
 });

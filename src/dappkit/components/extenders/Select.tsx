@@ -1,5 +1,5 @@
 import * as RadixSelect from "@radix-ui/react-select";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet, Variant } from "../../utils/types";
@@ -142,11 +142,14 @@ export default function Select<T extends string | number | symbol, Multiple exte
     size: size ?? "md",
   });
 
+  const value = useMemo(() => getter ?? internal, [getter, internal]);
+  const setValue = useCallback((v: Value) => setter?.(v) ?? setInternal(v), [setter]);
+
   const [searchInput, setSearch] = useState<string>();
   
   const matches = useMemo(() => {
     // const textToMatch = Object.keys(options ?? {}).map(option => `${option}_${options[option]?.props?.children?.filter(a => typeof a !== "object").join(" ")}`)
-    const textToMatch = Object.keys(options ?? {}).reduce((matches, option) => Object.assign(matches, {[`${option}`]: option}, {[`${options[option]?.props?.children?.filter(a => typeof a !== "object").join(" ")}`]: option}), {})
+    const textToMatch = Object.keys(options ?? {}).reduce((matches, option) => Object.assign(matches, {[`${option}`]: option}, {[`${options[option]?.props?.children?.filter?.(a => typeof a !== "object")?.join(" ")}`]: option}), {})
     const searchMatches = matchSorter(Object.keys(textToMatch), searchInput ?? "").map((key) => textToMatch[key])
     const uniqueOptionMatches = Array.from(searchMatches.reduce((set, option) => {set.add(option); return set}, new Set()))
 
@@ -154,10 +157,10 @@ export default function Select<T extends string | number | symbol, Multiple exte
   }, [options, searchInput]);
 
   const label = useMemo(() => {
-    if (options?.[internal]) return options?.[internal];
-    if (internal?.length > 0) return <><Text size="xs" className="rounded-full w-md*2 h-md*2 bg-accent-12 text-main-2">{internal.length}</Text> {placeholder}</>;
+    if (options?.[value]) return options?.[value];
+    if (value?.length > 0) return <><Text size="xs" className="rounded-full w-md*2 h-md*2 bg-accent-12 text-main-2">{value.length}</Text> {placeholder}</>;
     return placeholder
-  }, [options, internal, placeholder]);
+  }, [options, value, placeholder]);
 
   return (
     <Ariakit.ComboboxProvider
@@ -166,7 +169,7 @@ export default function Select<T extends string | number | symbol, Multiple exte
         setSearch(value);
     }}
   >
-    <Ariakit.SelectProvider setValue={setInternal} value={internal} defaultValue={multiple ? [] : undefined}>
+    <Ariakit.SelectProvider setValue={setValue} value={value} defaultValue={multiple ? [] : undefined}>
       <Ariakit.Select className={base()}>
       <div className={valueStyle()}>
         {label}
@@ -176,7 +179,8 @@ export default function Select<T extends string | number | symbol, Multiple exte
         </div>
       </Ariakit.Select>
       <Ariakit.SelectPopover gutter={4} className={dropdown()}>
-        <Box look='bold' size="sm" content="sm">
+        <Box look='bold' size="sm" content="sm" className="max-h-[200px]">
+
         {<div className="combobox-wrapper">
           <Ariakit.Combobox
             autoSelect
@@ -184,21 +188,23 @@ export default function Select<T extends string | number | symbol, Multiple exte
             className={mergeClass(inputStyles({size: "sm", look: "bold"}), "w-full", !search && "hidden")}
             />
         </div>}
+          <div className="overflow-y-auto">
         <Ariakit.ComboboxList>
         {allOption && !searchInput && <Ariakit.SelectItem
             className={mergeClass(item())}
-            onClick={() => setInternal(multiple ? [] : undefined)}
-            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{allOption}</Group>, <Icon key="select" className={mergeClass(check(), !(internal?.length === 0 || internal === undefined) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
-        />}
-        {matches.map((value) => (
+            onClick={() => setValue(multiple ? [] : undefined)}
+            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{allOption}</Group>, <Icon key="select" className={mergeClass(check(), !(value?.length === 0 || value === undefined) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
+            />}
+        {matches.map((_value) => (
           <Ariakit.SelectItem
-            key={value}
-            value={value}
+            key={_value}
+            value={_value}
             className={mergeClass(item())}
-            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[value]}</Group>, <Icon key="select" className={mergeClass(check(), !(internal?.includes(value) || internal === value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
+            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[_value]}</Group>, <Icon key="select" className={mergeClass(check(), !(value?.includes(_value) || value === _value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
         />
       ))}
     </Ariakit.ComboboxList>
+            </div>
           </Box>
       </Ariakit.SelectPopover>
     </Ariakit.SelectProvider>

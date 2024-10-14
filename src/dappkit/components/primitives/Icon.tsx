@@ -31,10 +31,10 @@ export const iconStyles = tv({
 
 export type IconProps = Component<
   Styled<typeof iconStyles> & {
-    src: string;
-    chain: ChainId;
-    action: Action;
-    remix: keyof typeof RemixIcon;
+    src?: string;
+    chain?: ChainId;
+    action?: Action;
+    remix?: keyof typeof RemixIcon;
   },
   HTMLImageElement
 >;

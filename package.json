@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "merkl-lite",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -23,6 +23,7 @@
     "@radix-ui/react-slider": "^1.2.0",
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
+    "merkl-api": "link:merkl-api",
     "@remix-run/serve": "^2.11.2",
     "@remixicon/react": "^4.2.0",
     "@svgr/rollup": "^8.1.0",
@@ -45,6 +46,7 @@
     "react-dom": "^18.2.0",
     "react-responsive": "^10.0.0",
     "recharts": "^2.12.7",
+    "remix-utils": "^7.7.0",
     "remixicon": "^4.3.0",
     "save": "^2.9.0",
     "tailwind-merge": "^2.5.2",

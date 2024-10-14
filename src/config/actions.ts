@@ -1,29 +1,42 @@
+import { IconProps } from "dappkit/components/primitives/Icon";
+import { Opportunity } from "merkl-api";
+
 export const actions = {
-  pool: {
+  POOL: {
     label: "Liquidity",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    asset: (await import("../assets/actions/pool.svg?url")).default,
+    icon: {remix: "RiWaterFlashLine"},
   },
-  drop: {
+  DROP: {
     label: "Airdrop",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    asset: (await import("../assets/actions/drop.svg?url")).default,
+    icon: {remix: "RiGiftLine"},
   },
-  borrow: {
+  BORROW: {
     label: "Borrow",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    asset: (await import("../assets/actions/borrow.svg?url")).default,
+    icon: {remix: "RiTokenSwapLine"},
   },
-  lend: {
+  LEND: {
     label: "Lend",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    asset: (await import("../assets/actions/lend.svg?url")).default,
+    icon: {remix: "RiHandCoinLine"},
   },
-  hold: {
+  HOLD: {
     label: "Hold",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    asset: (await import("../assets/actions/hold.svg?url")).default,
+    icon: {remix: "RiCoinsLine"},
   },
-};
+} satisfies {[S in Opportunity["action"]]: {label: string, icon: IconProps, description: string}};
 
 export type Action = keyof typeof actions;
+
+export function getAction(labelOrKey: string): Action | undefined {
+  for (const [action, { label }] of Object.entries(actions)) {
+    if (
+      label?.toLowerCase() === labelOrKey?.toLowerCase() ||
+      action?.toLocaleLowerCase() === labelOrKey?.toLowerCase()
+    )
+      return action as Action;
+  }
+}

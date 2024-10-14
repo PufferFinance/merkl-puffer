@@ -35,7 +35,7 @@ export default function Heading({ navigation, icons, title, description, tags, t
           <Group>
             <Icons size="lg">
               {icons?.map(icon => (
-                <Icon key={`${Object.values(icon)}`} {...icon} />
+                <Icon className="text-main-12" key={`${Object.values(icon)}`} {...icon} />
               ))}
             </Icons>
             <Title h={1}>{title}</Title>

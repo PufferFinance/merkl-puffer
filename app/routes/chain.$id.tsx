@@ -27,7 +27,7 @@ export default function Index() {
         icons={[{ chain: chainId }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={chain.label}
-        description={"A new era for ethereum apps"}
+        description={"Lorem ipsum something cool about the chain"}
         tabs={[
           { label: "Opportunities", link: `/chain/${chain.label?.toLowerCase()}` },
           { label: "Leaderboard", link: `/chain/${chain.label?.toLowerCase()}/leaderboard` },

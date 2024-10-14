@@ -1,4 +1,3 @@
-import { FetchedOpportunity } from "src/api/fetch/fetchOpportunities";
 import { opportunityColumns, OpportunityTable } from "./OpportunityTable";
 import { useMemo, useState } from "react";
 import OpportunityTableRow from "./OpportunityTableRow";
@@ -10,14 +9,20 @@ import Icon from "dappkit/components/primitives/Icon";
 import type { Order } from "dappkit/components/primitives/Table";
 import { chains } from "src/config/chains";
 import List from "dappkit/components/primitives/List";
+import { Opportunity } from "merkl-api";
+import { useFetcher, useSearchParams } from "@remix-run/react";
+import useSearchParamState from "dappkit/hooks/filtering/useSearchParamState";
+import OpportunityFilters, { OpportunityFilterProps } from "./OpportunityFilters";
 
 export type OpportunityLibrary = {
-  opportunities: FetchedOpportunity[];
-};
+  opportunities: Opportunity[];
+} & OpportunityFilterProps;
 
-export default function OpportunityLibrary({ opportunities }: OpportunityLibrary) {
+export default function OpportunityLibrary({ opportunities, only, exclude }: OpportunityLibrary) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const rows = useMemo(
-    () => opportunities.map(o => <OpportunityTableRow key={o.id} opportunity={o} />),
+    () => opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.identifier}`} opportunity={o} />),
     [opportunities],
   );
   
@@ -27,25 +32,13 @@ export default function OpportunityLibrary({ opportunities }: OpportunityLibrary
     console.log("SORT", column, order);
   }
 
-  const actions = {pool: <><Icon size="sm" remix="Ri24HoursFill"/> Pool</>, hold: <><Icon size="sm" remix="Ri24HoursFill"/> Hold</>, testsomelongenoughstring: <><Icon size="sm" remix="Ri24HoursFill"/> Test</>}
-  const statusOptions = {live: <><Icon size="sm" remix="Ri24HoursFill"/> Live</>, soon: <><Icon size="sm" remix="Ri24HoursFill"/> Soon</>, past: <><Icon size="sm" remix="Ri24HoursFill"/> Past</>}
-  const chainOptions = Object.entries(chains).reduce((obj, [id, chain]) => Object.assign(obj, {[id]: <><Icon size="sm" chain={id}/>{chain.label}</>}), {})
-
   return (
     <OpportunityTable
       sortable={sortable}
       onSort={onSort}
       header={
         <Group className="justify-between w-full">
-          <Group>
-            <List flex="row" size="sm" content="sm" look="bold">
-              <Input placeholder="Search" />
-              <Button><Icon size="sm" remix="RiSearchLine"/></Button>
-            </List>
-            <Select allOption={"All actions"} multiple options={actions} size="sm" placeholder="Actions" />
-            <Select allOption={"All status"} multiple options={statusOptions} size="sm" placeholder="Status" />
-            <Select allOption={"All chains"} multiple search options={chainOptions} size="sm" placeholder="Chains" />
-          </Group>
+            <OpportunityFilters {...{only, exclude}}/>
           <Group>
             <Button size="sm" look="base">
               Sort

@@ -10,6 +10,7 @@ import Title from "dappkit/components/primitives/Title";
 import { Button } from "dappkit/index";
 import { createColoring } from "dappkit/theming/coloring";
 import type { Coloring } from "dappkit/theming/variables";
+import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
 // import { Button, DAppProvider, Dropdown } from "dappkit";
 import { http, createConfig } from "wagmi";
@@ -53,12 +54,18 @@ const testThemes: { [name: string]: Coloring } = {
 export default function Index() {
   return (
     <Page>
-      <Group>
-        <Title h={1}>Merkl</Title>
-      </Group>
-      <div>
+      <Heading
+        icons={[{ remix: "RiSparklingLine" }]}
+        navigation={{ label: "Back to opportunities", link: "/" }}
+        title={"All Opportunities"}
+        description={"Lorem ipsum something cool"}
+        tabs={[
+          { label: "Opportunities", link: "/" },
+          { label: "Leaderboard", link: "/leaderboard" },
+          { label: "Analytics", link: "/analytics" },
+        ]}>
         <Outlet />
-      </div>
+      </Heading>
     </Page>
   );
 }

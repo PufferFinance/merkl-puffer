@@ -31,9 +31,10 @@ export type ValueFormatProps = { children?: number; format: string };
 export type ValueProps = Component<Styled<typeof valueStyles> & ValueFormatProps, HTMLDivElement>;
 
 export default function Value({ look, size, value, className, format: _format, children, ...props }: ValueProps) {
+  if (value) return format(children, _format, {currency: "USD"});
   return (
     <div className={mergeClass(valueStyles({ size, look }))} {...props}>
-      {format(children, _format)}
+      {format(children, _format, {currency: "USD"})}
     </div>
   );
 }
