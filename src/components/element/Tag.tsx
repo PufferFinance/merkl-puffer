@@ -163,6 +163,8 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     case "protocol": {
       const protocol = value;
 
+      console.log(protocol);
+      
       if (!protocol) return <Button {...props}>{value}</Button>;
 
       return (
@@ -174,7 +176,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   <Text size="xs">Protocol</Text>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} src={protocol?.asset} />
+                  <Icon size={props?.size} src={protocol?.icon} />
                   <Title h={4}>{value?.name}</Title>
                 </Group>
               </Group>

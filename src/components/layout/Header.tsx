@@ -1,5 +1,6 @@
 import WalletButton from "dappkit/components/dapp/WalletButton";
 import Group from "dappkit/components/extenders/Group";
+import Modal from "dappkit/components/extenders/Modal";
 import Icon from "dappkit/components/primitives/Icon";
 import Input from "dappkit/components/primitives/Input";
 import Title from "dappkit/components/primitives/Title";
@@ -16,6 +17,11 @@ export default function Header() {
       </Group>
       <Group className="grow flex justify-center">
         <Input look="base" placeholder="Search Merkl" />
+        <Modal title={"Search"} content={<>
+          <Input/>
+          </>}>
+          <Button>dqsd</Button>
+        </Modal>
       </Group>
       <Group>
         <Button size="md" onClick={toggleMode}>

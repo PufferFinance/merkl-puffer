@@ -1,3 +1,4 @@
+import { Form } from "@remix-run/react";
 import Group from "dappkit/components/extenders/Group";
 import Select from "dappkit/components/extenders/Select";
 import Icon from "dappkit/components/primitives/Icon";
@@ -5,7 +6,7 @@ import Input from "dappkit/components/primitives/Input";
 import List from "dappkit/components/primitives/List";
 import useSearchParamState from "dappkit/hooks/filtering/useSearchParamState";
 import { Button } from "dappkit/index";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { actions } from "src/config/actions";
 import { chains } from "src/config/chains";
 
@@ -77,21 +78,36 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
     v => v?.split(","),
   );
 
+  const [innerSearch, setInnerSearch] = useState<string>();
+  const [search, setSearch] = useSearchParamState<string>(
+    "search",
+    v => v,
+    v => v,
+  );
+
   const fields = useMemo(() => {
     if (only) return filters.filter(f => only.includes(f));
     if (exclude) return filters.filter(f => !exclude.includes(f));
     return filters;
   }, [only, exclude]);
 
+  function onSearchSubmit() {
+    if (!innerSearch || innerSearch === search) return;
+
+    setSearch(innerSearch)
+  }
+
   return (
     <Group>
       {fields.includes("search") && (
+          <Form>
         <List flex="row" size="sm" content="sm" look="bold">
-          <Input placeholder="Search" />
-          <Button>
+          <Input name='search' value={innerSearch} state={[innerSearch, setInnerSearch]} placeholder="Search" />
+          <Button onClick={onSearchSubmit}>
             <Icon size="sm" remix="RiSearchLine" />
           </Button>
         </List>
+          </Form>
       )}
       {fields.includes("action") && (
         <Select
