@@ -1,5 +1,4 @@
 import { Outlet, useParams } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
 import Hash from "dappkit/components/primitives/Hash";
 import Icon from "dappkit/components/primitives/Icon";
 import Heading from "src/components/composite/Heading";

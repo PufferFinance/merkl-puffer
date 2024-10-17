@@ -20,7 +20,7 @@ export type Variant<
 export type Styled<
   T extends { variants: { [x: string]: unknown } },
   Key extends keyof T["variants"] = keyof T["variants"],
-> = { [K in Key]?: Variant<T, K> extends "true" | "false" ? boolean : Variant<T, K>  };
+> = { [K in Key]?: Variant<T, K> extends "true" | "false" ? boolean : Variant<T, K> };
 
 /**
  * Themable

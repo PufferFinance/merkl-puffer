@@ -6,11 +6,11 @@ import Hash from "dappkit/components/primitives/Hash";
 import Icon from "dappkit/components/primitives/Icon";
 import Text from "dappkit/components/primitives/Text";
 import Title from "dappkit/components/primitives/Title";
+import type { Opportunity } from "merkl-api";
 import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";
-import { type Protocol, getProtocolInfo } from "src/config/protocols";
-import {Opportunity} from "merkl-api";
+import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
 
 export type TagTypes = {
@@ -18,7 +18,7 @@ export type TagTypes = {
   token: Token;
   protocol: Protocol;
   action: Action;
-  status: Opportunity["status"]
+  status: Opportunity["status"];
 };
 
 export type TagType<T extends keyof TagTypes = keyof TagTypes> = { type: T; value: TagTypes[T] };
@@ -27,7 +27,6 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & { type: T; value:
 export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
   switch (type) {
     case "status": {
-      
       const status = statuses[value as TagTypes["status"]] ?? statuses["LIVE"];
 
       return (
@@ -112,7 +111,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               </Button>
             </>
           }>
-          <Button  key={value} {...props}>
+          <Button key={value} {...props}>
             <Icon size={props?.size} {...action.icon} />
             {action?.label}
           </Button>
@@ -162,7 +161,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "protocol": {
-      const protocol = value
+      const protocol = value;
 
       if (!protocol) return <Button {...props}>{value}</Button>;
 

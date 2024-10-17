@@ -3,7 +3,6 @@ import { useLoaderData } from "@remix-run/react";
 import Text from "dappkit/components/primitives/Text";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  console.log("chain", params.chain, params.id);
   return json({ chain: params.chain });
 }
 

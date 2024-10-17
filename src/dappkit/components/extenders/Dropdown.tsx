@@ -1,12 +1,8 @@
 import * as Popover from "@radix-ui/react-popover";
-import { type ReactNode, Suspense, useState } from "react";
+import { type ReactNode, useState } from "react";
 import Box from "../../components/primitives/Box";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet } from "../../utils/types";
-import * as Ariakit from "@ariakit/react"
-
-import { ClientOnly } from "remix-utils/client-only"
-import { buttonStyles } from "../primitives/Button";
 
 export type DropdownProps = Component<{ state?: GetSet<boolean>; content?: ReactNode }>;
 
@@ -14,7 +10,6 @@ export default function Dropdown({ state, content, children }: DropdownProps) {
   const { vars } = useTheme();
   const [internalState, setInternalState] = useState<boolean>(false);
 
-  
   return (
     <Popover.Root open={!state ? internalState : state?.[0]} onOpenChange={!state ? setInternalState : state?.[1]}>
       <Popover.Trigger
@@ -27,7 +22,7 @@ export default function Dropdown({ state, content, children }: DropdownProps) {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content asChild style={vars} className="">
-          <Box look='bold' size="md" content="sm" className="mt-md mx-lg shadow-md animate-drop">
+          <Box look="bold" size="md" content="sm" className="mt-md mx-lg shadow-md animate-drop">
             {content}
             {/* <Popover.Arrow className="fill-main-6 border-main-6" /> */}
           </Box>

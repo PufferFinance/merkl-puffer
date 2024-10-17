@@ -1,15 +1,8 @@
-import { Outlet, useParams } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
-import Hash from "dappkit/components/primitives/Hash";
-import Heading from "src/components/composite/Heading";
+import { useParams } from "@remix-run/react";
 import Page from "src/components/composite/layout/Page";
 
 export default function Index() {
   const { address } = useParams();
 
-  return (
-    <Page>
-     rewards
-    </Page>
-  );
+  return <Page>rewards</Page>;
 }

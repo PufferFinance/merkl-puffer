@@ -1,13 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import Dropdown from "dappkit/components/extenders/Dropdown";
-import Group from "dappkit/components/extenders/Group";
-import Box from "dappkit/components/primitives/Box";
-import Divider from "dappkit/components/primitives/Divider";
-import Space from "dappkit/components/primitives/Space";
-import Text from "dappkit/components/primitives/Text";
-import Title from "dappkit/components/primitives/Title";
-import { Button } from "dappkit/index";
 import { createColoring } from "dappkit/theming/coloring";
 import type { Coloring } from "dappkit/theming/variables";
 import Heading from "src/components/composite/Heading";

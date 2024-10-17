@@ -1,13 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { mergeClass } from "dappkit/utils/css";
 import { type ReactNode, useState } from "react";
-import Box, { BoxProps } from "../../components/primitives/Box";
-import Button, { ButtonProps } from "../../components/primitives/Button";
+import Box, { type BoxProps } from "../../components/primitives/Box";
+import Button from "../../components/primitives/Button";
 import Text from "../../components/primitives/Text";
 import Title from "../../components/primitives/Title";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet } from "../../utils/types";
 import Group from "./Group";
-import { mergeClass } from "dappkit/utils/css";
 
 export type ModalProps = Component<{
   open?: boolean;
@@ -15,7 +15,8 @@ export type ModalProps = Component<{
   description?: ReactNode;
   content?: ReactNode;
   state?: GetSet<boolean>;
-}> & BoxProps;
+}> &
+  BoxProps;
 
 export default function Modal({ state, title, description, content, children, className, ...props }: ModalProps) {
   const { vars } = useTheme();
@@ -26,7 +27,9 @@ export default function Modal({ state, title, description, content, children, cl
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay style={vars} className="bg-main-1 opacity-[0.75] fixed inset-0" />
-        <Dialog.Content style={vars} className={mergeClass("fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]", className)}>
+        <Dialog.Content
+          style={vars}
+          className={mergeClass("fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]", className)}>
           <Box className="shadow-md" {...props}>
             <Dialog.Title asChild={!!title}>
               {typeof title === "string" ? <Title h={2}>{title}</Title> : title}

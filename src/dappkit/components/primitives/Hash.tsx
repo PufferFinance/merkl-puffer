@@ -2,7 +2,11 @@ import { mergeClass } from "dappkit/utils/css";
 import { useMemo } from "react";
 import Text, { type TextProps } from "./Text";
 
-export type HashProps = Omit<TextProps, "children"> & { format: "full" | "short" | "prefix"; value?: boolean, children?: string };
+export type HashProps = Omit<TextProps, "children"> & {
+  format: "full" | "short" | "prefix";
+  value?: boolean;
+  children?: string;
+};
 
 export default function Hash({ format, value, children: hash, className, ...props }: HashProps) {
   const formatted: string = useMemo(() => {
@@ -16,7 +20,7 @@ export default function Hash({ format, value, children: hash, className, ...prop
     }
   }, [hash, format]);
 
-  if (value) return <span className="font-mono">{formatted}</span>
+  if (value) return <span className="font-mono">{formatted}</span>;
   return (
     <Text {...props} className={mergeClass("hover:underline cursor-pointer font-mono", className)}>
       {formatted}

@@ -12,8 +12,10 @@ export type ImageProps = Component<
 export default function Image({ fallback, className, ...props }: ImageProps) {
   return (
     <Avatar.Root className={mergeClass(className)}>
-      <Avatar.Image {...props} style={{...props.style, width: "100%", height: "100%"}} />
-      <Avatar.Fallback className="bg-main-10 h-full w-full text-auto justify-center flex items-center rounded-full p-sm" delayMs={0}>
+      <Avatar.Image {...props} style={{ ...props.style, width: "100%", height: "100%" }} />
+      <Avatar.Fallback
+        className="bg-main-10 h-full w-full text-auto justify-center flex items-center rounded-full p-sm"
+        delayMs={0}>
         {fallback}
       </Avatar.Fallback>
     </Avatar.Root>

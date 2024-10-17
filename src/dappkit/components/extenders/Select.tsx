@@ -1,15 +1,15 @@
-import * as RadixSelect from "@radix-ui/react-select";
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import * as Ariakit from "@ariakit/react";
+import type * as RadixSelect from "@radix-ui/react-select";
+import { mergeClass } from "dappkit/utils/css";
+import { matchSorter } from "match-sorter";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { tv } from "tailwind-variants";
 import { useTheme } from "../../context/Theme.context";
 import type { Component, GetSet, Variant } from "../../utils/types";
-import * as Ariakit from "@ariakit/react";
-import { matchSorter } from "match-sorter";
 import Group from "../extenders/Group";
-import { inputStyles } from "../primitives/Input";
 import Box from "../primitives/Box";
-import { mergeClass } from "dappkit/utils/css";
 import Icon from "../primitives/Icon";
+import { inputStyles } from "../primitives/Input";
 import Text from "../primitives/Text";
 
 export const selectStyles = tv({
@@ -34,7 +34,7 @@ export const selectStyles = tv({
         base: "bg-main-2 border-main-6 hover:bg-main-4 active:bg-main-3 hover:text-main-12  focus-visible:border-main-9",
         icon: "border-main-6",
         item: "hover:bg-main-5 data-[active-item]:bg-main-5 active:bg-main-4 text-main-12 focus-visible:border-main-8",
-        check: "text-accent-10"
+        check: "text-accent-10",
       },
       bold: {
         base: "bg-main-4 border-main-4 hover:bg-main-5 active:bg-main-3 text-main-12 focus-visible:border-main-9",
@@ -124,20 +124,42 @@ export type SelectProps<Value> = Component<{
   value?: Value;
   placeholder?: string;
   state?: GetSet<Value>;
-  search?: boolean,
-  allOption?: ReactNode,
+  search?: boolean;
+  allOption?: ReactNode;
   options?: { [key: string | number | symbol]: ReactNode };
 }> &
   RadixSelect.SelectProps;
 
-type MaybeArray<T, IsArray extends undefined | boolean> = IsArray extends true ? T[] : T  
+type MaybeArray<T, IsArray extends undefined | boolean> = IsArray extends true ? T[] : T;
 
-export default function Select<T extends string | number | symbol, Multiple extends undefined | boolean, Value extends MaybeArray<T, Multiple>>({ look, size, state, options, search, multiple, allOption, placeholder, className, ...props }: SelectProps<Value> & {multiple?: Multiple}) {
+export default function Select<
+  T extends string | number | symbol,
+  Multiple extends undefined | boolean,
+  Value extends MaybeArray<T, Multiple>,
+>({
+  look,
+  size,
+  state,
+  options,
+  search,
+  multiple,
+  allOption,
+  placeholder,
+  className,
+  ...props
+}: SelectProps<Value> & { multiple?: Multiple }) {
   const { vars } = useTheme();
   const [internal, setInternal] = useState<Value>();
   const [getter, setter] = state ?? [];
 
-  const { base, dropdown, item, icon, value: valueStyle, check } = selectStyles({
+  const {
+    base,
+    dropdown,
+    item,
+    icon,
+    value: valueStyle,
+    check,
+  } = selectStyles({
     look: look ?? "base",
     size: size ?? "md",
   });
@@ -146,68 +168,123 @@ export default function Select<T extends string | number | symbol, Multiple exte
   const setValue = useCallback((v: Value) => setter?.(v) ?? setInternal(v), [setter]);
 
   const [searchInput, setSearch] = useState<string>();
-  
+
   const matches = useMemo(() => {
     // const textToMatch = Object.keys(options ?? {}).map(option => `${option}_${options[option]?.props?.children?.filter(a => typeof a !== "object").join(" ")}`)
-    const textToMatch = Object.keys(options ?? {}).reduce((matches, option) => Object.assign(matches, {[`${option}`]: option}, {[`${options[option]?.props?.children?.filter?.(a => typeof a !== "object")?.join(" ")}`]: option}), {})
-    const searchMatches = matchSorter(Object.keys(textToMatch), searchInput ?? "").map((key) => textToMatch[key])
-    const uniqueOptionMatches = Array.from(searchMatches.reduce((set, option) => {set.add(option); return set}, new Set()))
+    const textToMatch = Object.keys(options ?? {}).reduce(
+      (matches, option) =>
+        Object.assign(
+          matches,
+          { [`${option}`]: option },
+          { [`${options[option]?.props?.children?.filter?.(a => typeof a !== "object")?.join(" ")}`]: option },
+        ),
+      {},
+    );
+    const searchMatches = matchSorter(Object.keys(textToMatch), searchInput ?? "").map(key => textToMatch[key]);
+    const uniqueOptionMatches = Array.from(
+      searchMatches.reduce((set, option) => {
+        set.add(option);
+        return set;
+      }, new Set()),
+    );
 
     return uniqueOptionMatches;
   }, [options, searchInput]);
 
   const label = useMemo(() => {
     if (options?.[value]) return options?.[value];
-    if (value?.length > 0) return <><Text size="xs" className="rounded-full w-md*2 h-md*2 bg-accent-12 text-main-2">{value.length}</Text> {placeholder}</>;
-    return placeholder
+    if (value?.length > 0)
+      return (
+        <>
+          <Text size="xs" className="rounded-full w-md*2 h-md*2 bg-accent-12 text-main-2">
+            {value.length}
+          </Text>{" "}
+          {placeholder}
+        </>
+      );
+    return placeholder;
   }, [options, value, placeholder]);
 
   return (
     <Ariakit.ComboboxProvider
-    resetValueOnHide
-    setValue={(value) => {
+      resetValueOnHide
+      setValue={value => {
         setSearch(value);
-    }}
-  >
-    <Ariakit.SelectProvider setValue={setValue} value={value} defaultValue={multiple ? [] : undefined}>
-      <Ariakit.Select className={base()}>
-      <div className={valueStyle()}>
-        {label}
-        </div>
-        <div className={icon()}>
-          <Icon remix="RiArrowDropDownLine" />
-        </div>
-      </Ariakit.Select>
-      <Ariakit.SelectPopover gutter={4} className={dropdown()}>
-        <Box look='bold' size="sm" content="sm" className="max-h-[200px]">
-
-        {<div className="combobox-wrapper">
-          <Ariakit.Combobox
-            autoSelect
-            placeholder="Search..."
-            className={mergeClass(inputStyles({size: "sm", look: "bold"}), "w-full", !search && "hidden")}
-            />
-        </div>}
-          <div className="overflow-y-auto">
-        <Ariakit.ComboboxList>
-        {allOption && !searchInput && <Ariakit.SelectItem
-            className={mergeClass(item())}
-            onClick={() => setValue(multiple ? [] : undefined)}
-            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{allOption}</Group>, <Icon key="select" className={mergeClass(check(), !(value?.length === 0 || value === undefined) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
-            />}
-        {matches.map((_value) => (
-          <Ariakit.SelectItem
-            key={_value}
-            value={_value}
-            className={mergeClass(item())}
-            render={<Ariakit.ComboboxItem children={[<Group className="flex-nowrap" key="label">{options?.[_value]}</Group>, <Icon key="select" className={mergeClass(check(), !(value?.includes(_value) || value === _value) && "opacity-0")} size="sm" remix="RiCheckFill"/>]} />}
-        />
-      ))}
-    </Ariakit.ComboboxList>
+      }}>
+      <Ariakit.SelectProvider setValue={setValue} value={value} defaultValue={multiple ? [] : undefined}>
+        <Ariakit.Select className={base()}>
+          <div className={valueStyle()}>{label}</div>
+          <div className={icon()}>
+            <Icon remix="RiArrowDropDownLine" />
+          </div>
+        </Ariakit.Select>
+        <Ariakit.SelectPopover gutter={4} className={dropdown()}>
+          <Box look="bold" size="sm" content="sm" className="max-h-[200px]">
+            {
+              <div className="combobox-wrapper">
+                <Ariakit.Combobox
+                  autoSelect
+                  placeholder="Search..."
+                  className={mergeClass(inputStyles({ size: "sm", look: "bold" }), "w-full", !search && "hidden")}
+                />
+              </div>
+            }
+            <div className="overflow-y-auto">
+              <Ariakit.ComboboxList>
+                {allOption && !searchInput && (
+                  <Ariakit.SelectItem
+                    className={mergeClass(item())}
+                    onClick={() => setValue(multiple ? [] : undefined)}
+                    render={
+                      <Ariakit.ComboboxItem
+                        children={[
+                          <Group className="flex-nowrap" key="label">
+                            {allOption}
+                          </Group>,
+                          <Icon
+                            key="select"
+                            className={mergeClass(
+                              check(),
+                              !(value?.length === 0 || value === undefined) && "opacity-0",
+                            )}
+                            size="sm"
+                            remix="RiCheckFill"
+                          />,
+                        ]}
+                      />
+                    }
+                  />
+                )}
+                {matches?.map(_value => (
+                  <Ariakit.SelectItem
+                    key={_value}
+                    value={_value}
+                    className={mergeClass(item())}
+                    render={
+                      <Ariakit.ComboboxItem
+                        children={[
+                          <Group className="flex-nowrap" key="label">
+                            {options?.[_value]}
+                          </Group>,
+                          <Icon
+                            key="select"
+                            className={mergeClass(
+                              check(),
+                              !(value?.includes(_value) || value === _value) && "opacity-0",
+                            )}
+                            size="sm"
+                            remix="RiCheckFill"
+                          />,
+                        ]}
+                      />
+                    }
+                  />
+                ))}
+              </Ariakit.ComboboxList>
             </div>
           </Box>
-      </Ariakit.SelectPopover>
-    </Ariakit.SelectProvider>
-  </Ariakit.ComboboxProvider>
+        </Ariakit.SelectPopover>
+      </Ariakit.SelectProvider>
+    </Ariakit.ComboboxProvider>
   );
 }

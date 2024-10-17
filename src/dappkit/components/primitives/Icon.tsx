@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";
 import { tv } from "tailwind-variants";
-import * as Avatar from '@radix-ui/react-avatar';
 import Image from "./Image";
 
 export const iconStyles = tv({
@@ -21,11 +20,11 @@ export const iconStyles = tv({
     rounded: {
       true: "rounded-full",
       false: "",
-    }
+    },
   },
   defaultVariants: {
     size: "md",
-    rounded: false
+    rounded: false,
   },
 });
 

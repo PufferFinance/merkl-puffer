@@ -1,19 +1,12 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
-import Select from "dappkit/components/extenders/Select";
-import Icon from "dappkit/components/primitives/Icon";
-import Title from "dappkit/components/primitives/Title";
-import { type ReactNode, useMemo } from "react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import { Action, actions, getAction } from "src/config/actions";
-import { type ChainId, chains, getChainId } from "src/config/chains";
-import { getStatus, Status, statuses } from "src/config/status";
+import { type Action, actions, getAction } from "src/config/actions";
 
 export async function loader({ params: { action: _action } }: LoaderFunctionArgs) {
   const action = getAction(_action ?? "");
-  
+
   if (!action) throw new Error("Unknown action");
 
   return json({ action });
@@ -30,9 +23,7 @@ export default function Index() {
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={action.label}
         description={action.description}
-        tabs={[
-          { label: "Opportunities", link: `/action/${action.label?.toLowerCase()}` },
-        ]}>
+        tabs={[{ label: "Opportunities", link: `/action/${action.label?.toLowerCase()}` }]}>
         <Outlet />
       </Heading>
     </Page>

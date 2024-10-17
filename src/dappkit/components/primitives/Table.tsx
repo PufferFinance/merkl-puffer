@@ -1,12 +1,12 @@
-import { Component, Styled } from "dappkit/utils/types";
-import { type ReactNode, useMemo, useState } from "react";
-import Icon from "./Icon";
-import { tv } from "tailwind-variants";
 import { mergeClass } from "dappkit/utils/css";
-import List from "./List";
-import Box from "./Box";
-import Text from "./Text";
+import type { Component, Styled } from "dappkit/utils/types";
+import { type ReactNode, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { tv } from "tailwind-variants";
+import Box from "./Box";
+import Icon from "./Icon";
+import List from "./List";
+import Text from "./Text";
 
 export const tableStyles = tv({
   base: "",
@@ -43,7 +43,7 @@ export const tableStyles = tv({
   },
 });
 
-const orders = ["descending", "ascending"] as const;
+const orders = ["desc", "asc"] as const;
 
 export type Order = (typeof orders)[number];
 export type Columns = {
@@ -119,6 +119,8 @@ export type TableProps<T extends Columns> = Component<
     columns: T;
     header?: ReactNode;
     footer?: ReactNode;
+    order?: Order;
+    sort?: keyof T;
     loading?: boolean;
     sortable?: (keyof T)[];
     onSort?: (id: keyof T, order: Order) => void;
@@ -148,7 +150,7 @@ export function useHeaders<T extends Columns>(
           <span className="absolute -right-5">
             {sortable &&
               id === sortBy &&
-              (order === "ascending" ? (
+              (order === "desc" ? (
                 <Icon size="sm" remix={"RiArrowDropDownLine"} />
               ) : (
                 <Icon size="sm" remix={"RiArrowDropUpLine"} />
@@ -168,20 +170,26 @@ export function Table<T extends Columns>({
   sortable,
   columns,
   header,
+  order,
+  sort,
+  onSort,
   className,
   children,
   ...props
 }: TableProps<T>) {
   const isScreenSmall = useMediaQuery({ maxWidth: 600 });
-  const [order, setOrder] = useState<"ascending" | "descending">("descending");
+  const [_order, setOrder] = useState<"asc" | "desc">("desc");
   const [sortBy, setSortBy] = useState<keyof T | undefined>(sortable?.[0]);
 
   function onHeaderClick(id: keyof T) {
-    setOrder(a => (a === "ascending" || id !== sortBy ? "descending" : "ascending"));
+    const currentOrder = id !== sortBy ? "desc" : _order === "desc" ? "asc" : "desc";
+
+    setOrder(currentOrder);
     setSortBy(id);
+    onSort?.(id, currentOrder);
   }
 
-  const headers = useHeaders(columns, sortable, onHeaderClick, sortBy, order);
+  const headers = useHeaders(columns, sortable, onHeaderClick, sort ?? sortBy, order ?? _order);
 
   return (
     <List look={"base"} className={mergeClass(className)} {...props}>
