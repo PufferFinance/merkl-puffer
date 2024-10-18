@@ -94,20 +94,20 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
   function onSearchSubmit() {
     if (!innerSearch || innerSearch === search) return;
 
-    setSearch(innerSearch)
+    setSearch(innerSearch);
   }
 
   return (
     <Group>
       {fields.includes("search") && (
-          <Form>
-        <List flex="row" size="sm" content="sm" look="bold">
-          <Input name='search' value={innerSearch} state={[innerSearch, setInnerSearch]} placeholder="Search" />
-          <Button onClick={onSearchSubmit}>
-            <Icon size="sm" remix="RiSearchLine" />
-          </Button>
-        </List>
-          </Form>
+        <Form>
+          <List flex="row" size="sm" content="sm" look="bold">
+            <Input name="search" value={innerSearch} state={[innerSearch, setInnerSearch]} placeholder="Search" />
+            <Button onClick={onSearchSubmit}>
+              <Icon size="sm" remix="RiSearchLine" />
+            </Button>
+          </List>
+        </Form>
       )}
       {fields.includes("action") && (
         <Select

@@ -12,7 +12,10 @@ export async function fetchOpportunities(
   const search = new URL(request.url).searchParams.get("search");
   const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
-  const filters = Object.assign({ status, action, chainId, page, items, sort, order, name: search}, overrideQuery ?? {});
+  const filters = Object.assign(
+    { status, action, chainId, page, items, sort, order, name: search },
+    overrideQuery ?? {},
+  );
   const query = Object.entries(filters).reduce(
     (_query, [key, filter]) => Object.assign(_query, !filter ? {} : { [key]: filter }),
     {},

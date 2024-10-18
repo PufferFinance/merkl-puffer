@@ -72,9 +72,7 @@ export default function WalletButton(props: ButtonProps) {
             </Group>
           </>
         }>
-        <Button look="tint" size="sm">
-          {Format.address(address, "short")}
-        </Button>
+        <Button look="tint">{Format.address(address, "short")}</Button>
       </Dropdown>
     </>
   );

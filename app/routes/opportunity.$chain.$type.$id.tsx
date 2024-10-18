@@ -1,27 +1,23 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
-import { Meta, Outlet, useLoaderData, useLocation, useParams } from "@remix-run/react";
+import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
+import useOpportunity from "dappkit/hooks/resources/useOpportunity";
+import type { Opportunity } from "merkl-api";
 import { api } from "src/api";
-import { fetchOpportunity } from "src/api/fetch/fetchOpportunity";
-import { fetchTokens } from "src/api/fetch/fetchTokens";
-import { tagOpportunity } from "src/api/utils/opportunity";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import Tag, { type TagTypes } from "src/components/element/Tag";
+import Tag from "src/components/element/Tag";
 import { getChainId } from "src/config/chains";
 
-export async function loader({ params: { id, chain } }: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain } }: LoaderFunctionArgs) {
   const chainId = getChainId(chain ?? "");
 
-  if (!chainId) throw "";
+  if (!chainId || !id || !type) throw "";
 
-  const { res: opportunity } = await fetchOpportunity({ chainId: chainId, mainParameter: id ?? "" });
-  const a = await api.v4.opportunity({ chainId })({ id: id! }).get();
+  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId })({ type })({ id }).get();
 
   if (!opportunity) throw "";
 
-  const { res: tokens } = await fetchTokens({ chainIds: [opportunity?.chainId], symbols: opportunity.tokenIcons });
-
-  return json(tagOpportunity(opportunity, tokens));
+  return json(opportunity);
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -31,27 +27,24 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
-  const { pathname } = useLocation();
   const { chain, id } = useParams();
+
+  const { tags, description } = useOpportunity(opportunity as Opportunity);
 
   return (
     <Page>
       <Meta />
       <Heading
-        icons={opportunity.contextTag
-          .filter(({ type }) => type === "token")
-          .map(token => ({ src: (token?.value as TagTypes["token"])?.logoURI }))}
+        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={opportunity.name}
-        description={
-          "Earn rewards by providing liquidity to this pool directly on USDC/USDT/FRAX or through one of the supported Automated Liquidity Managers."
-        }
+        description={description}
         tabs={[
           { label: "Overview", link: `/opportunity/${chain}/${id}` },
           { label: "Leaderboard", link: `/opportunity/${chain}/${id}/leaderboard` },
           { label: "Analytics", link: `/opportunity/${chain}/${id}/analytics` },
         ]}
-        tags={opportunity.contextTag.map(tag => (
+        tags={tags.map(tag => (
           <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
         ))}>
         <Outlet />

@@ -164,7 +164,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
       const protocol = value;
 
       console.log(protocol);
-      
+
       if (!protocol) return <Button {...props}>{value}</Button>;
 
       return (
