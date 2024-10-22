@@ -15,7 +15,7 @@ export type OpportunityLibrary = {
 
 export default function OpportunityLibrary({ opportunities, only, exclude }: OpportunityLibrary) {
   const rows = useMemo(
-    () => opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.identifier}`} opportunity={o} />),
+    () => opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />),
     [opportunities],
   );
 

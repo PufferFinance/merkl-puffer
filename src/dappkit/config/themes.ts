@@ -2,7 +2,7 @@ import { type Themes, createColoring } from "../theming/coloring";
 
 export const demoThemes: Themes = {
   zksync: {
-    base: createColoring(["#1C1C1C", "#9AA3F4", "#131620"], ["#FCF8F5", "#9AA3F4", "white"]),
+    base: createColoring(["#6e4c18", "#FB9901", "#111111"], ["#6e4c18", "#FB9901", "#FCF8F5"]),
     info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),

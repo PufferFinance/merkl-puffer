@@ -17,7 +17,7 @@ export const selectStyles = tv({
     "text-main-11 flex items-center justify-between gap-1 border-1 outline-offset-0 outline-0 text-nowrap font-main font-medium",
   ],
   slots: {
-    dropdown: "outline-0 z-50 animate-drop mt-sm min-w-[var(--popover-anchor-width)]",
+    dropdown: "outline-0 z-50 origin-top animate-drop animate-stretch mt-sm min-w-[var(--popover-anchor-width)]",
     item: "flex justify-between items-center gap-lg cursor-pointer select-none p-sm outline-offset-0 outline-0 text-nowrap",
     icon: "border-l-1 h-full flex items-center",
     value: "flex gap-sm items-center",
@@ -221,7 +221,7 @@ export default function Select<
         <Ariakit.SelectPopover gutter={4} className={dropdown()}>
           <Box look="bold" size="sm" content="sm" className="max-h-[200px]">
             {
-              <div className="combobox-wrapper">
+              search && <div className="combobox-wrapper">
                 <Ariakit.Combobox
                   autoSelect
                   placeholder="Search..."

@@ -18,6 +18,10 @@ export const generateTailwindConfig = () => ({
       "0%": { transform: "translateY(-10px)", opacity: 0 },
       "100%": { transform: "translateY(0px)", opacity: 1 },
     },
+    stretch: {
+      "0%": { transform: "scaleY(0.9)" },
+      "100%": { transform: "scaleY(1)" },
+    },
     fadeIn: {
       "0%": { opacity: 0.7 },
       "100%": { opacity: 1 },
@@ -25,6 +29,7 @@ export const generateTailwindConfig = () => ({
   },
   animation: {
     drop: "drop 0.1s ease-out",
+    stretch: "stretch 0.05s ease-out",
     fadeIn: "fadeIn 0.1s ease-out",
   },
   borderRadius: {

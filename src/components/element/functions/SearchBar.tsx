@@ -93,7 +93,7 @@ export default function SearchBar() {
 
   return (
     <Modal
-      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop"
+      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top [&>*]:animate-stretch"
       state={[opened, setOpened]}
       content={
         <>

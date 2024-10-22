@@ -16,6 +16,7 @@ import { statuses } from "src/config/status";
 export type TagTypes = {
   chain: ChainId;
   token: Token;
+  tokenChain: Token;
   protocol: Protocol;
   action: Action;
   status: Opportunity["status"];
@@ -155,6 +156,47 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
           <Button key={value} {...props}>
             <Icon size={props?.size} src={token.logoURI} />
             {token?.symbol}
+          </Button>
+        </Dropdown>
+      );
+    }
+
+    case "tokenChain": {
+      const token = value as TagTypes["token"];
+
+      if (!token) return <Button {...props}>{value}</Button>;
+
+      return (
+        <Dropdown
+          content={
+            <>
+              <Group size="xs" className="flex-col">
+                <Group className="justify-between">
+                  <Text size="xs">Token</Text>
+                  <Hash format="short" size="xs">
+                    {token.address}
+                  </Hash>
+                </Group>
+                <Group size="sm">
+                  <Icon size={props?.size} src={token.logoURI} />
+                  <Title h={4}>{token?.name}</Title>
+                </Group>
+              </Group>
+              <Divider className="border-main-6" horizontal />
+              {/* <Text size="xs">{token?.description}</Text> */}
+              <Group className="flex-col" size="sm">
+                <Button to={`/token/${token?.symbol}`} size="sm" look="bold">
+                  {token?.symbol} on Merkl
+                </Button>
+                <Button size="sm" look="bold">
+                  {token?.symbol} on Etherscan
+                </Button>
+              </Group>
+            </>
+          }>
+          <Button key={value} {...props}>
+            <Icon size={props?.size} chain={token.chainId} />
+            {chains[token.chainId]?.label}
           </Button>
         </Dropdown>
       );

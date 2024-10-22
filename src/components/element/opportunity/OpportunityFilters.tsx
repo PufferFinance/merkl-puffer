@@ -116,6 +116,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
           multiple
           options={actionOptions}
           size="sm"
+          look="bold"
           placeholder="Actions"
         />
       )}
@@ -126,6 +127,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
           multiple
           options={statusOptions}
           size="sm"
+          look="bold"
           placeholder="Status"
         />
       )}
@@ -137,6 +139,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
           search
           options={chainOptions}
           size="sm"
+          look="bold"
           placeholder="Chains"
         />
       )}
