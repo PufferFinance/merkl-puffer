@@ -1,11 +1,6 @@
 import { useLocation } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
-import Icons from "dappkit/components/extenders/Icons";
-import Divider from "dappkit/components/primitives/Divider";
-import Icon, { type IconProps } from "dappkit/components/primitives/Icon";
-import Text from "dappkit/components/primitives/Text";
-import Title from "dappkit/components/primitives/Title";
-import { Button } from "dappkit/index";
+import {Group, Icons, Divider, Icon, Text, Title, type IconProps} from "dappkit/src";
+import { Button } from "dappkit/src";
 import type { PropsWithChildren, ReactNode } from "react";
 
 export type HeadingProps = PropsWithChildren<{

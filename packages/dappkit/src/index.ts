@@ -1,7 +1,15 @@
 import "./style.css";
 export * from "./context/Dapp.context";
+export * from "./context/Theme.context";
 export { default as Button } from "./components/primitives/Button";
 export * from "./utils/tailwind";
+
+export * from "./components";
+export * from "./hooks/events/useShortcut";
+export * from "./theming/coloring"
+export * from "./theming/variables"
+export * from "./utils/css"
+export * from "./utils/types"
 
 //Primitives
 // export * from "./components/primitives/Block";

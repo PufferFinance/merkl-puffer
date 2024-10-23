@@ -1,5 +1,5 @@
-import { mergeClass } from "dappkit/utils/css";
-import type { Component, Styled } from "dappkit/utils/types";
+import { mergeClass } from "dappkit/src";
+import type { Component, Styled } from "dappkit/src";
 import { Children, type ReactElement, cloneElement } from "react";
 import { tv } from "tailwind-variants";
 import Group from "./Group";

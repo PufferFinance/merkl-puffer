@@ -1,9 +1,7 @@
-import Group from "dappkit/components/extenders/Group";
-import Icon from "dappkit/components/primitives/Icon";
-import type { Order } from "dappkit/components/primitives/Table";
-import useSearchParamState from "dappkit/hooks/filtering/useSearchParamState";
-import { Button } from "dappkit/index";
-import type { Opportunity } from "merkl-api";
+import {Group, Icon, type Order} from "dappkit";
+import useSearchParamState from "src/hooks/filtering/useSearchParamState";
+import { Button } from "dappkit";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import { useMemo } from "react";
 import OpportunityFilters, { type OpportunityFilterProps } from "./OpportunityFilters";
 import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";

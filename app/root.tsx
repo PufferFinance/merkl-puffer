@@ -1,10 +1,9 @@
 import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import "./tailwind.css";
-import Group from "dappkit/components/extenders/Group";
-import { DAppProvider } from "dappkit/context/Dapp.context";
-import Footer from "src/components/layout/Footer";
-import Header from "src/components/layout/Header";
+import {Group, DAppProvider} from "dappkit/src";
+// import Footer from "src/components/layout/Footer";
+// import Header from "src/components/layout/Header";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
@@ -71,11 +70,11 @@ export default function App() {
   return (
     <DAppProvider config={config}>
       <Group size="xl" className="bg-main-1 min-h-[100vh] via-main-1 via-[15em] from-main-3 to-main-1 p-md flex-col">
-        <Header />
+        {/* <Header />
         <div className="grow h-full">
           <Outlet />
         </div>
-        <Footer />
+        <Footer /> */}
       </Group>
     </DAppProvider>
   );

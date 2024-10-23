@@ -1,9 +1,5 @@
-import Card from "dappkit/components/extenders/Card";
-import Group from "dappkit/components/extenders/Group";
-import type { BoxProps } from "dappkit/components/primitives/Box";
-import Title from "dappkit/components/primitives/Title";
-import Value from "dappkit/components/primitives/Value";
-import { mergeClass } from "dappkit/utils/css";
+import {Card, Group, Title, Value, mergeClass} from "dappkit/src";
+import type { BoxProps } from "dappkit/src";
 import type { FetchedOpportunity } from "src/api/fetch/fetchOpportunity";
 import { chains } from "src/config/chains";
 import Tag, { type TagTypes } from "./Tag";
