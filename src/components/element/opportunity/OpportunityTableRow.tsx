@@ -4,7 +4,7 @@ import {Icons} from "dappkit";
 import type { BoxProps } from "dappkit";
 import {Title} from "dappkit";
 import {Value} from "dappkit";
-import { useOpportunity } from "dappkit";
+import useOpportunity from "src/hooks/resources/useOpportunity";
 import { Button } from "dappkit";
 import { mergeClass } from "dappkit";
 import type { Opportunity } from "@angleprotocol/merkl-api";

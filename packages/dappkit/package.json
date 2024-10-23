@@ -1,8 +1,8 @@
 {
-  "name": "dappkit/src",
+  "name": "dappkit",
   "private": true,
   "sideEffects": false,
-  "type": "commonjs",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "build": "remix vite:build",

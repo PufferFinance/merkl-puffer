@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { createColoring, type Coloring } from "dappkit/src";
+import { createColoring, type Coloring } from "dappkit";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
 import { http, createConfig } from "wagmi";
@@ -46,7 +46,7 @@ export default function Index() {
     <Page>
       <Heading
         icons={[{ remix: "RiSparklingLine" }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
+        // navigation={{ label: "Back to opportunities", link: "/" }}
         title={"All Opportunities"}
         description={"Lorem ipsum something cool"}
         tabs={[
