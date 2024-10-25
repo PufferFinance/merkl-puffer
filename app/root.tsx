@@ -6,7 +6,7 @@ import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import styles from "./tailwind.css?url";
-import { createColoring } from "dappkit";
+import { zkSyncThemes } from "src/zksync/components/layout/themes";
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
@@ -65,26 +65,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const themes = {
-  ignite: {
-    base: createColoring(["#000000", "#1755F4", "#000000"], ["#6e4c18", "#FB9901", "#FCF8F5"]),
-    info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-  },
-  zksync: {
-    base: createColoring(["#000000", "#1755F4", "#000000"], ["#6e4c18", "#FB9901", "#FCF8F5"]),
-    info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-    harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-  },
-} as const;
-
 export default function App() {
   return (
-    <DAppProvider themes={themes} config={config}>
+    <DAppProvider themes={zkSyncThemes} config={config}>
       <Outlet />
     </DAppProvider>
   );
