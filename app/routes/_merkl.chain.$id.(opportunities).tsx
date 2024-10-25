@@ -1,14 +1,17 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import {Space} from "dappkit";
+import { Space } from "dappkit/src";
 import { fetchOpportunities } from "src/api/opportunity/opportunity";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
+import { getChainId } from "src/config/chains";
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { data: opportunities, ...res } = await fetchOpportunities(request);
+export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
+  const chainId = getChainId(id ?? "");
 
-  console.log(opportunities, res);
-  
+  if (!chainId) throw new Error("Unsupported Chain");
+
+  const { data: opportunities, ...res } = await fetchOpportunities(request, { chainId: chainId?.toString() });
+
   return json({ opportunities });
 }
 
@@ -18,7 +21,7 @@ export default function Index() {
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary opportunities={opportunities} />
+      <OpportunityLibrary exclude={["chain"]} opportunities={opportunities} />
     </>
   );
 }

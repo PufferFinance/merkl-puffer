@@ -1,9 +1,9 @@
 import { Form } from "@remix-run/react";
-import {Group, Select, Icon, Input, List, Button} from "dappkit/src";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
+import { Button, Group, Icon, Input, List, Select } from "dappkit/src";
 import { useMemo, useState } from "react";
 import { actions } from "src/config/actions";
 import { chains } from "src/config/chains";
+import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 
 const filters = ["search", "action", "status", "chain"] as const;
 type OpportunityFilter = (typeof filters)[number];

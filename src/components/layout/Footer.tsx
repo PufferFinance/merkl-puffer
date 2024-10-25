@@ -1,4 +1,4 @@
-import {Group, Divider, Icon, Text, Button} from "dappkit/src";
+import { Button, Divider, Group, Icon, Text } from "dappkit/src";
 import Page from "../composite/layout/Page";
 
 export default function Footer() {

@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { createColoring, type Coloring } from "dappkit";
+import { type Coloring, createColoring } from "dappkit";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
 import { http, createConfig } from "wagmi";

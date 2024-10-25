@@ -1,5 +1,5 @@
-import type { IconProps } from "dappkit";
 import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { IconProps } from "dappkit";
 
 export const statuses = {
   LIVE: {

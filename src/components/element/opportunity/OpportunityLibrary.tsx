@@ -1,8 +1,8 @@
-import {Group, Icon, type Order} from "dappkit";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
-import { Button } from "dappkit";
 import type { Opportunity } from "@angleprotocol/merkl-api";
+import { Group, Icon, type Order } from "dappkit";
+import { Button } from "dappkit";
 import { useMemo } from "react";
+import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import OpportunityFilters, { type OpportunityFilterProps } from "./OpportunityFilters";
 import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";
 import OpportunityTableRow from "./OpportunityTableRow";
@@ -13,7 +13,8 @@ export type OpportunityLibrary = {
 
 export default function OpportunityLibrary({ opportunities, only, exclude }: OpportunityLibrary) {
   const rows = useMemo(
-    () => opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />),
+    () =>
+      opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />),
     [opportunities],
   );
 

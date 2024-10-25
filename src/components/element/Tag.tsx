@@ -1,6 +1,6 @@
-import {Dropdown, Group, Button, Divider, Hash, Icon, Text, Title} from "dappkit";
-import type { ButtonProps } from "dappkit";
 import type { Opportunity } from "@angleprotocol/merkl-api";
+import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Title } from "dappkit";
+import type { ButtonProps } from "dappkit";
 import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";

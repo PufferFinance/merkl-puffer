@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import {Space} from "dappkit/src";
+import { Space } from "dappkit/src";
 import { fetchOpportunities } from "src/api/opportunity/opportunity";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
 import { getStatus } from "src/config/status";

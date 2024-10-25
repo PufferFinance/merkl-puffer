@@ -1,13 +1,13 @@
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import { Link } from "@remix-run/react";
-import {Group} from "dappkit";
-import {Icons} from "dappkit";
+import { Group } from "dappkit";
+import { Icons } from "dappkit";
 import type { BoxProps } from "dappkit";
-import {Title} from "dappkit";
-import {Value} from "dappkit";
-import useOpportunity from "src/hooks/resources/useOpportunity";
+import { Title } from "dappkit";
+import { Value } from "dappkit";
 import { Button } from "dappkit";
 import { mergeClass } from "dappkit";
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import useOpportunity from "src/hooks/resources/useOpportunity";
 import Tag, { type TagTypes } from "../Tag";
 import { OpportunityRow } from "./OpportunityTable";
 

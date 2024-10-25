@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "@remix-run/react";
-import {Hash, Icon} from "dappkit/src";
+import { Hash, Icon } from "dappkit/src";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
 

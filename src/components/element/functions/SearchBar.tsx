@@ -1,9 +1,9 @@
-import { useLocation } from "@remix-run/react";
-import {Group, Icons, Modal, Icon, Input, Title, useShortcut} from "dappkit";
-import useOpportunity from "src/hooks/resources/useOpportunity";
-import { Button } from "dappkit";
 import type { Opportunity } from "@angleprotocol/merkl-api";
+import { useLocation } from "@remix-run/react";
+import { Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
+import { Button } from "dappkit";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import useOpportunity from "src/hooks/resources/useOpportunity";
 import { type SearchResults, useMerklSearch } from "src/hooks/useMerklSearch";
 
 const titles: { [S in keyof SearchResults]: ReactNode } = {

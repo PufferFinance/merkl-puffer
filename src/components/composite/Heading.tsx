@@ -1,5 +1,5 @@
 import { useLocation } from "@remix-run/react";
-import {Group, Icons, Divider, Icon, Text, Title, type IconProps} from "dappkit";
+import { Divider, Group, Icon, type IconProps, Icons, Text, Title } from "dappkit";
 import { Button } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
 
@@ -19,13 +19,18 @@ export default function Heading({ navigation, icons, title, description, tags, t
     <>
       <Group className="flex-row justify-between pb-md">
         <Group size="sm" className="mt-xl flex-col">
-        <Group>
-          {/** Disabled and set opacity to 0 when undefined to preserve layout height */}
-              <Button className={!navigation ? "opacity-0" : ""} disabled={!navigation?.link} to={navigation?.link} look="soft" size="sm">
-                <Icon size="sm" remix="RiArrowLeftSLine" />
-                {navigation?.label}
-              </Button>
-            </Group>
+          <Group>
+            {/** Disabled and set opacity to 0 when undefined to preserve layout height */}
+            <Button
+              className={!navigation ? "opacity-0" : ""}
+              disabled={!navigation?.link}
+              to={navigation?.link}
+              look="soft"
+              size="sm">
+              <Icon size="sm" remix="RiArrowLeftSLine" />
+              {navigation?.label}
+            </Button>
+          </Group>
           <Group>
             <Icons size="lg">
               {icons?.map(icon => (

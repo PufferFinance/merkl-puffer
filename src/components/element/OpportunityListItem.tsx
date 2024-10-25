@@ -1,4 +1,4 @@
-import {Card, Group, Title, Value, mergeClass} from "dappkit/src";
+import { Card, Group, Title, Value, mergeClass } from "dappkit/src";
 import type { BoxProps } from "dappkit/src";
 import type { FetchedOpportunity } from "src/api/fetch/fetchOpportunity";
 import { chains } from "src/config/chains";
