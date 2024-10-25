@@ -15,7 +15,6 @@ const titles: { [S in keyof SearchResults]: ReactNode } = {
 
 function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
   const { link, icons } = useOpportunity(opportunity);
-  console.log("res", icons);
 
   return (
     <Button to={link} size="lg" look="bold">

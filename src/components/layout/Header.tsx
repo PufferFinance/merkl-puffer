@@ -1,4 +1,4 @@
-import { WalletButton, Group, Icon, Title, useTheme, Button } from "dappkit/src";
+import { WalletButton, Group, Icon, Title, useTheme, Button } from "dappkit";
 import SearchBar from "../element/functions/SearchBar";
 
 export default function Header() {
