@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
-import useOpportunity from "dappkit/hooks/resources/useOpportunity";
-import type { Opportunity } from "merkl-api";
+import useOpportunity from "src/hooks/resources/useOpportunity";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";

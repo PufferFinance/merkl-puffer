@@ -1,12 +1,6 @@
-import Dropdown from "dappkit/components/extenders/Dropdown";
-import Group from "dappkit/components/extenders/Group";
-import Button, { type ButtonProps } from "dappkit/components/primitives/Button";
-import Divider from "dappkit/components/primitives/Divider";
-import Hash from "dappkit/components/primitives/Hash";
-import Icon from "dappkit/components/primitives/Icon";
-import Text from "dappkit/components/primitives/Text";
-import Title from "dappkit/components/primitives/Title";
-import type { Opportunity } from "merkl-api";
+import {Dropdown, Group, Button, Divider, Hash, Icon, Text, Title} from "dappkit";
+import type { ButtonProps } from "dappkit";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
 import { type ChainId, chains } from "src/config/chains";

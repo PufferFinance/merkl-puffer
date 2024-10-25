@@ -1,8 +1,4 @@
-import Group from "dappkit/components/extenders/Group";
-import Divider from "dappkit/components/primitives/Divider";
-import Icon from "dappkit/components/primitives/Icon";
-import Text from "dappkit/components/primitives/Text";
-import { Button } from "dappkit/index";
+import {Group, Divider, Icon, Text, Button} from "dappkit/src";
 import Page from "../composite/layout/Page";
 
 export default function Footer() {

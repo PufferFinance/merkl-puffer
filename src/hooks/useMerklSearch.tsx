@@ -1,4 +1,4 @@
-import type { Chain, Opportunity, Protocol, Token } from "merkl-api";
+import type { Chain, Opportunity, Protocol, Token } from "@angleprotocol/merkl-api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "src/api";
 

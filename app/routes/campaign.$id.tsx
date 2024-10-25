@@ -1,4 +1,4 @@
-import Group from "dappkit/components/extenders/Group";
+import {Group} from "dappkit/src";
 
 export default function Index() {
   return (

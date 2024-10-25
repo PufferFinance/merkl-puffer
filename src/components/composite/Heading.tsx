@@ -1,17 +1,12 @@
 import { useLocation } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
-import Icons from "dappkit/components/extenders/Icons";
-import Divider from "dappkit/components/primitives/Divider";
-import Icon, { type IconProps } from "dappkit/components/primitives/Icon";
-import Text from "dappkit/components/primitives/Text";
-import Title from "dappkit/components/primitives/Title";
-import { Button } from "dappkit/index";
+import {Group, Icons, Divider, Icon, Text, Title, type IconProps} from "dappkit";
+import { Button } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
 
 export type HeadingProps = PropsWithChildren<{
   icons: IconProps[];
   title: ReactNode;
-  navigation: { label: ReactNode; link: string };
+  navigation?: { label: ReactNode; link: string };
   description: ReactNode;
   tags: ReactNode[];
   tabs: { label: ReactNode; link: string }[];
@@ -24,14 +19,13 @@ export default function Heading({ navigation, icons, title, description, tags, t
     <>
       <Group className="flex-row justify-between pb-md">
         <Group size="sm" className="mt-xl flex-col">
-          {navigation && (
-            <Group>
-              <Button to={navigation.link} look="soft" size="sm">
+        <Group>
+          {/** Disabled and set opacity to 0 when undefined to preserve layout height */}
+              <Button className={!navigation ? "opacity-0" : ""} disabled={!navigation?.link} to={navigation?.link} look="soft" size="sm">
                 <Icon size="sm" remix="RiArrowLeftSLine" />
-                {navigation.label}
+                {navigation?.label}
               </Button>
             </Group>
-          )}
           <Group>
             <Icons size="lg">
               {icons?.map(icon => (

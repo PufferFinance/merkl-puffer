@@ -1,11 +1,6 @@
 import { Form } from "@remix-run/react";
-import Group from "dappkit/components/extenders/Group";
-import Select from "dappkit/components/extenders/Select";
-import Icon from "dappkit/components/primitives/Icon";
-import Input from "dappkit/components/primitives/Input";
-import List from "dappkit/components/primitives/List";
-import useSearchParamState from "dappkit/hooks/filtering/useSearchParamState";
-import { Button } from "dappkit/index";
+import {Group, Select, Icon, Input, List, Button} from "dappkit/src";
+import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import { useMemo, useState } from "react";
 import { actions } from "src/config/actions";
 import { chains } from "src/config/chains";

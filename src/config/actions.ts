@@ -1,5 +1,5 @@
-import type { IconProps } from "dappkit/components/primitives/Icon";
-import type { Opportunity } from "merkl-api";
+import type { IconProps } from "dappkit";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 
 export const actions = {
   POOL: {

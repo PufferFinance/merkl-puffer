@@ -1,10 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { createColoring } from "dappkit/theming/coloring";
-import type { Coloring } from "dappkit/theming/variables";
+import { createColoring, type Coloring } from "dappkit";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-// import { Button, DAppProvider, Dropdown } from "dappkit";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
@@ -48,7 +46,7 @@ export default function Index() {
     <Page>
       <Heading
         icons={[{ remix: "RiSparklingLine" }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
+        // navigation={{ label: "Back to opportunities", link: "/" }}
         title={"All Opportunities"}
         description={"Lorem ipsum something cool"}
         tabs={[

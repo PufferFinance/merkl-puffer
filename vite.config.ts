@@ -16,9 +16,4 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  resolve: {
-    alias: {
-      dappkit: path.resolve(__dirname, "./src/dappkit")
-    }
-  }
 });
