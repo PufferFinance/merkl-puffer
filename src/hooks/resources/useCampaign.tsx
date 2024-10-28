@@ -1,7 +1,7 @@
 import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import moment from "moment";
 import { Group, Text, Value } from "packages/dappkit/src";
-import Bar from "packages/dappkit/src/components/primitives/Bar";
+import { Bar } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 import { formatUnits } from "viem";
 

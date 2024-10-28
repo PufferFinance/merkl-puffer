@@ -4,7 +4,7 @@ import { Group, Icon, Select, Title } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
+import Container from "src/components/composite/layout/Container";
 import { type ChainId, chains } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
