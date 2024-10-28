@@ -1,8 +1,8 @@
 import { useParams } from "@remix-run/react";
-import Page from "src/components/composite/layout/Page";
+import Container from "src/components/composite/layout/Container";
 
 export default function Index() {
   const { address } = useParams();
 
-  return <Page>rewards</Page>;
+  return <Container>rewards</Container>;
 }

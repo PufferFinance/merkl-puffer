@@ -4,7 +4,7 @@ import { Group, Icon, Select, Title } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
+import { Container } from "dappkit";
 import { type ChainId, chains } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
@@ -22,7 +22,7 @@ export default function Index() {
   const label = chain.name.toLowerCase();
 
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[{ src: chain.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
@@ -35,7 +35,7 @@ export default function Index() {
         ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }
 
@@ -45,18 +45,15 @@ export function ErrorBoundary() {
 
   const networks = useMemo(() => {
     const a = Object.keys(chains);
-    return Object.entries(chains).reduce(
-      (supported, [chainId, chain]) => {
-        supported[chainId] = (
-          <Group>
-            <Icon size="sm" chain={chainId} />
-            {chain.label}
-          </Group>
-        );
-        return supported;
-      },
-      {} as { [C in ChainId]?: ReactNode },
-    );
+    return Object.entries(chains).reduce((supported, [chainId, chain]) => {
+      supported[chainId] = (
+        <Group>
+          <Icon size="sm" chain={chainId} />
+          {chain.label}
+        </Group>
+      );
+      return supported;
+    }, {} as { [C in ChainId]?: ReactNode });
   }, []);
 
   return (
@@ -66,7 +63,7 @@ export function ErrorBoundary() {
         {/* <Text h={3}>We don't support this chain</Text> */}
         <div>
           <Select
-            state={[undefined, c => navigate(`/chain/${chains?.[c]?.label}`)]}
+            state={[undefined, (c) => navigate(`/chain/${chains?.[c]?.label}`)]}
             placeholder="Supported Chains"
             options={networks}
           />
