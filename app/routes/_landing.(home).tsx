@@ -41,7 +41,7 @@ export default function Index() {
                 </Text>
               </div>
             </Group>
-            <Group className="w-1/2 mx-auto flex-col !items-end">
+            <Group className="w-2/3 mx-auto flex-col !items-end">
               <Group className="justify-center items-stretch">
                 <Input
                   className="!rounded-full !px-xl !text-main-9 inline-flex items-center placeholder:!text-sm !text-sm placeholder:!text-main-9 !bg-main-1 min-w-[300px]"
