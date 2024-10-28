@@ -1,9 +1,9 @@
 import { Button, Divider, Group, Icon, Text } from "dappkit/src";
-import Page from "../composite/layout/Page";
+import Container from "packages/dappkit/src/components/layout/Container";
 
 export default function Footer() {
   return (
-    <Page>
+    <Container>
       <Divider horizontal className="border-main-4" />
       <footer className="flex flex-nowrap justify-between  items-center w-full pt-md">
         <Group>
@@ -21,6 +21,6 @@ export default function Footer() {
           </Button>
         </Group>
       </footer>
-    </Page>
+    </Container>
   );
 }

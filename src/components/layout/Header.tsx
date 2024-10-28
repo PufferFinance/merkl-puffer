@@ -12,7 +12,10 @@ export default function Header() {
       <Group className="grow flex justify-center"></Group>
       <Group>
         <Button size="md" onClick={toggleMode}>
-          <Icon size="sm" remix={mode === "dark" ? "RiMoonClearFill" : "RiSunFill"} />
+          <Icon
+            size="sm"
+            remix={mode === "dark" ? "RiMoonClearFill" : "RiSunFill"}
+          />
         </Button>
         <SearchBar />
         <WalletButton look="hype">Connect</WalletButton>
