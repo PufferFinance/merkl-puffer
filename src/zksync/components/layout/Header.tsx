@@ -5,19 +5,19 @@ import Container from "packages/dappkit/src/components/layout/Container";
 
 export default function Header() {
   return (
-    <header className="bg-main-6 w-full">
+    <header className="w-full">
       <Container className="py-xl">
         <Group className="justify-between">
           <Button to="/" look="text">
             <Image className="w-[165px]" alt="zkSync logo" src={zksyncLogo} />
           </Button>
 
-          <Group>
-            <Button look="base" to="/faq">
+          <Group className="gap-xl*2">
+            <Button look="text" to="/faq" className="text-accent-9">
               FAQ
             </Button>
-            <Button look="tint" to="/app">
-              Protocol Application
+            <Button look="primary" to="/app" size="xl">
+              You're a protocol?
             </Button>
           </Group>
         </Group>
