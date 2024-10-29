@@ -1,9 +1,12 @@
 import type { Opportunity } from "@angleprotocol/merkl-api";
+import { Group } from "@ariakit/react";
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
+import { Text } from "packages/dappkit/src";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
+import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Tag from "src/components/element/Tag";
 import { getChainId } from "src/config/chains";
 import useOpportunity from "src/hooks/resources/useOpportunity";
@@ -32,23 +35,8 @@ export default function Index() {
   const { tags, description, link } = useOpportunity(opportunity as Opportunity);
 
   return (
-    <Page>
-      <Meta />
-      <Heading
-        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={opportunity.name}
-        description={description}
-        tabs={[
-          { label: "Overview", link },
-          { label: "Leaderboard", link: `${link}/leaderboard` },
-          { label: "Analytics", link: `${link}/analytics` },
-        ]}
-        tags={tags.map(tag => (
-          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
-        ))}>
-        <Outlet />
-      </Heading>
-    </Page>
+    <Group>
+        <CampaignLibrary campaigns={opportunity.campaigns} />
+    </Group>
   );
 }
