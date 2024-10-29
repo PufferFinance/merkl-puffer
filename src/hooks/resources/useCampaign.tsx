@@ -45,6 +45,7 @@ export default function useCampaign(campaign: Opportunity["campaigns"][number]) 
     return reducer[campaign.type]?.(campaign) ?? <Text>NONE</Text>;
   }, [campaign]);
 
+<<<<<<< HEAD
   const progressBar = useMemo(() => {
     const now = moment.now() / 1000;
     const duration = Number(campaign.endTimestamp - campaign.startTimestamp);
@@ -91,4 +92,7 @@ export default function useCampaign(campaign: Opportunity["campaigns"][number]) 
   }, [campaign.endTimestamp])
 
   return { amount, time, profile, dailyRewards, progressBar, active };
+=======
+  return { amount, time, profile };
+>>>>>>> b6eb8ee (add: campaign display with updated api)
 }
