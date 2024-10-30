@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   createColoring,
-  Divider,
   Group,
   Icon,
   Input,
