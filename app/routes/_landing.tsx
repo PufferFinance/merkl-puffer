@@ -6,7 +6,7 @@ import Header from "src/zksync/components/layout/Header";
 export default function Index() {
   return (
     <>
-      <Group size="xl" className="gap-0 min-h-[100vh] flex-col">
+      <Group size="xl" className="!gap-0 min-h-[100vh] flex-col">
         <Header />
         <main className="grow w-full h-full">
           <Outlet />

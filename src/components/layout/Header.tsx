@@ -9,7 +9,6 @@ export default function Header() {
       <Group>
         <Title h={3}>Merkl (Lite)</Title>
       </Group>
-      <Group className="grow flex justify-center"></Group>
       <Group>
         <Button size="md" onClick={toggleMode}>
           <Icon

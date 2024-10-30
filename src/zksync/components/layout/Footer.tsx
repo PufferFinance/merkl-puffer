@@ -7,13 +7,13 @@ import { EXT } from "src/constants/routes";
 
 export default function Footer() {
   return (
-    <footer className="border-t-1 py-lg lg:py-lg*2 border-main-4 flex flex-nowrap justify-between items-center w-full">
+    <footer className="bg-main-1 border-t-1 py-lg lg:py-lg*2 border-main-8 flex flex-nowrap justify-between items-center w-full">
       <Container>
         <Group className="justify-between">
           <Group size="xl">
             <Button to="/" look="text">
               <Image
-                className="w-[125px] lg:w-[165px]"
+                className="hidden md:block w-[125px] lg:w-[165px]"
                 alt="zkSync logo"
                 src={zksyncLogo}
               />
