@@ -44,7 +44,7 @@ export function Hero() {
               </Title>
               <Title
                 h={5}
-                className="absolute right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 -bottom-8 md:bottom-0 text-main-12"
+                className="absolute right-1/2 translate-x-1/2 md:translate-x-0 md:right-0 -bottom-8 md:-bottom-4 text-main-12"
               >
                 Powered by <span className="text-accent-1">Merkl</span>
               </Title>
