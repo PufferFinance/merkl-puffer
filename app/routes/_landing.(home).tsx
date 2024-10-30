@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   createColoring,
-  Divider,
   Group,
   Icon,
   Input,
@@ -11,6 +10,7 @@ import {
   Text,
   Title,
   Faq,
+  Countdown,
 } from "dappkit";
 
 import { EXT } from "src/constants/routes";
@@ -96,7 +96,7 @@ export function Hero() {
   );
 }
 
-export function Countdown() {
+export function CountdownSection() {
   return (
     <section className="counter py-xl*2 bg-accent-10 w-full">
       <OverrideTheme mode="light">
@@ -115,32 +115,8 @@ export function Countdown() {
               </Button>
             </Group>
             <Group className="lg:w-2/3 text-gray-12 text-xl lg:justify-end items-center gap-y-lg">
-              <Group className="items-center leading-none">
-                <Title h={5} size={2} className="!leading-none">
-                  15
-                </Title>
-                <Text className="!text-main-1">
-                  d<span className="hidden md:inline">ays</span>
-                </Text>
-              </Group>
-              <Divider vertical className="mx-lg" />
-              <Group className="items-center">
-                <Title h={5} size={2} className="!leading-none">
-                  20
-                </Title>
-                <Text className="!text-main-1">
-                  m<span className="hidden md:inline">inutes</span>
-                </Text>
-              </Group>
-              <Divider vertical className="mx-lg" />
-              <Group className="items-center">
-                <Title h={5} size={2} className="!leading-none">
-                  4
-                </Title>
-                <Text className="!text-main-1">
-                  s<span className="hidden md:inline">econds</span>
-                </Text>
-              </Group>
+              <Countdown targetDate={new Date("2024-12-01T12:00:00")} />
+
               <Text
                 size="md"
                 className="w-full md:w-auto text-right md:text-left md:ml-lg text-main-12 !font-bold"
@@ -159,7 +135,7 @@ export default function Index() {
   return (
     <>
       <Hero />
-      <Countdown />
+      <CountdownSection />
       <Faq
         faqs={[
           "How to participate?",
