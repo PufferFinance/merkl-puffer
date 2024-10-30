@@ -1,8 +1,7 @@
-import { Group, Button, Text } from "dappkit";
+import { Group, Button, Text, Container } from "dappkit";
 import zksyncLogoMob from "../../../assets/images/zksync-logo-mob.svg";
 import zksyncLogo from "../../../assets/images/zksync-logo.svg";
 import Image from "../../../../packages/dappkit/src/components/primitives/Image";
-import Container from "packages/dappkit/src/components/layout/Container";
 import SCREENS from "../../../../packages/dappkit/src/constants/SCREENS.json";
 import { useMediaQuery } from "react-responsive";
 

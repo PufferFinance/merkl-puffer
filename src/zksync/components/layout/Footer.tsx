@@ -1,5 +1,4 @@
-import { Group, Icon, Button } from "dappkit";
-import Container from "packages/dappkit/src/components/layout/Container";
+import { Group, Icon, Button, Container } from "dappkit";
 import Image from "../../../../packages/dappkit/src/components/primitives/Image";
 import zksyncLogo from "../../../assets/images/zksync-logo.svg";
 import merklFooter from "../../../assets/images/merkl-footer.svg";

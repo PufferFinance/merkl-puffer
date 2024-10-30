@@ -10,8 +10,9 @@ import {
   OverrideTheme,
   Text,
   Title,
+  Faq,
 } from "dappkit";
-import FaqSection from "packages/dappkit/src/components/layout/FAQ/Faq";
+
 import { EXT } from "src/constants/routes";
 
 export const meta: MetaFunction = () => {
@@ -98,13 +99,7 @@ export function Hero() {
 export function Countdown() {
   return (
     <section className="counter py-xl*2 bg-accent-10 w-full">
-      <OverrideTheme
-        coloring={createColoring(
-          ["#7F89F2", "#FFA200", "#111111"],
-          ["#F89B00", "#3A3D90", "#FFFFFF"]
-        )}
-        mode="light"
-      >
+      <OverrideTheme mode="light">
         <Container>
           <Group className="gap-xl*2 lg:!gap-0 my-[4rem] items-center flex-wrap-reverse">
             <Group className="lg:w-1/3">
@@ -165,7 +160,7 @@ export default function Index() {
     <>
       <Hero />
       <Countdown />
-      <FaqSection
+      <Faq
         faqs={[
           "How to participate?",
           "What's zkSync Ignite?",
