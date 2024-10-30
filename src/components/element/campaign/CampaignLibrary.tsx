@@ -1,21 +1,18 @@
-import { Opportunity } from "@angleprotocol/merkl-api";
+import { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { CampaignTable } from "./CampaignTable";
 import { useMemo } from "react";
 import CampaignTableRow from "./CampaignTableRow";
 
 export type CampaignProps = {
-  campaigns: Opportunity["campaigns"];
+  campaigns: Campaign[];
 };
 
 export default function CampaignLibrary({ campaigns }: CampaignProps) {
-    const rows = useMemo(
-        () =>
-            campaigns?.map(c => <CampaignTableRow campaign={c} />),
-        [campaigns],
-      );
-  return <CampaignTable
-      header={"Something"}
-  >
-    {rows}
-  </CampaignTable>;
+  const rows = useMemo(() => campaigns?.map(c => <CampaignTableRow key={c.campaignId} campaign={c} />), [campaigns]);
+
+  return (
+    <CampaignTable header={"Campaigns"} footer={"Something"}>
+      {rows}
+    </CampaignTable>
+  );
 }

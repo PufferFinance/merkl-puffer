@@ -10,20 +10,26 @@ export const [CampaignTable, CampaignRow, CampaignColumns] = createTable({
   },
   timeRemaining: {
     name: "END OF REWARDS",
-    size: "minmax(min-content,150px)",
-    compactSize: "minmax(min-content,1fr)",
+    size: "minmax(10px,150px)",
+    compactSize: "minmax(10px,1fr)",
     className: "justify-center",
   },
   restrictions: {
     name: "RESTRICTIONS",
-    size: "minmax(min-content,1fr)",
-    compactSize: "minmax(min-content,1fr)",
-    className: "justify-center",
+    size: "minmax(100px,1fr)",
+    compactSize: "minmax(10px,1fr)",
+    className: "justify-start",
   },
   profile: {
     name: "PROFILE",
-    size: "minmax(min-content,150px)",
-    compactSize: "minmax(min-content,1fr)",
+    size: "minmax(100px,200px)",
+    compactSize: "minmax(100px,1fr)",
     className: "justify-center",
   },
+  arrow: {
+    name: "",
+    size: "20px",
+    compactSize: "20px",
+    className: "justify-end",
+  }
 });
