@@ -8,7 +8,7 @@ import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
 
 export type TagTypes = {
-  chain: ChainId;
+  chain: Opportunity["chain"];
   token: Token;
   tokenChain: Token;
   protocol: Protocol;
@@ -52,7 +52,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
       );
     }
     case "chain": {
-      const chain = chains[value as TagTypes["chain"]];
+      const chain = value as TagTypes["chain"];
 
       return (
         <Dropdown
@@ -61,22 +61,22 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Group size="xs" className="flex-col">
                 <Group className="justify-between">
                   <Text size="xs">Chain</Text>
-                  <Text size="xs">id: {value}</Text>
+                  <Text size="xs">id: {chain?.id}</Text>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} chain={value} />
-                  <Title h={4}>{chain?.label}</Title>
+                  <Icon size={props?.size} src={chain?.icon} />
+                  <Title h={4}>{chain?.name}</Title>
                 </Group>
               </Group>
               <Divider className="border-main-6" horizontal />
-              <Button to={`/chain/${chain?.label}`} size="sm" look="bold">
+              <Button to={`/chain/${chain?.name}`} size="sm" look="bold">
                 Open
               </Button>
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} chain={value} />
-            {chain?.label}
+            <Icon size={props?.size} src={chain?.icon} />
+            {chain?.name}
           </Button>
         </Dropdown>
       );
