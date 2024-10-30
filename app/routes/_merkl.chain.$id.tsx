@@ -8,7 +8,8 @@ import {
 import { Group, Icon, Select, Title } from "dappkit/src";
 import { type ReactNode, useMemo } from "react";
 import Heading from "src/components/composite/Heading";
-import Container from "src/components/composite/layout/Container";
+
+import { Container } from "dappkit";
 import { type ChainId, chains, getChainId } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {

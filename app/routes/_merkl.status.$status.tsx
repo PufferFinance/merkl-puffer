@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Heading from "src/components/composite/Heading";
-import Container from "src/components/composite/layout/Container";
+import { Container } from "dappkit";
 import { type Status, getStatus, statuses } from "src/config/status";
 
 export async function loader({

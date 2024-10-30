@@ -7,7 +7,8 @@ import {
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Container from "src/components/composite/layout/Container";
+
+import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
 import { getChainId } from "src/config/chains";
 import useOpportunity from "src/hooks/resources/useOpportunity";
