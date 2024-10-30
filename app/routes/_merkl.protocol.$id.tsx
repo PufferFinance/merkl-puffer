@@ -2,7 +2,7 @@ import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Container from "src/components/composite/layout/Container";
+import { Container } from "dappkit";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const { data: protocol } = await api.v4.protocol({ id: id ?? "" }).get();

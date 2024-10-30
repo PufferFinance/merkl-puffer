@@ -1,5 +1,5 @@
 import { useParams } from "@remix-run/react";
-import Container from "src/components/composite/layout/Container";
+import { Container } from "dappkit";
 
 export default function Index() {
   const { address } = useParams();
