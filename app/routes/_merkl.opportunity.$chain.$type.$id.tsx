@@ -1,19 +1,28 @@
 import type { Opportunity } from "@angleprotocol/merkl-api";
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import {
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  json,
+} from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
+
+import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
 import { getChainId } from "src/config/chains";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
-export async function loader({ params: { id, type, chain } }: LoaderFunctionArgs) {
+export async function loader({
+  params: { id, type, chain },
+}: LoaderFunctionArgs) {
   const chainId = getChainId(chain ?? "");
 
   if (!chainId || !id || !type) throw "";
 
-  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId })({ type })({ id }).get();
+  const { data: opportunity, ...res } = await api.v4
+    .opportunity({ chainId })({ type })({ id })
+    .get();
 
   if (!opportunity) throw "";
 
@@ -32,23 +41,32 @@ export default function Index() {
   const { tags, description } = useOpportunity(opportunity as Opportunity);
 
   return (
-    <Page>
+    <Container>
       <Meta />
       <Heading
-        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
+        icons={opportunity.tokens.map((t) => ({ src: t.icon }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={opportunity.name}
         description={description}
         tabs={[
           { label: "Overview", link: `/opportunity/${chain}/${id}` },
-          { label: "Leaderboard", link: `/opportunity/${chain}/${id}/leaderboard` },
+          {
+            label: "Leaderboard",
+            link: `/opportunity/${chain}/${id}/leaderboard`,
+          },
           { label: "Analytics", link: `/opportunity/${chain}/${id}/analytics` },
         ]}
-        tags={tags.map(tag => (
-          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
-        ))}>
+        tags={tags.map((tag) => (
+          <Tag
+            key={`${tag.type}_${tag.value?.address ?? tag.value}`}
+            {...tag}
+            size="sm"
+            look="bold"
+          />
+        ))}
+      >
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }
