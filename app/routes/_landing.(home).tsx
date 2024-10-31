@@ -9,11 +9,12 @@ import {
   OverrideTheme,
   Text,
   Title,
-  Faq,
   Countdown,
 } from "dappkit";
+import Faq from "src/components/composite/Faq";
 
-import { EXT } from "src/constants/routes";
+import { link } from "src/constants/link";
+import { zkSyncThemes } from "src/zksync/components/layout/themes";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,10 +27,6 @@ export function Hero() {
   return (
     <section className="hero py-xl*2 md:py-xl*4 lg:py-[8rem] bg-accent-10 w-full">
       <OverrideTheme
-        coloring={createColoring(
-          ["#7F89F2", "#FFA200", "#111111"],
-          ["#F89B00", "#3A3D90", "#FFFFFF"]
-        )}
         mode="light"
       >
         <Container>
@@ -58,9 +55,12 @@ export function Hero() {
               />
               <Button
                 size="xl"
-                className="!py-lg !rounded-full transition-all duration-300 bg-main-12 text-accent-1 hover:bg-accent-12 hover:text-main-1 active:bg-main-3 focus-visible:border-main-9 !gap-sm"
+                look="bold"
+                mode="dark"
+                className="!rounded-full"
+                coloring={zkSyncThemes.igniteWarm.base}
               >
-                <Icon remix="RiArrowRightLine" className="text-main-6" />
+                <Icon remix="RiArrowRightLine" className="text-main-11" />
                 Subscribe
               </Button>
             </Group>
@@ -70,7 +70,7 @@ export function Hero() {
                 <Button
                   className="transition-opacity hover:opacity-70 !rounded-full !p-md !text-main-12 !bg-main-1"
                   external
-                  to={EXT.x}
+                  to={link.x}
                 >
                   <Icon
                     className="!h-xl*1.5 w-lg*2 lg:w-xl*1.5"
@@ -80,7 +80,7 @@ export function Hero() {
                 <Button
                   className="transition-opacity hover:opacity-70 !rounded-full !p-md !text-main-12 !bg-main-1"
                   external
-                  to={EXT.telegram}
+                  to={link.telegram}
                 >
                   <Icon
                     className="!h-xl*1.5 w-lg*2 lg:w-xl*1.5"
@@ -99,7 +99,7 @@ export function Hero() {
 export function CountdownSection() {
   return (
     <section className="counter py-xl*2 bg-accent-10 w-full">
-      <OverrideTheme mode="light">
+      <OverrideTheme coloring={zkSyncThemes.igniteWarm.base} mode="light">
         <Container>
           <Group className="gap-xl*2 lg:!gap-0 my-[4rem] items-center flex-wrap-reverse">
             <Group className="lg:w-1/3">
@@ -109,7 +109,10 @@ export function CountdownSection() {
 
               <Button
                 size="xl"
-                className="!py-lg !rounded-full !text-sm transition-all duration-300 bg-main-12 text-accent-1 hover:bg-accent-12 hover:text-main-1 active:bg-main-3 focus-visible:border-main-12 !gap-sm"
+                look="bold"
+                mode="dark"
+                className="!rounded-full"
+                coloring={zkSyncThemes.igniteWarm.base}
               >
                 Join the program now!
               </Button>
