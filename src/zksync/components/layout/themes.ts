@@ -4,7 +4,7 @@ export const zkSyncThemes = {
   ignite: {
     base: createColoring(
       ["#7F89F2", "#FFA200", "#111111"],
-      ["#F89B00", "#3A3D90", "#FFFFFF"]
+      ["#7F89F2", "#FFA200", "#FFFFFF"]
     ),
     info: createColoring(
       ["#2ABDFF", "#2ABDFF", "#131620"],
