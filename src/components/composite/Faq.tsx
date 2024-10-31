@@ -38,7 +38,7 @@ const Faq: FC<{
   }));
 
   return (
-    <section className="faq bg-main-1 py-xl*4">
+    <section className="faq py-xl*4">
       <Container>
         <Group className="gap-xl lg:gap-0 !items-start">
           <Group className="w-full lg:w-1/4">

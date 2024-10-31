@@ -6,7 +6,7 @@ import { link } from "src/constants/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-main-1 border-t-1 py-lg lg:py-lg*2 border-main-8 flex flex-nowrap justify-between items-center w-full">
+    <footer className="border-t-1 py-lg lg:py-lg*2 border-main-8 flex flex-nowrap justify-between items-center w-full">
       <Container>
         <Group className="justify-between">
           <Group size="xl">
