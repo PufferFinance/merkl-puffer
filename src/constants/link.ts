@@ -1,4 +1,4 @@
-export const EXT = {
+export const link = {
   merkl: "https://merkl.xyz/",
   discord: "https://join.zksync.dev/",
   telegram: "https://t.me/+2T0RNabX2ANkMzAx",
