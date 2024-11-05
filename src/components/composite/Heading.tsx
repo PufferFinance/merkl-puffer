@@ -43,7 +43,7 @@ export default function Heading({ navigation, icons, title, description, tags, t
           <Text>{description}</Text>
           <Group className="mt-xl*2">
             {tabs?.map(tab => (
-              <Button look={location.pathname === tab.link ? "hype" : "base"} to={tab.link} key={tab.link}>
+              <Button look={location.pathname === tab.link ? "hype" : "soft"} to={tab.link} key={tab.link}>
                 {tab.label}
               </Button>
             ))}

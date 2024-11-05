@@ -1,34 +1,37 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
-import { Group, Icon, Select, Title } from "dappkit/src";
+import { Group, Icon, Select, Title } from "dappkit";
 import { type ReactNode, useMemo } from "react";
+import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
 import Page from "src/components/composite/layout/Page";
-import { type ChainId, chains, getChainId } from "src/config/chains";
+import { type ChainId, chains } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const chainId = getChainId(id ?? "");
+  const { data: chains } = await api.v4.chain.get({ query: { search: id } });
+  const chain = chains?.[0];
 
-  if (!chainId) throw new Error("Unsupported Chain");
+  if (!chain) throw new Error("Unsupported Chain");
+  if (chains?.length > 1 || chain.name.toLowerCase() !== id?.toLowerCase()) throw new Error("Unsupported Chain");
 
-  return json({ chainId });
+  return json({ chain });
 }
 
 export default function Index() {
-  const { chainId } = useLoaderData<typeof loader>();
-  const chain = chains[chainId];
+  const { chain } = useLoaderData<typeof loader>();
+  const label = chain.name.toLowerCase();
 
   return (
     <Page>
       <Heading
-        icons={[{ chain: chainId }]}
+        icons={[{ src: chain.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
-        title={chain.label}
+        title={chain.name}
         description={"Lorem ipsum something cool about the chain"}
         tabs={[
-          { label: "Opportunities", link: `/chain/${chain.label?.toLowerCase()}` },
-          { label: "Leaderboard", link: `/chain/${chain.label?.toLowerCase()}/leaderboard` },
-          { label: "Analytics", link: `/chain/${chain.label?.toLowerCase()}/analytics` },
+          { label: "Opportunities", link: `/chain/${label?.toLowerCase()}` },
+          { label: "Leaderboard", link: `/chain/${label?.toLowerCase()}/leaderboard` },
+          { label: "Analytics", link: `/chain/${label?.toLowerCase()}/analytics` },
         ]}>
         <Outlet />
       </Heading>

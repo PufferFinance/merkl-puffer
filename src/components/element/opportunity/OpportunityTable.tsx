@@ -1,4 +1,4 @@
-import { createTable } from "dappkit/src";
+import { createTable } from "dappkit";
 
 export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTable({
   opportunity: {
