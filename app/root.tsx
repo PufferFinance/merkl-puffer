@@ -2,6 +2,8 @@ import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import "./tailwind.css";
 import { DAppProvider } from "dappkit";
+// import Footer from "src/components/layout/Footer";
+// import Header from "src/components/layout/Header";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
