@@ -8,26 +8,31 @@ import Tag, { type TagType } from "src/components/element/Tag";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
   const { data: tokens, ...res } = await api.v4.token.get({ query: { symbol } });
+  const { data: chains } = await api.v4.chain.get({ query: {} });
 
   if (!tokens?.length) throw new Error("Unknown token");
 
-  return json({ tokens });
+  return json({ tokens, chains });
 }
 
 export default function Index() {
-  const { tokens } = useLoaderData<typeof loader>();
+  const { tokens, chains } = useLoaderData<typeof loader>();
   const token = tokens?.[0];
 
   const tags = useMemo(() => {
-    console.log(tokens.filter(c => c.chainId === 167000));
-
-    return tokens.map(t => ({ type: "tokenChain", value: t }) satisfies TagType<"tokenChain">);
-  }, [tokens]);
+    return tokens.map(
+      t =>
+        ({
+          type: "tokenChain",
+          value: { ...t, chain: chains?.find(c => c.id === t.chainId) },
+        }) satisfies TagType<"tokenChain">,
+    );
+  }, [tokens, chains]);
 
   return (
     <Page>
       <Heading
-        icons={[token?.icon]}
+        icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
           <>

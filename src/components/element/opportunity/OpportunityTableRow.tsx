@@ -54,7 +54,10 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
           <Group className="py-xl flex-col w-full text-nowrap whitespace-nowrap text-ellipsis">
             <Group className="text-nowrap whitespace-nowrap text-ellipsis min-w-0 flex-nowrap overflow-hidden max-w-full">
               <Icons>{icons}</Icons>
-              <Title h={3} className="text-nowrap whitespace-nowrap text-ellipsis min-w-0 inline-block overflow-hidden">
+              <Title
+                h={3}
+                size={4}
+                className="text-nowrap whitespace-nowrap text-ellipsis min-w-0 inline-block overflow-hidden">
                 {opportunity.name}
               </Title>
             </Group>

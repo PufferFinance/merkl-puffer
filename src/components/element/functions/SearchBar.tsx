@@ -58,7 +58,7 @@ export default function SearchBar() {
                       case "chain":
                         return (
                           <Button to={`/chain/${results[i].name}`} size="lg" look="bold">
-                            <Icon chain={results[i].id} /> {results[i].name}
+                            <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
                       case "opportunity":

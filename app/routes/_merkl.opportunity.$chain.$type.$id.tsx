@@ -17,6 +17,8 @@ export async function loader({ params: { id, type, chain } }: LoaderFunctionArgs
 
   if (!opportunity) throw "";
 
+  console.log("OPPO", res, opportunity);
+
   return json(opportunity);
 }
 

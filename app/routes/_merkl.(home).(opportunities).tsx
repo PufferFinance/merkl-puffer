@@ -6,8 +6,7 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { data: opportunities, ...res } = await fetchOpportunities(request);
-
-  console.log(opportunities, res);
+  console.log("RES", res);
 
   return json({ opportunities });
 }
