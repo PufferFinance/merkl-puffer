@@ -1,16 +1,16 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Chain, Opportunity } from "@angleprotocol/merkl-api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Title } from "dappkit";
 import type { ButtonProps } from "dappkit";
 import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
-import { type ChainId, chains } from "src/config/chains";
+import { chains } from "src/config/chains";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
   token: Token;
-  tokenChain: Token;
+  tokenChain: Token & { chain: Chain };
   protocol: Protocol;
   action: Action;
   status: Opportunity["status"];
@@ -131,7 +131,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   </Hash>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} src={token.logoURI} />
+                  <Icon size={props?.size} src={token.icon} />
                   <Title h={4}>{token?.name}</Title>
                 </Group>
               </Group>
@@ -148,7 +148,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} src={token.logoURI} />
+            <Icon size={props?.size} src={token.icon} />
             {token?.symbol}
           </Button>
         </Dropdown>
@@ -156,7 +156,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "tokenChain": {
-      const token = value as TagTypes["token"];
+      const token = value as TagTypes["tokenChain"];
 
       if (!token) return <Button {...props}>{value}</Button>;
 
@@ -189,7 +189,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} chain={token.chainId} />
+            <Icon size={props?.size} src={token.chain.icon} />
             {chains[token.chainId]?.label}
           </Button>
         </Dropdown>
@@ -198,8 +198,6 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
     case "protocol": {
       const protocol = value;
-
-      console.log(protocol);
 
       if (!protocol) return <Button {...props}>{value}</Button>;
 

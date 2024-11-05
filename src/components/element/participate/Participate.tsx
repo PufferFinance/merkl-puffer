@@ -1,5 +1,5 @@
 import type { Opportunity } from "@angleprotocol/merkl-api";
-import { Box, Button, Divider, Input, Space, Text } from "dappkit";
+import { Box, Button, Input, Space, Text } from "dappkit";
 
 export type ParticipateProps = {
   opportunity: Opportunity;

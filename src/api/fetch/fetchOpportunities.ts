@@ -46,8 +46,6 @@ export const fetchOpportunities = createCall<
     };
   },
   reducer(fetched, { chainId }) {
-    console.log("opps", fetched);
-
     return fetched;
   },
 });

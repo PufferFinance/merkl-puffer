@@ -1,8 +1,9 @@
 import { MerklApi } from "@angleprotocol/merkl-api";
 
 const local = "http://localhost:6007";
-const prod = "https://api.merkl.xyz";
+const production = "https://api.merkl.xyz";
+const staging = "https://api-staging.merkl.xyz";
 
-const api = MerklApi(local);
+const api = MerklApi(staging);
 
 export { api };

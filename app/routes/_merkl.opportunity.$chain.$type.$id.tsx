@@ -26,6 +26,8 @@ export async function loader({
 
   if (!opportunity) throw "";
 
+  console.log("OPPO", res, opportunity);
+
   return json(opportunity);
 }
 

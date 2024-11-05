@@ -1,17 +1,18 @@
-import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
-import { CampaignRow } from "./CampaignTable";
-import { Button, Component, Group, Hash, Icon, mergeClass, Text, Value } from "dappkit";
-import useCampaign from "src/hooks/resources/useCampaign";
-import { Link } from "@remix-run/react";
+import type { Campaign } from "@angleprotocol/merkl-api";
+import { type Component, Group, Hash, Icon, OverrideTheme, Text, mergeClass } from "dappkit";
 import { useState } from "react";
+import useCampaign from "src/hooks/resources/useCampaign";
+import Token from "../token/Token";
+import { CampaignRow } from "./CampaignTable";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
+  startsOpen?: boolean;
 }>;
 
-export default function CampaignTableRow({ campaign, className, ...props }: CampaignTableRowProps) {
-  const { time, profile, dailyRewards, progressBar } = useCampaign(campaign);
-  const [open, setOpen] = useState(false);
+export default function CampaignTableRow({ campaign, startsOpen, className, ...props }: CampaignTableRowProps) {
+  const { time, profile, dailyRewards, progressBar, active } = useCampaign(campaign);
+  const [open, setOpen] = useState(startsOpen);
 
   return (
     <CampaignRow
@@ -19,11 +20,11 @@ export default function CampaignTableRow({ campaign, className, ...props }: Camp
       className={mergeClass("cursor-pointer", className)}
       onClick={() => setOpen(o => !o)}
       dailyRewardsColumn={
-        <Group className="py-xl">
-          <Value value format="0.00a">
-            {dailyRewards}
-          </Value>{" "}
-          {campaign.rewardToken.symbol}
+        <Group className="align-middle items-center">
+          <OverrideTheme accent={"good"}>
+            <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" size="xs" />
+          </OverrideTheme>
+          <Token token={campaign.rewardToken} amount={dailyRewards} />
         </Group>
       }
       timeRemainingColumn={<Group className="py-xl">{time}</Group>}
@@ -36,20 +37,24 @@ export default function CampaignTableRow({ campaign, className, ...props }: Camp
           <Group className="justify-between">
             <Group>
               <Text size="sm">created by</Text>
+              {campaign.creator}
+              {/*
+              TODO: fix
               <Hash size="sm" format="short">
                 {campaign.creator}
-              </Hash>
+              </Hash> */}
             </Group>
             <Group>
               <Text size="sm">id:</Text>
-              <Hash size="sm" format="short">
+              <Hash size="sm" format="short" copy>
                 {campaign.campaignId}
               </Hash>
             </Group>
           </Group>
           <Group>
             <Text size="sm" className="flex gap-[1ch]">
-              distributed on <Icon size="sm" src={campaign.distributionChain?.icon} /> {campaign.distributionChain?.name}
+              distributed on
+              <Icon size="sm" src={campaign.distributionChain?.icon} /> {campaign.distributionChain?.name}
             </Text>
           </Group>
         </div>
