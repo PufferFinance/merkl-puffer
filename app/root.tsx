@@ -2,31 +2,8 @@ import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import "./tailwind.css";
 import { DAppProvider } from "dappkit";
-import { http, createConfig } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import styles from "./tailwind.css?url";
-
-export const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [
-    coinbaseWallet(),
-    walletConnect({
-      customStoragePrefix: "wagmi",
-      projectId: "26c912aadd2132cd869a5edc00aeea0f",
-      metadata: {
-        name: "Example",
-        description: "Example website",
-        url: "https://example.com",
-        icons: [],
-      },
-    }),
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-});
+import config from "../merkl.config"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -66,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <DAppProvider config={config}>
+    <DAppProvider themes={config.themes} config={config.wagmi}>
       <Outlet />
     </DAppProvider>
   );

@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
 import Tag, { type TagType } from "src/components/element/Tag";
+import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
   const { data: tokens, ...res } = await api.v4.token.get({ query: { symbol } });
@@ -39,7 +40,7 @@ export default function Index() {
             {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
           </>
         }
-        description={`Deposit or earn ${token.symbol} on Merkl.`}
+        description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
         tabs={[
           {
             label: "Opportunities",
