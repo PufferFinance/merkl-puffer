@@ -37,12 +37,6 @@ export default function CampaignTableRow({ campaign, startsOpen, className, ...p
           <Group className="justify-between">
             <Group>
               <Text size="sm">created by</Text>
-              {campaign.creator}
-              {/*
-              TODO: fix
-              <Hash size="sm" format="short">
-                {campaign.creator}
-              </Hash> */}
             </Group>
             <Group>
               <Text size="sm">id:</Text>
