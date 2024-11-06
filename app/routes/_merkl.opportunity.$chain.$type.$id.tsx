@@ -26,6 +26,8 @@ export async function loader({
 
   if (!opportunity) throw "";
 
+  console.log("OPPO", res, opportunity);
+
   return json(opportunity);
 }
 
@@ -38,7 +40,7 @@ export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
   const { chain, id } = useParams();
 
-  const { tags, description } = useOpportunity(opportunity as Opportunity);
+  const { tags, description, link } = useOpportunity(opportunity as Opportunity);
 
   return (
     <Container>
@@ -49,12 +51,9 @@ export default function Index() {
         title={opportunity.name}
         description={description}
         tabs={[
-          { label: "Overview", link: `/opportunity/${chain}/${id}` },
-          {
-            label: "Leaderboard",
-            link: `/opportunity/${chain}/${id}/leaderboard`,
-          },
-          { label: "Analytics", link: `/opportunity/${chain}/${id}/analytics` },
+          { label: "Overview", link },
+          { label: "Leaderboard", link: `${link}/leaderboard` },
+          { label: "Analytics", link: `${link}/analytics` },
         ]}
         tags={tags.map((tag) => (
           <Tag

@@ -1,16 +1,16 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Chain, Opportunity } from "@angleprotocol/merkl-api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Title } from "dappkit";
 import type { ButtonProps } from "dappkit";
 import type { Token } from "src/api/fetch/fetchTokens";
 import { type Action, actions } from "src/config/actions";
-import { type ChainId, chains } from "src/config/chains";
+import { chains } from "src/config/chains";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
 
 export type TagTypes = {
-  chain: ChainId;
+  chain: Opportunity["chain"];
   token: Token;
-  tokenChain: Token;
+  tokenChain: Token & { chain: Chain };
   protocol: Protocol;
   action: Action;
   status: Opportunity["status"];
@@ -52,7 +52,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
       );
     }
     case "chain": {
-      const chain = chains[value as TagTypes["chain"]];
+      const chain = value as TagTypes["chain"];
 
       return (
         <Dropdown
@@ -61,22 +61,22 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Group size="xs" className="flex-col">
                 <Group className="justify-between">
                   <Text size="xs">Chain</Text>
-                  <Text size="xs">id: {value}</Text>
+                  <Text size="xs">id: {chain?.id}</Text>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} chain={value} />
-                  <Title h={4}>{chain?.label}</Title>
+                  <Icon size={props?.size} src={chain?.icon} />
+                  <Title h={4}>{chain?.name}</Title>
                 </Group>
               </Group>
               <Divider className="border-main-6" horizontal />
-              <Button to={`/chain/${chain?.label}`} size="sm" look="bold">
+              <Button to={`/chain/${chain?.name}`} size="sm" look="bold">
                 Open
               </Button>
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} chain={value} />
-            {chain?.label}
+            <Icon size={props?.size} src={chain?.icon} />
+            {chain?.name}
           </Button>
         </Dropdown>
       );
@@ -131,7 +131,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   </Hash>
                 </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} src={token.logoURI} />
+                  <Icon size={props?.size} src={token.icon} />
                   <Title h={4}>{token?.name}</Title>
                 </Group>
               </Group>
@@ -148,7 +148,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} src={token.logoURI} />
+            <Icon size={props?.size} src={token.icon} />
             {token?.symbol}
           </Button>
         </Dropdown>
@@ -156,7 +156,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
 
     case "tokenChain": {
-      const token = value as TagTypes["token"];
+      const token = value as TagTypes["tokenChain"];
 
       if (!token) return <Button {...props}>{value}</Button>;
 
@@ -189,7 +189,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
             </>
           }>
           <Button key={value} {...props}>
-            <Icon size={props?.size} chain={token.chainId} />
+            <Icon size={props?.size} src={token.chain.icon} />
             {chains[token.chainId]?.label}
           </Button>
         </Dropdown>
@@ -198,8 +198,6 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
     case "protocol": {
       const protocol = value;
-
-      console.log(protocol);
 
       if (!protocol) return <Button {...props}>{value}</Button>;
 
