@@ -6,7 +6,6 @@ import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import styles from "./tailwind.css?url";
-import { zkSyncThemes } from "src/zksync/components/layout/themes";
 
 export const config = createConfig({
   chains: [mainnet, sepolia],
@@ -67,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <DAppProvider themes={zkSyncThemes} config={config}>
+    <DAppProvider config={config}>
       <Outlet />
     </DAppProvider>
   );
