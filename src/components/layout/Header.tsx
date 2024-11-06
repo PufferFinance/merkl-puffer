@@ -5,7 +5,7 @@ export default function Header() {
   const { mode, toggleMode } = useTheme();
 
   return (
-    <header className="flex flex-nowrap justify-center items-center w-full">
+    <header className="flex flex-nowrap justify-between items-center w-full">
       <Group>
         <Title h={3}>Merkl (Lite)</Title>
       </Group>
