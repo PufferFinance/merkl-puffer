@@ -5,6 +5,7 @@ import { DAppProvider } from "dappkit";
 import styles from "./tailwind.css?url";
 import config from "../merkl.config"
 
+
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {

@@ -45,7 +45,8 @@ export default function Index() {
             ),
             link: `/user/${address}/claims`,
           },
-        ]}>
+        ]}
+      >
         <Outlet />
       </Heading>
     </Container>
