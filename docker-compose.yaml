@@ -11,8 +11,6 @@ services:
       - '3000:5173'
     env_file:
       - .env
-    environment:
-      PORT: '3000'
     volumes:
       - ./src:/app/src
       - ./app:/app/app
