@@ -9,14 +9,14 @@ export const [CampaignTable, CampaignRow, CampaignColumns] = createTable({
     main: true,
   },
   timeRemaining: {
-    name: "END OF REWARDS",
+    name: "END",
     size: "minmax(10px,150px)",
-    compactSize: "minmax(10px,1fr)",
+    compactSize: "minmax(20px,1fr)",
     className: "justify-center",
   },
   restrictions: {
     name: "RESTRICTIONS",
-    size: "minmax(100px,1fr)",
+    size: "minmax(120px,1fr)",
     compactSize: "minmax(10px,1fr)",
     className: "justify-start",
   },
@@ -24,7 +24,7 @@ export const [CampaignTable, CampaignRow, CampaignColumns] = createTable({
     name: "PROFILE",
     size: "minmax(100px,200px)",
     compactSize: "minmax(100px,1fr)",
-    className: "justify-center",
+    className: "justify-start",
   },
   arrow: {
     name: "",

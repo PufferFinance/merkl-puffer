@@ -2,6 +2,7 @@ import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { Bar } from "dappkit";
 import moment from "moment";
 import { Group, Text, Value } from "packages/dappkit/src";
+import Time from "packages/dappkit/src/components/primitives/Time";
 import { type ReactNode, useMemo } from "react";
 import { formatUnits } from "viem";
 
@@ -11,9 +12,7 @@ export default function useCampaign(campaign: Opportunity["campaigns"][number]) 
   }, [campaign?.amount, campaign?.rewardToken?.decimals]);
 
   const time = useMemo(() => {
-    const timestamp = moment(Number(campaign.endTimestamp) * 1000).fromNow();
-
-    return timestamp;
+    return <Time timestamp={Number(campaign.endTimestamp) * 1000}/>;
   }, [campaign.endTimestamp]);
 
   const profile = useMemo(() => {
