@@ -45,10 +45,6 @@ export default function useCampaign(campaign: Opportunity["campaigns"][number]) 
     return reducer[campaign.type]?.(campaign) ?? <Text>NONE</Text>;
   }, [campaign]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7326fb2 (add: icons + campaign controller)
   const progressBar = useMemo(() => {
     const now = moment.now() / 1000;
     const duration = Number(campaign.endTimestamp - campaign.startTimestamp);
