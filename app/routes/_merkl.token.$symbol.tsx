@@ -1,9 +1,9 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { Container } from "dappkit";
 import { useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import { Container } from "dappkit";
 import Tag, { type TagType } from "src/components/element/Tag";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
@@ -47,15 +47,9 @@ export default function Index() {
             link: `/token/${token.symbol?.toLowerCase()}`,
           },
         ]}
-        tags={tags.map((tag) => (
-          <Tag
-            key={`${tag.type}_${tag.value?.address ?? tag.value}`}
-            {...tag}
-            size="sm"
-            look="bold"
-          />
-        ))}
-      >
+        tags={tags.map(tag => (
+          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
+        ))}>
         <Outlet />
       </Heading>
     </Container>

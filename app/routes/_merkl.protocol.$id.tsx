@@ -1,8 +1,8 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { Container } from "dappkit";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import { Container } from "dappkit";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const { data: protocol } = await api.v4.protocol({ id: id ?? "" }).get();
@@ -27,8 +27,7 @@ export default function Index() {
             label: "Opportunities",
             link: `/protocol/${protocol.name?.toLowerCase()}`,
           },
-        ]}
-      >
+        ]}>
         <Outlet />
       </Heading>
     </Container>

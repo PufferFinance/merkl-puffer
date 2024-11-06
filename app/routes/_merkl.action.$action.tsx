@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import Heading from "src/components/composite/Heading";
 import { Container } from "dappkit";
+import Heading from "src/components/composite/Heading";
 import { type Action, actions, getAction } from "src/config/actions";
 
 export async function loader({
@@ -30,8 +30,7 @@ export default function Index() {
             label: "Opportunities",
             link: `/action/${action.label?.toLowerCase()}`,
           },
-        ]}
-      >
+        ]}>
         <Outlet />
       </Heading>
     </Container>
