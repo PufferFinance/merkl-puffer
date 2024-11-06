@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "remix vite:dev",
+    "dev": "remix vite:dev --host",
     "lint": "biome check --fix ./src ./app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
@@ -42,11 +42,11 @@
     "typedoc": "^0.26.7",
     "viem": "2.x",
     "vite-plugin-dts": "^4.2.1",
-    "zustand": "^5.0.0-rc.2"
+    "zustand": "^5.0.0-rc.2",
+    "@remix-run/dev": "^2.11.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
-    "@remix-run/dev": "^2.11.2",
     "@types/bun": "latest",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
