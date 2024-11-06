@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { Container } from "dappkit";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
 import { type Status, getStatus, statuses } from "src/config/status";
 
 export async function loader({ params: { status: _status } }: LoaderFunctionArgs) {
@@ -17,15 +17,20 @@ export default function Index() {
   const status = statuses[_status as Status];
 
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[status.icon]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={status.label}
         description={status.description}
-        tabs={[{ label: "Opportunities", link: `/status/${status.label?.toLowerCase()}` }]}>
+        tabs={[
+          {
+            label: "Opportunities",
+            link: `/status/${status.label?.toLowerCase()}`,
+          },
+        ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }

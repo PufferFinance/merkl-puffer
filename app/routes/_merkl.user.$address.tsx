@@ -1,13 +1,13 @@
 import { Outlet, useParams } from "@remix-run/react";
 import { Hash, Icon } from "dappkit";
+import { Container } from "dappkit";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
 
 export default function Index() {
   const { address } = useParams();
 
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[{ remix: "RiUser6Fill" }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
@@ -48,6 +48,6 @@ export default function Index() {
         ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }

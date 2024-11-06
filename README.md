@@ -2,6 +2,15 @@
 
 - 📖 [Remix docs](https://remix.run/docs)
 
+## Installation
+
+1. Go to `cd packages/dappkit`
+2. `git submodule init`
+3. `git submodule update`
+4. `bun i`
+5. `bun dev`
+
+
 ## Development
 
 Run the dev server:

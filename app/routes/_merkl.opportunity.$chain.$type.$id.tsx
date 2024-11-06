@@ -3,7 +3,8 @@ import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/nod
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
+
+import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
 import { getChainId } from "src/config/chains";
 import useOpportunity from "src/hooks/resources/useOpportunity";
@@ -34,7 +35,7 @@ export default function Index() {
   const { tags, description, link } = useOpportunity(opportunity as Opportunity);
 
   return (
-    <Page>
+    <Container>
       <Meta />
       <Heading
         icons={opportunity.tokens.map(t => ({ src: t.icon }))}
@@ -51,6 +52,6 @@ export default function Index() {
         ))}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }

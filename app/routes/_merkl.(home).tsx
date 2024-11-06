@@ -1,8 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { type Coloring, createColoring } from "dappkit";
+import { type Coloring, Container, createColoring } from "dappkit";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
@@ -43,7 +42,7 @@ const testThemes: { [name: string]: Coloring } = {
 
 export default function Index() {
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[{ remix: "RiSparklingLine" }]}
         // navigation={{ label: "Back to opportunities", link: "/" }}
@@ -56,6 +55,6 @@ export default function Index() {
         ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }

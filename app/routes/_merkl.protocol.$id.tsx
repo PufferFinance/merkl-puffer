@@ -1,8 +1,8 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+import { Container } from "dappkit";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const { data: protocol } = await api.v4.protocol({ id: id ?? "" }).get();
@@ -16,15 +16,20 @@ export default function Index() {
   const { protocol } = useLoaderData<typeof loader>();
 
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[{ src: protocol?.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={protocol?.name}
         description={"Protocol"}
-        tabs={[{ label: "Opportunities", link: `/protocol/${protocol.name?.toLowerCase()}` }]}>
+        tabs={[
+          {
+            label: "Opportunities",
+            link: `/protocol/${protocol.name?.toLowerCase()}`,
+          },
+        ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }

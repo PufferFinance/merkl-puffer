@@ -1,10 +1,10 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
 import { Group, Icon, Select, Title } from "dappkit";
+import { Container } from "dappkit";
 import { type ReactNode, useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import Page from "src/components/composite/layout/Page";
 import { type ChainId, chains } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
@@ -22,7 +22,7 @@ export default function Index() {
   const label = chain.name.toLowerCase();
 
   return (
-    <Page>
+    <Container>
       <Heading
         icons={[{ src: chain.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
@@ -35,7 +35,7 @@ export default function Index() {
         ]}>
         <Outlet />
       </Heading>
-    </Page>
+    </Container>
   );
 }
 
