@@ -1,7 +1,7 @@
 import { Outlet, useParams } from "@remix-run/react";
 import { Hash, Icon } from "dappkit";
-import Heading from "src/components/composite/Heading";
 import { Container } from "dappkit";
+import Heading from "src/components/composite/Heading";
 
 export default function Index() {
   const { address } = useParams();
@@ -45,8 +45,7 @@ export default function Index() {
             ),
             link: `/user/${address}/claims`,
           },
-        ]}
-      >
+        ]}>
         <Outlet />
       </Heading>
     </Container>

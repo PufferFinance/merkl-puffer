@@ -1,12 +1,10 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import Heading from "src/components/composite/Heading";
 import { Container } from "dappkit";
+import Heading from "src/components/composite/Heading";
 import { type Status, getStatus, statuses } from "src/config/status";
 
-export async function loader({
-  params: { status: _status },
-}: LoaderFunctionArgs) {
+export async function loader({ params: { status: _status } }: LoaderFunctionArgs) {
   const status = getStatus(_status ?? "");
 
   if (!status) throw new Error("Unknown status");
@@ -30,8 +28,7 @@ export default function Index() {
             label: "Opportunities",
             link: `/status/${status.label?.toLowerCase()}`,
           },
-        ]}
-      >
+        ]}>
         <Outlet />
       </Heading>
     </Container>

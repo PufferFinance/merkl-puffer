@@ -1,5 +1,5 @@
-import { Button, Divider, Group, Icon, Text } from "dappkit/src";
 import { Container } from "dappkit";
+import { Button, Divider, Group, Icon, Text } from "dappkit/src";
 
 export default function Footer() {
   return (
