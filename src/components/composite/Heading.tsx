@@ -8,7 +8,7 @@ export type HeadingProps = PropsWithChildren<{
   title: ReactNode;
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
-  tags: ReactNode[];
+  tags?: ReactNode[];
   tabs: { label: ReactNode; link: string }[];
 }>;
 
@@ -49,29 +49,6 @@ export default function Heading({ navigation, icons, title, description, tags, t
             ))}
           </Group>
         </Group>
-        {/* <Group size="xl" className="grid grid-cols-3 grow max-w-[50%]">
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>APR</Title>
-              <Title h={3}>129%</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>TVL</Title>
-              <Title h={3}>129$</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-          <Group className="flex-col" look="base">
-            <Group className="gap-xl">
-              <Title h={3}>APR</Title>
-              <Title h={3}>129%</Title>
-            </Group>
-            <Box className="grow">graph</Box>
-          </Group>
-        </Group> */}
       </Group>
       <Divider className="border-main-4" horizontal />
       <div>{children}</div>

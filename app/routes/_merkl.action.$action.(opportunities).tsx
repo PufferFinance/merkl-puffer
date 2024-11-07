@@ -12,6 +12,8 @@ export async function loader({ params: { action: _action }, request }: LoaderFun
 
   const { data: opportunities, ...res } = await fetchOpportunities(request, { action });
 
+  if (!opportunities) throw new Error("Unknown opportunity");
+
   return json({ opportunities });
 }
 
