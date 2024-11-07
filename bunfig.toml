@@ -1,5 +1,5 @@
 [install.scopes]
 "@angleprotocol" = {
-    token = $GH_REGISTRY_ACCESS_TOKEN,
+    token = $GITHUB_REGISTRY_TOKEN,
     url = "https://npm.pkg.github.com/"
 }

@@ -24,4 +24,4 @@ jobs:
         env:
           GITHUB_REGISTRY_TOKEN: ${{ secrets.GH_REGISTRY_ACCESS_TOKEN }}
       - name: Lint merkl-api codebase
-        run: yarn lint:ci
+        run: bun lint:ci
