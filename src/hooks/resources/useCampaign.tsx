@@ -12,7 +12,7 @@ export default function useCampaign(campaign: Opportunity["campaigns"][number]) 
   }, [campaign?.amount, campaign?.rewardToken?.decimals]);
 
   const time = useMemo(() => {
-    return <Time timestamp={Number(campaign.endTimestamp) * 1000}/>;
+    return <Time timestamp={Number(campaign.endTimestamp) * 1000} />;
   }, [campaign.endTimestamp]);
 
   const profile = useMemo(() => {

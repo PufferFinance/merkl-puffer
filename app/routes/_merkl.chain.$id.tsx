@@ -45,15 +45,18 @@ export function ErrorBoundary() {
 
   const networks = useMemo(() => {
     const a = Object.keys(chains);
-    return Object.entries(chains).reduce((supported, [chainId, chain]) => {
-      supported[chainId] = (
-        <Group>
-          <Icon size="sm" chain={chainId} />
-          {chain.label}
-        </Group>
-      );
-      return supported;
-    }, {} as { [C in ChainId]?: ReactNode });
+    return Object.entries(chains).reduce(
+      (supported, [chainId, chain]) => {
+        supported[chainId] = (
+          <Group>
+            <Icon size="sm" chain={chainId} />
+            {chain.label}
+          </Group>
+        );
+        return supported;
+      },
+      {} as { [C in ChainId]?: ReactNode },
+    );
   }, []);
 
   return (
@@ -63,7 +66,7 @@ export function ErrorBoundary() {
         {/* <Text h={3}>We don't support this chain</Text> */}
         <div>
           <Select
-            state={[undefined, (c) => navigate(`/chain/${chains?.[c]?.label}`)]}
+            state={[undefined, c => navigate(`/chain/${chains?.[c]?.label}`)]}
             placeholder="Supported Chains"
             options={networks}
           />

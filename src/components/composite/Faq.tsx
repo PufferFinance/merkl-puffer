@@ -1,8 +1,8 @@
-import type { FC } from "react";
 import { Container } from "dappkit";
 import Group from "dappkit/src/components/extenders/Group";
-import Title from "dappkit/src/components/primitives/Title";
 import Accordion from "dappkit/src/components/primitives/Accordion";
+import Title from "dappkit/src/components/primitives/Title";
+import type { FC } from "react";
 import { faqList } from "src/constants/faq";
 
 export type FAQ = {
@@ -11,14 +11,14 @@ export type FAQ = {
   key: string;
 };
 
-const FaqQuestions = faqList.map((faq) => faq.question);
+const FaqQuestions = faqList.map(faq => faq.question);
 
 export type FaqQuestion = (typeof FaqQuestions)[number];
 
 // Utility function to get specific FAQs by question
 export function getFaqsByQuestions(questions: FaqQuestion[]): FAQ[] {
   return questions.reduce<FAQ[]>((acc, question) => {
-    const faq = faqList.find((faq) => faq.question === question);
+    const faq = faqList.find(faq => faq.question === question);
     if (faq) {
       acc.push(faq);
     }
@@ -31,7 +31,7 @@ const Faq: FC<{
 }> = ({ faqs }) => {
   const faqData = getFaqsByQuestions(faqs);
 
-  const accordionItems = faqData.map((faq) => ({
+  const accordionItems = faqData.map(faq => ({
     trigger: faq.question,
     content: faq.answer,
     key: faq.key,
@@ -47,10 +47,7 @@ const Faq: FC<{
             </Title>
           </Group>
           <Group className="w-full lg:w-3/4">
-            <Accordion
-              items={accordionItems}
-              className="w-full flex flex-col"
-            />
+            <Accordion items={accordionItems} className="w-full flex flex-col" />
           </Group>
         </Group>
       </Container>
