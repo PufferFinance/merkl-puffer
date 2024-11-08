@@ -29,7 +29,7 @@ jobs:
         run: |
           export SHORT_SHA=${GITHUB_SHA:0:7}
           docker pull $IMAGE_URL:latest || true
-          docker build --build-arg GITHUB_REGISTRY_TOKEN=${{ secrets.GH_REGISTRY_ACCESS_TOKEN }} --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$SHORT_SHA --tag $IMAGE_URL:latest .
+          docker build --build-arg SDK_READ_ACCESS_TOKEN=${{ secrets.SDK_READ_ACCESS_TOKEN }} --cache-from $IMAGE_URL:latest --tag $IMAGE_URL:$SHORT_SHA --tag $IMAGE_URL:latest .
       - name: Push image
         run: |
           export SHORT_SHA=${GITHUB_SHA:0:7}

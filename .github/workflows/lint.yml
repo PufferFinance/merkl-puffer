@@ -22,6 +22,6 @@ jobs:
       - name: Install dependencies
         run: bun install
         env:
-          GITHUB_REGISTRY_TOKEN: ${{ secrets.GH_REGISTRY_ACCESS_TOKEN }}
+          SDK_READ_ACCESS_TOKEN: ${{ secrets.SDK_READ_ACCESS_TOKEN }}
       - name: Lint merkl-api codebase
         run: bun lint:ci
