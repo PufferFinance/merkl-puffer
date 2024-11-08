@@ -7,7 +7,7 @@
     "build": "remix vite:build",
     "dev": "remix vite:dev --host",
     "lint": "biome check --fix ./src ./app",
-    "lint:ci": "biome check --diagnostic-level error ./src",
+    "lint:ci": "biome check --diagnostic-level error ./src ./app",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
