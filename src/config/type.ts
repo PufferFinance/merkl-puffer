@@ -1,6 +1,6 @@
 import type { Opportunity } from "@angleprotocol/merkl-api";
 import type { Themes } from "dappkit";
-import { http, createConfig as createWagmiConfig } from "wagmi";
+import { createConfig as createWagmiConfig } from "wagmi";
 
 export function getCampaignType(labelOrShort: string): Opportunity["type"] | undefined {
   //TODO
@@ -9,12 +9,12 @@ export function getCampaignType(labelOrShort: string): Opportunity["type"] | und
 export type MerklConfig<T extends Themes> = {
   themes: T;
   defaultTheme: keyof T;
-  wagmi: Parameters<typeof createWagmiConfig>["0"],
-  appName: string,
+  wagmi: Parameters<typeof createWagmiConfig>["0"];
+  appName: string;
 };
 
-export function createConfig<T extends Themes>({wagmi, ...config}: MerklConfig<T>) {
-  const wagmiConfig = createWagmiConfig(wagmi)
+export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
+  const wagmiConfig = createWagmiConfig(wagmi);
 
   return { wagmi: wagmiConfig, ...config };
 }

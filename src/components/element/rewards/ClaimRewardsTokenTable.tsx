@@ -31,7 +31,7 @@ export type Rewards = {
         symbol: string;
         amount: number;
         price: number;
-      }
-    }
-  }
-}
+      };
+    };
+  };
+};

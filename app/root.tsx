@@ -2,9 +2,8 @@ import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import "./tailwind.css";
 import { DAppProvider } from "dappkit";
+import config from "../merkl.config";
 import styles from "./tailwind.css?url";
-import config from "../merkl.config"
-
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

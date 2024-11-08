@@ -27,7 +27,7 @@ export default function useSearchParamState<T>(
   );
 
   const state = useMemo(() => {
-    const value = searchParams.get(key);
+    const value = location && searchParams.get(key);
 
     if (value === null) return;
     return transform(value);

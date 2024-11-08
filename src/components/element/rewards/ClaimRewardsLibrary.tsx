@@ -1,4 +1,4 @@
-import { Box, List } from "dappkit";
+import { List } from "dappkit";
 import { ClaimRewardsChainRow, ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenRow, ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 

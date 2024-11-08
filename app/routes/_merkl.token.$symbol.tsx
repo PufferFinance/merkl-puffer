@@ -37,8 +37,7 @@ export default function Index() {
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
           <>
-            {token.name}{" "}
-            <span className="font-mono text-main-8">({token.symbol})</span>
+            {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
           </>
         }
         description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
