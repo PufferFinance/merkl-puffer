@@ -21,6 +21,8 @@ COPY tsconfig.json ./
 
 COPY app app
 COPY src src
+COPY public public
+
 RUN bun run build
 
 EXPOSE 5173
