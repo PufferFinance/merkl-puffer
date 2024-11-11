@@ -1,4 +1,3 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { api } from "src/api";
@@ -9,14 +8,13 @@ import Tag from "src/components/element/Tag";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
-  
   if (!chainId || !id || !type) throw "";
-  
+
   const { data: chains } = await api.v4.chain.get({ query: { search: id } });
   const chain = chains?.[0];
 
   if (!chain) throw "";
-  
+
   const { data: opportunity, ...res } = await api.v4.opportunity({ chainId: chain.id })({ type })({ id }).get();
 
   if (!opportunity) throw "";

@@ -7,7 +7,7 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 
 export async function loader({ params: { symbol }, request }: LoaderFunctionArgs) {
   const { data: opportunities, ...res } = await fetchOpportunities(request, { tokens: [symbol] });
-  const { data: chains } = await api.v4.chain.get({ query: {}});
+  const { data: chains } = await api.v4.chain.get({ query: {} });
 
   if (!opportunities?.length || !chains) throw new Error("Unknown token");
 
@@ -20,7 +20,7 @@ export default function Index() {
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary opportunities={opportunities} chains={chains}/>
+      <OpportunityLibrary opportunities={opportunities} chains={chains} />
     </>
   );
 }

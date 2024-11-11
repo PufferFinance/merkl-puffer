@@ -7,7 +7,7 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 
 export async function loader({ params: { id: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId) throw new Error("Unsupported Chain");
-  
+
   const { data: chains } = await api.v4.chain.get({ query: { search: chainId } });
   const chain = chains?.[0];
 

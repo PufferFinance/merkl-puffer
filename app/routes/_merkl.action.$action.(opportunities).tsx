@@ -12,11 +12,11 @@ export async function loader({ params: { action: _action }, request }: LoaderFun
   if (!action) throw new Error("Unknown action");
 
   const { data: opportunities, ...res } = await fetchOpportunities(request, { action });
-  const { data: chains } = await api.v4.chain.get({ query: {}});
+  const { data: chains } = await api.v4.chain.get({ query: {} });
 
   if (!opportunities || !chains) throw new Error("Unknown opportunity");
 
-  return json({ opportunities, chains});
+  return json({ opportunities, chains });
 }
 
 export default function Index() {
@@ -25,7 +25,7 @@ export default function Index() {
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary exclude={["action"]} opportunities={opportunities.filter(o => o)} chains={chains}/>
+      <OpportunityLibrary exclude={["action"]} opportunities={opportunities.filter(o => o)} chains={chains} />
     </>
   );
 }

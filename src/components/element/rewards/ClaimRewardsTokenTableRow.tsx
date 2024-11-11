@@ -1,9 +1,8 @@
-import { createTable, Space } from "dappkit";
-import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
-import Token from "../token/Token";
-import { PropsWithChildren, useState } from "react";
-import Accordion from "packages/dappkit/src/components/primitives/Accordion";
+import { Space } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
+import { type PropsWithChildren, useState } from "react";
+import Token from "../token/Token";
+import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 
 export type ClaimRewardsTokenTableRowProps = PropsWithChildren;
 

@@ -45,18 +45,19 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
       </>
     ),
   };
-  const chainOptions = chains?.reduce(
-    (obj, chain) =>
-      Object.assign(obj, {
-        [chain.id]: (
-          <>
-            <Icon size="sm" src={chain?.icon} />
-            {chain.name}
-          </>
-        ),
-      }),
-    {},
-  ) ?? [];
+  const chainOptions =
+    chains?.reduce(
+      (obj, chain) =>
+        Object.assign(obj, {
+          [chain.id]: (
+            <>
+              <Icon size="sm" src={chain?.icon} />
+              {chain.name}
+            </>
+          ),
+        }),
+      {},
+    ) ?? [];
 
   const [actionsFilter, setActions] = useSearchParamState<string[]>(
     "action",

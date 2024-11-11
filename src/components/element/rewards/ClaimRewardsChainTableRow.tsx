@@ -1,13 +1,11 @@
-import { Button, createTable, Icon, Space, Text } from "dappkit";
-import { ClaimRewardsTokenRow, ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
-import Token from "../token/Token";
-import { PropsWithChildren, useState } from "react";
-import Accordion from "packages/dappkit/src/components/primitives/Accordion";
+import { Button, Icon, Space, Text } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
+import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
+import { type PropsWithChildren, useState } from "react";
 import Chain from "../chain/Chain";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
+import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
-import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
 
 export type ClaimRewardsChainTableRowProps = PropsWithChildren;
 
@@ -38,9 +36,13 @@ export default function ClaimRewardsChainTableRow(props: ClaimRewardsChainTableR
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
         <ClaimRewardsTokenTable
-      tokenHeader={<Text size="xs" className="pl-md">TOKEN</Text>}
-        
-        size="sm" look="soft">
+          tokenHeader={
+            <Text size="xs" className="pl-md">
+              TOKEN
+            </Text>
+          }
+          size="sm"
+          look="soft">
           <ClaimRewardsTokenTableRow />
           <ClaimRewardsTokenTableRow />
           <ClaimRewardsTokenTableRow />

@@ -25,5 +25,5 @@ export const [ClaimRewardsChainTable, ClaimRewardsChainRow, claimRewardsChainCol
     size: "minmax(100px,100px)",
     compactSize: "minmax(min-content,1fr)",
     className: "justify-end",
-  }
+  },
 });
