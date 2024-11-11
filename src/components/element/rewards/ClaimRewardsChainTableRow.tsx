@@ -1,4 +1,4 @@
-import { Button, createTable, Icon, Space } from "dappkit";
+import { Button, createTable, Icon, Space, Text } from "dappkit";
 import { ClaimRewardsTokenRow, ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import Token from "../token/Token";
 import { PropsWithChildren, useState } from "react";
@@ -37,7 +37,10 @@ export default function ClaimRewardsChainTableRow(props: ClaimRewardsChainTableR
       claimedColumn={""}>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
-        <ClaimRewardsTokenTable size="sm" look="soft">
+        <ClaimRewardsTokenTable
+      tokenHeader={<Text size="xs" className="pl-md">TOKEN</Text>}
+        
+        size="sm" look="soft">
           <ClaimRewardsTokenTableRow />
           <ClaimRewardsTokenTableRow />
           <ClaimRewardsTokenTableRow />

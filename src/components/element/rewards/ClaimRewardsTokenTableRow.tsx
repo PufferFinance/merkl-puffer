@@ -12,7 +12,8 @@ export default function ClaimRewardsTokenTableRow(props: PropsWithChildren) {
 
   return (
     <ClaimRewardsTokenRow
-    {...props}
+      data-look={props?.look ?? "none"}
+      {...props}
       onClick={() => setOpen(o => !o)}
       tokenColumn={<Token token={{ symbol: "WETH" }} />}
       valueColumn={"3m"}
