@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY bunfig.toml .
 COPY package.json .
-COPY packages/ ./
+COPY packages packages
 COPY bun.lockb .
 RUN bun install
 
@@ -19,7 +19,8 @@ COPY postcss.config.js ./
 
 COPY tsconfig.json ./
 
-COPY ./ ./
+COPY app app
+COPY src src
 RUN bun run build
 
 EXPOSE 5173
