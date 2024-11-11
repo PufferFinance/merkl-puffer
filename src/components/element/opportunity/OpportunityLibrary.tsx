@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Chain, Opportunity } from "@angleprotocol/merkl-api";
 import { Group, Icon, type Order } from "dappkit";
 import { Button } from "dappkit";
 import { useMemo } from "react";
@@ -9,9 +9,10 @@ import OpportunityTableRow from "./OpportunityTableRow";
 
 export type OpportunityLibrary = {
   opportunities: Opportunity[];
+  chains?: Chain[];
 } & OpportunityFilterProps;
 
-export default function OpportunityLibrary({ opportunities, only, exclude }: OpportunityLibrary) {
+export default function OpportunityLibrary({ opportunities, only, exclude, chains }: OpportunityLibrary) {
   const rows = useMemo(
     () =>
       opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />),
@@ -40,7 +41,7 @@ export default function OpportunityLibrary({ opportunities, only, exclude }: Opp
       onSort={onSort}
       header={
         <Group className="justify-between w-full">
-          <OpportunityFilters {...{ only, exclude }} />
+          <OpportunityFilters {...{ only, exclude, chains }} />
           <Group>
             <Button size="sm" look="base">
               Sort

@@ -6,7 +6,7 @@ import Time from "packages/dappkit/src/components/primitives/Time";
 import { type ReactNode, useMemo } from "react";
 import { formatUnits } from "viem";
 
-export default function useCampaign(campaign: Opportunity["campaigns"][number]) {
+export default function useCampaign(campaign: Campaign) {
   const amount = useMemo(() => {
     return Number.parseFloat(formatUnits(BigInt(campaign.amount), campaign.rewardToken.decimals));
   }, [campaign?.amount, campaign?.rewardToken?.decimals]);

@@ -6,7 +6,7 @@ export type TokenTooltipProps = {
   amount?: number;
 };
 
-export default function TokenTooltip({ token, amount }: TokenTooltipProps) {
+export default function TokenTooltip({ token }: TokenTooltipProps) {
   return (
     <>
       <Group size="xs" className="flex-col">

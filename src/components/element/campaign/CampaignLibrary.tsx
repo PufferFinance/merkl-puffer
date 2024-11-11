@@ -16,7 +16,7 @@ export default function CampaignLibrary({ campaigns }: CampaignProps) {
     const shownCampaigns = campaigns.filter(c => showInactive || Number(c.endTimestamp) > now);
     const startsOpen = shownCampaigns.length < 3;
 
-    return shownCampaigns?.map(c => <CampaignTableRow key={c.campaignId} campaign={c} startsOpen={startsOpen} />);
+    return shownCampaigns?.map(c => <CampaignTableRow key={c.id} campaign={c} startsOpen={startsOpen} />);
   }, [campaigns, showInactive]);
 
   return (

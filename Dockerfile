@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY bunfig.toml .
 COPY package.json .
+COPY packages/ ./
 COPY bun.lockb .
 RUN bun install
 
@@ -19,7 +20,8 @@ COPY postcss.config.js ./
 COPY tsconfig.json ./
 
 COPY ./ ./
+RUN bun run build
 
 EXPOSE 5173
 
-CMD ["bun", "dev"]
+CMD ["bun", "start"]
