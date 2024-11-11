@@ -4,11 +4,12 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "start": "bun run scripts/start.ts",
     "build": "remix vite:build",
     "dev": "remix vite:dev --host",
     "lint": "biome check --fix ./src ./app",
     "lint:ci": "biome check --diagnostic-level error ./src ./app",
-    "start": "remix-serve ./build/server/index.js",
+    "serve": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "workspaces": ["packages/*"],
@@ -29,6 +30,7 @@
     "@tanstack/react-query": "^5.55.4",
     "@vitejs/plugin-react": "^4.3.1",
     "ajv": "^8.17.1",
+    "chalk": "^5.3.0",
     "clsx": "^2.1.1",
     "commander": "^12.1.0",
     "isbot": "^4.1.0",

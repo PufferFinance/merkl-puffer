@@ -27,4 +27,4 @@ RUN bun run build
 
 EXPOSE 5173
 
-CMD ["bun", "start"]
+CMD ["bun", "serve"]
