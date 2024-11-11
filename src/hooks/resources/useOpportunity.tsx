@@ -2,7 +2,6 @@ import type { Opportunity } from "@angleprotocol/merkl-api";
 import { Icon } from "dappkit";
 import { useMemo } from "react";
 import type { TagType } from "src/components/element/Tag";
-import { chains } from "src/config/chains";
 
 export default function useOpportunity(opportunity: Opportunity) {
   const tags = useMemo(() => {
@@ -17,7 +16,7 @@ export default function useOpportunity(opportunity: Opportunity) {
 
   const link = useMemo(
     () =>
-      `/opportunity/${chains[opportunity.chainId]?.label?.toLowerCase?.()}/${opportunity.type}/${opportunity.identifier}`,
+      `/opportunity/${opportunity.chain?.name?.toLowerCase?.()}/${opportunity.type}/${opportunity.identifier}`,
     [opportunity],
   );
 

@@ -1,11 +1,9 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
-import { Group, Icon, Select, Title } from "dappkit";
+import { Group, Title } from "dappkit";
 import { Container } from "dappkit";
-import { type ReactNode, useMemo } from "react";
 import { api } from "src/api";
 import Heading from "src/components/composite/Heading";
-import { type ChainId, chains } from "src/config/chains";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const { data: chains } = await api.v4.chain.get({ query: { search: id } });
@@ -43,33 +41,13 @@ export function ErrorBoundary() {
   const error = useRouteError();
   const navigate = useNavigate();
 
-  const networks = useMemo(() => {
-    const a = Object.keys(chains);
-    return Object.entries(chains).reduce(
-      (supported, [chainId, chain]) => {
-        supported[chainId] = (
-          <Group>
-            <Icon size="sm" chain={chainId} />
-            {chain.label}
-          </Group>
-        );
-        return supported;
-      },
-      {} as { [C in ChainId]?: ReactNode },
-    );
-  }, []);
-
   return (
     <>
       <Group className="mx-auto my-auto flex-col p-xl*2 [&>*]:text-center max-w-fit justify-center">
         <Title h={3}>{error?.message ?? "Error"}</Title>
         {/* <Text h={3}>We don't support this chain</Text> */}
         <div>
-          <Select
-            state={[undefined, c => navigate(`/chain/${chains?.[c]?.label}`)]}
-            placeholder="Supported Chains"
-            options={networks}
-          />
+
         </div>
       </Group>
     </>

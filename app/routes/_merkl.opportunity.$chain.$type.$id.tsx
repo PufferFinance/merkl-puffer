@@ -6,15 +6,18 @@ import Heading from "src/components/composite/Heading";
 
 import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
-import { getChainId } from "src/config/chains";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
-export async function loader({ params: { id, type, chain } }: LoaderFunctionArgs) {
-  const chainId = getChainId(chain ?? "");
-
+export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+  
   if (!chainId || !id || !type) throw "";
+  
+  const { data: chains } = await api.v4.chain.get({ query: { search: id } });
+  const chain = chains?.[0];
 
-  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId })({ type })({ id }).get();
+  if (!chain) throw "";
+  
+  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId: chain.id })({ type })({ id }).get();
 
   if (!opportunity) throw "";
 
@@ -30,7 +33,7 @@ export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
   const { chain, id } = useParams();
 
-  const { tags, description, link } = useOpportunity(opportunity as Opportunity);
+  const { tags, description, link } = useOpportunity(opportunity);
 
   return (
     <Container>

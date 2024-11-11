@@ -1,8 +1,8 @@
+import type { Chain } from "@angleprotocol/merkl-api";
 import { Form } from "@remix-run/react";
 import { Button, Group, Icon, Input, List, Select } from "dappkit/src";
 import { useMemo, useState } from "react";
 import { actions } from "src/config/actions";
-import { chains } from "src/config/chains";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 
 const filters = ["search", "action", "status", "chain"] as const;
@@ -10,10 +10,11 @@ type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
   only?: OpportunityFilter[];
+  chains?: Chain[];
   exclude?: OpportunityFilter[];
 };
 
-export default function OpportunityFilters({ only, exclude }: OpportunityFilterProps) {
+export default function OpportunityFilters({ only, exclude, chains }: OpportunityFilterProps) {
   //TODO: componentify theses
   const actionOptions = Object.entries(actions).reduce(
     (obj, [action, { icon, label }]) =>
@@ -44,18 +45,18 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
       </>
     ),
   };
-  const chainOptions = Object.entries(chains).reduce(
-    (obj, [id, chain]) =>
+  const chainOptions = chains?.reduce(
+    (obj, chain) =>
       Object.assign(obj, {
-        [id]: (
+        [chain.id]: (
           <>
             <Icon size="sm" src={chain?.icon} />
-            {chain.label}
+            {chain.name}
           </>
         ),
       }),
     {},
-  );
+  ) ?? [];
 
   const [actionsFilter, setActions] = useSearchParamState<string[]>(
     "action",
@@ -106,7 +107,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
       )}
       {fields.includes("action") && (
         <Select
-          state={[actionsFilter, setActions]}
+          state={[actionsFilter, a => setActions(a as string[])]}
           allOption={"All actions"}
           multiple
           options={actionOptions}
@@ -117,7 +118,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
       )}
       {fields.includes("status") && (
         <Select
-          state={[statusFilter, s => setStatus(s)]}
+          state={[statusFilter, s => setStatus(s as string[])]}
           allOption={"All status"}
           multiple
           options={statusOptions}
@@ -128,7 +129,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
       )}
       {fields.includes("chain") && (
         <Select
-          state={[chainIdsFilter, setChainIds]}
+          state={[chainIdsFilter, c => setChainIds(c as string[])]}
           allOption={"All chains"}
           multiple
           search

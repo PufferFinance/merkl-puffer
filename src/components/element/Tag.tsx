@@ -2,7 +2,6 @@ import type { Opportunity, Token } from "@angleprotocol/merkl-api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Title } from "dappkit";
 import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
-import { chains } from "src/config/chains";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
 
@@ -189,7 +188,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
           }>
           <Button key={value} {...props}>
             <Icon size={props?.size} src={token.chain.icon} />
-            {chains[token.chainId]?.label}
+            {token.chain.name}
           </Button>
         </Dropdown>
       );
