@@ -17,6 +17,9 @@ jobs:
       IMAGE_URL: europe-west1-docker.pkg.dev/angle-artifacts/angle-docker-registry/merkl-app
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+        submo
       - uses: actions/setup-node@v3
         with:
           node-version: 18
