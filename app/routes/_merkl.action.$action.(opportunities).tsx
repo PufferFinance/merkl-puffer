@@ -1,3 +1,4 @@
+import { Opportunity } from "@angleprotocol/merkl-api";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Space } from "dappkit";
@@ -23,7 +24,7 @@ export default function Index() {
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary exclude={["action"]} opportunities={opportunities} />
+      <OpportunityLibrary exclude={["action"]} opportunities={opportunities.filter(o => o)} />
     </>
   );
 }

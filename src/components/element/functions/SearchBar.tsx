@@ -5,9 +5,9 @@ import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import { type SearchResults, useMerklSearch } from "src/hooks/useMerklSearch";
+import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
 
-const titles: { [S in keyof SearchResults]: ReactNode } = {
+const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
   opportunity: "Opportunities",
   protocol: "Protocols",
@@ -41,8 +41,8 @@ export default function SearchBar() {
 
   const Results = useMemo(() => {
     const entries = Object.entries(searchResults ?? {}) as {
-      [S in keyof SearchResults]: [S, SearchResults[S]];
-    }[keyof SearchResults][];
+      [S in keyof Results]: [S, Results[S]];
+    }[keyof Results][];
 
     return (
       <Group className="flex-col flex-nowrap overflow-hidden">
@@ -89,9 +89,9 @@ export default function SearchBar() {
 
   return (
     <Modal
-      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top [&>*]:animate-stretch"
+      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
       state={[opened, setOpened]}
-      content={
+      modal={
         <>
           <Input look="bold" state={[searchInput, setSearchInput]} placeholder="Search Merkl..." />
           {Results}

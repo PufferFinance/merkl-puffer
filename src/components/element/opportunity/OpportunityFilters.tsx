@@ -49,7 +49,7 @@ export default function OpportunityFilters({ only, exclude }: OpportunityFilterP
       Object.assign(obj, {
         [id]: (
           <>
-            <Icon size="sm" chain={id} />
+            <Icon size="sm" src={chain?.icon} />
             {chain.label}
           </>
         ),

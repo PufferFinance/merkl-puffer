@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "src/api";
 
 const searchables = ["opportunity", "token", "protocol", "chain"] as const;
-type Searchable = (typeof searchables)[number];
-type Results = { chain: Chain[]; protocol: Protocol[]; opportunity: Opportunity[]; token: Token[] };
+export type Searchable = (typeof searchables)[number];
+export type Results = { chain: Chain[]; protocol: Protocol[]; opportunity: Opportunity[]; token: Token[] };
 
 export function useMerklSearch(input: string, include?: Searchable[]) {
   const [resultCache, setResultCache] = useState<{ [input: string]: Results }>({});
@@ -18,7 +18,7 @@ export function useMerklSearch(input: string, include?: Searchable[]) {
         chain: async i => (await api.v4.chain.get({ query: { search: i } }))?.data,
         opportunity: async i => (await api.v4.opportunity.get({ query: { name: i } }))?.data,
         protocol: async i => (await api.v4.protocol.get({ query: { name: i } }))?.data,
-        token: async i => (await api.v4.token.get({ query: { symbol: i } }))?.data,
+        token: async i => (await api.v4.token.get({ query: { symbol: i } }))?.data ?? null,
       };
 
       const promises = (include ?? searchables).map(searchable =>

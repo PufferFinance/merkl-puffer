@@ -1,10 +1,5 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
 import type { Themes } from "dappkit";
 import { createConfig as createWagmiConfig } from "wagmi";
-
-export function getCampaignType(labelOrShort: string): Opportunity["type"] | undefined {
-  //TODO
-}
 
 export type MerklConfig<T extends Themes> = {
   themes: T;

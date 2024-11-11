@@ -50,5 +50,5 @@ export default function useOpportunity(opportunity: Opportunity) {
     }
   }, [opportunity]);
 
-  return { tags, link, icons, description, ...opportunity };
+  return { link, icons, description, ...opportunity, tags };
 }

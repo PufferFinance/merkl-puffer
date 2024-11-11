@@ -25,7 +25,7 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
         {...props}
         aprColumn={
           <Group className="py-xl">
-            <Button look={opportunity.aprRecords?.[0]?.cummulated > 0 ? "hype" : "soft"} className="font-mono">
+            <Button look={(opportunity?.aprRecord?.cummulated ?? 0) > 0 ? "hype" : "soft"} className="font-mono">
               <Value value format="0a%">
                 {opportunity.apr / 100}
               </Value>
@@ -34,7 +34,7 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
         }
         tvlColumn={
           <Group className="py-xl">
-            <Button look={opportunity.tvlRecords?.[0]?.total > 0 ? "soft" : "soft"} className="font-mono">
+            <Button look={(opportunity?.tvlRecord?.total ?? 0) > 0 ? "soft" : "soft"} className="font-mono">
               <Value value format="$0,0.0a">
                 {opportunity.tvl ?? 0}
               </Value>
@@ -43,7 +43,7 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
         }
         rewardsColumn={
           <Group className="py-xl">
-            <Button look={opportunity.rewardsRecords?.[0]?.total > 0 ? "soft" : "soft"} className="font-mono">
+            <Button look={(opportunity?.rewardsRecord?.total ?? 0) > 0 ? "soft" : "soft"} className="font-mono">
               <Value value format="$0,0.0a">
                 {opportunity.dailyRewards ?? 0}
               </Value>

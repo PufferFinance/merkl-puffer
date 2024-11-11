@@ -45,7 +45,7 @@ export default function CampaignTableRow({ campaign, startsOpen, className, ...p
             <Group>
               <Text size="sm">id:</Text>
               <Hash size="sm" format="short" copy>
-                {campaign.campaignId}
+                {campaign.id}
               </Hash>
             </Group>
           </Group>
