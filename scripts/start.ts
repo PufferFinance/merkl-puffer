@@ -14,6 +14,7 @@ program
   .name("merkl-lite")
   .description("A script to start the merkl-lite")
   .option("--api <local|staging|production>", "the API_URL_* to choose as API_URL")
+  .option("--build", "use the build command")
   .parse();
 
 const options = program.opts();
