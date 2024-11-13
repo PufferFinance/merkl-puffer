@@ -8,8 +8,8 @@ import Tag, { type TagType } from "src/components/element/Tag";
 import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
-  const { data: tokens, ...res } = await api.v4.token.get({ query: { symbol } });
-  const { data: chains } = await api.v4.chain.get({ query: {} });
+  const { data: tokens, ...res } = await api.v4.tokens.get({ query: { symbol } });
+  const { data: chains } = await api.v4.chains.get({ query: {} });
 
   if (!tokens?.length) throw new Error("Unknown token");
 

@@ -11,7 +11,7 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
   
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains, ...resChain } = await api.v4.chain.get({ query: { search: chainId } });
+  const { data: chains, ...resChain } = await api.v4.chains.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
 
@@ -21,7 +21,7 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
 
   console.log("BEFORE");
   
-  const { data: opportunity, ...res } = await api.v4.opportunity({ id: `${chain.id}-${type}-${id}` }).get();
+  const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
   console.log(res);
   
 

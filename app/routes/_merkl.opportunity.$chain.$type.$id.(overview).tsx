@@ -11,15 +11,15 @@ import useOpportunity from "src/hooks/resources/useOpportunity";
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chain.get({ query: { search: id } });
+  const { data: chains } = await api.v4.chains.get({ query: { search: id } });
   const chain = chains?.[0];
 
   if (!chain) throw "";
 
-  const { data: opportunity, ...res } = await api.v4.opportunity({ id: `${chain.id}-${type}-${id}` }).get();
+  const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
   console.log(res);
   
-  const { data: campaigns } = await api.v4.campaign.opportunity({ chainId: chain.id })({ type })({ identifier: id }).get();
+  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
 
   if (!opportunity || !campaigns) throw "";
 

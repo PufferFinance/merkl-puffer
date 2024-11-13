@@ -12,7 +12,7 @@ export async function loader({ params: { action: _action }, request }: LoaderFun
   if (!action) throw new Error("Unknown action");
 
   const { data: opportunities, ...res } = await fetchOpportunities(request, { action });
-  const { data: chains } = await api.v4.chain.get({ query: {} });
+  const { data: chains } = await api.v4.chains.get({ query: {} });
 
   if (!opportunities || !chains) throw new Error("Unknown opportunity");
 
