@@ -1,6 +1,6 @@
 import type { Chain, Opportunity, Protocol, Token } from "@angleprotocol/merkl-api";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { api } from "src/api";
+import { api } from "src/api/index.client";
 
 const searchables = ["opportunity", "token", "protocol", "chain"] as const;
 export type Searchable = (typeof searchables)[number];

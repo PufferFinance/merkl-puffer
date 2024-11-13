@@ -20,7 +20,7 @@ program
 const options = program.opts();
 const api = (options.api as string) ?? "production";
 
-const API_URL = process.env[`API_URL${((options.api as string) ?? "production").toUpperCase()}`];
+const API_URL = process.env[`API_URL_${((options.api as string) ?? "production").toUpperCase()}`];
 
 const targetTag = (name: string, value: "staging" | "production" | "local") => {
   const color = {

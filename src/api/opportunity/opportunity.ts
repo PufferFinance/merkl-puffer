@@ -1,4 +1,4 @@
-import { api } from "..";
+import { api } from "../index.server";
 
 export async function fetchOpportunities(
   request: Request,
@@ -20,6 +20,9 @@ export async function fetchOpportunities(
     (_query, [key, filter]) => Object.assign(_query, !filter ? {} : { [key]: filter }),
     {},
   );
+
+  console.log("QUERY", query);
+  
 
   return await api.v4.opportunity.get({ query });
 }

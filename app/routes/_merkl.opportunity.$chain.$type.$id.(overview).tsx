@@ -3,7 +3,7 @@ import { Group } from "@ariakit/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData, useParams } from "@remix-run/react";
 import { Space } from "packages/dappkit/src";
-import { api } from "src/api";
+import { api } from "src/api/index.server";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Participate from "src/components/element/participate/Participate";
 import useOpportunity from "src/hooks/resources/useOpportunity";
@@ -16,8 +16,10 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
 
   if (!chain) throw "";
 
-  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId: chain.id })({ type })({ id }).get();
-  const { data: campaigns } = await api.v4.campaign.opportunity({ chainId: chain.id })({ type })({ id }).get();
+  const { data: opportunity, ...res } = await api.v4.opportunity({ id: `${chain.id}-${type}-${id}` }).get();
+  console.log(res);
+  
+  const { data: campaigns } = await api.v4.campaign.opportunity({ chainId: chain.id })({ type })({ identifier: id }).get();
 
   if (!opportunity || !campaigns) throw "";
 

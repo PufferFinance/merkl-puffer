@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData, useParams } from "@remix-run/react";
-import { api } from "src/api";
+import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 
 import { Container } from "dappkit";
@@ -8,14 +8,22 @@ import Tag from "src/components/element/Tag";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+  
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chain.get({ query: { search: id } });
+  const { data: chains, ...resChain } = await api.v4.chain.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
+
+  console.log("chain", chains, resChain);
+  
   if (!chain) throw "";
 
-  const { data: opportunity, ...res } = await api.v4.opportunity({ chainId: chain.id })({ type })({ id }).get();
+  console.log("BEFORE");
+  
+  const { data: opportunity, ...res } = await api.v4.opportunity({ id: `${chain.id}-${type}-${id}` }).get();
+  console.log(res);
+  
 
   if (!opportunity) throw "";
 
