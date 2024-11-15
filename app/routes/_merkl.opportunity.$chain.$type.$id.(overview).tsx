@@ -14,14 +14,15 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
   const { data: chains } = await api.v4.chains.get({ query: { search: id } });
   const chain = chains?.[0];
 
-  if (!chain) throw "";
+  if (!chain) throw "DSS";
 
   const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
-  console.log(res);
+
+  if (!opportunity) throw "No Opportunity"
   
   const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
 
-  if (!opportunity || !campaigns) throw "";
+  if (!opportunity || !campaigns) throw "DAZZ";
 
   return json({ opportunity, campaigns });
 }
