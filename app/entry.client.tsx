@@ -5,18 +5,14 @@
  */
 
 import { RemixBrowser } from "@remix-run/react";
-import { WalletProvider } from "packages/dappkit/src/context/Wallet.context";
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
-import config from "../merkl.config";
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <WalletProvider config={config.wagmi}>
         <RemixBrowser />
-      </WalletProvider>
     </StrictMode>,
   );
 });
