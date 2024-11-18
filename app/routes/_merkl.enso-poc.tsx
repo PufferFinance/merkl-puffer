@@ -1,6 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Box, Container, Divider, Group, Icon, Input, Select, Space, Title } from "dappkit";
+import { Box, Button, Container, Divider, Group, Icon, Input, Select, Space, Title } from "dappkit";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useEffect, useMemo, useState } from "react";
 import { api } from "src/api/index.server";
@@ -11,6 +11,8 @@ import Footer from "src/components/layout/Footer";
 import Header from "src/components/layout/Header";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import { formatUnits, parseUnits } from "viem";
+import { useSendTransaction, useWriteContract } from "wagmi";
+import useParticipate from "packages/dappkit/src/hooks/useParticipate";
 
 const ENSO = "https://api.enso.finance/api";
 const route = "/v1/tokens?protocolSlug=aave-v3&chainId=42161&type=defi&page=1&includeMetadata=false'";
@@ -34,13 +36,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const { data: targets, ...res} = await api.v4.participate.targets.get({ query: { chainId, protocolId: protocol } });
 
-
   return json({ chains, targets: targets, protocols });
 }
 
 export default function Index() {
-  const { chains, targets, protocols } = useLoaderData<typeof loader>();
-
+  const { chains, protocols } = useLoaderData<typeof loader>();
+  const { targets } = useParticipate();
   const [chain, setChain] = useState(1);
 
   const [chainId, setChainId] = useSearchParamState<string>(
@@ -65,7 +66,7 @@ export default function Index() {
 
   const [depositTokenAddress, setDepositTokenAddress] = useState<string>();
   const [depositTokens, setDepositTokens] = useState<Awaited<ReturnType<typeof clientApi.v4.tokens.balances.get>>["data"]>();
-  const [depositAmount, setDepositAmount] = useState<number>(0); 
+  const [depositAmount, setDepositAmount] = useState<string>("0"); 
   const depositToken = useMemo(() => depositTokens?.find(t => t.address === depositTokenAddress), [depositTokenAddress, depositTokens]);
 
   const { address } = useWalletContext();
@@ -91,23 +92,39 @@ export default function Index() {
     };
   }, [identifier, targets, address, chainId]);
 
+  const [transaction, setTransaction] = useState<Awaited<ReturnType<typeof clientApi.v4.participate.transaction.get>>["data"]>();
+
   useEffect(() => {
     async function getDepositTransaction() {
       const target = targets?.find((t) => t?.identifier === identifier);
 
       if (!target || !chainId || !address || !protocol || !depositTokenAddress || !depositToken) return;
       
-      const {data: tkns} = await clientApi.v4.participate.transaction.get({query: {chainId: +chainId, protocolId: protocol, identifier: target.identifier, userAddress: address, fromTokenAddress: depositTokenAddress, fromAmount: parseUnits(depositAmount?.toString(), depositToken?.decimals).toString() }})
+      try {
 
-      console.log("txns", tkns);
+        const {data: txn} = await clientApi.v4.participate.transaction.get({query: {chainId: +chainId, protocolId: protocol, identifier: target.identifier, userAddress: address, fromTokenAddress: depositTokenAddress, fromAmount: parseUnits(depositAmount, depositToken?.decimals).toString() }})
+        
+        console.log("txns", txn);
+        setTransaction(txn)
+      } catch (err) {
+        console.log("ERROR");
+      }
     }
 
     getDepositTransaction();
-    
-    return () => {
-      setDepositTokens(undefined);  
-    };
   }, [depositToken, depositAmount, target]);
+
+  function deposit() {
+    console.log("??", transaction.tx.to, transaction?.tx.data);
+    
+    const res = writeContract({
+      address: transaction.tx.to,
+      data: transaction?.tx.data
+    })
+
+    console.log(res);
+    
+  }
 
 
   // useEffect(() => {
@@ -176,7 +193,10 @@ export default function Index() {
             <Group>
               <Select state={[identifier, setIdentifier]} search options={targets?.reduce((obj, t) => Object.assign(obj, { [t?.identifier]: <>{t?.tokens.map(tkn => <Token key={tkn.address} value token={tkn}/>)}</> }), {})} />
             </Group>
-            <Input state={[depositAmount?.toString(), (s) => setDepositAmount(Number.parseFloat(s ?? "0") ?? 0)]} header={<>max: {depositToken && formatUnits(depositToken?.balance, depositToken?.decimals)}</>} placeholder="0.0" look="bold" suffix={<Select state={[depositTokenAddress, setDepositTokenAddress]} search options={depositTokens?.reduce((obj, t) => Object.assign(obj, { [t?.address]: <>{<Token key={t.address} value token={t}/>} ({ formatUnits(t.balance, t.decimals)})</> }), {})} />} />
+            <Input state={[depositAmount, setDepositAmount]} header={<>max: {depositToken && formatUnits(depositToken?.balance, depositToken?.decimals)}</>} placeholder="0.0" look="bold" suffix={<Select state={[depositTokenAddress, setDepositTokenAddress]} search options={depositTokens?.reduce((obj, t) => Object.assign(obj, { [t?.address]: <>{<Token key={t.address} value token={t}/>} ({ formatUnits(t.balance, t.decimals)})</> }), {})} />} />
+            <Group>
+              <Button look="hype" onClick={deposit}>Deposit</Button>
+            </Group>
           </Group>
         </Group>
       </Box>
