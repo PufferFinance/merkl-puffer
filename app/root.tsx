@@ -1,5 +1,5 @@
-import type { LinksFunction } from "@remix-run/node";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData } from "@remix-run/react";
 import "./tailwind.css";
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
@@ -23,6 +23,10 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export async function loader(_args: LoaderFunctionArgs) {
+  return json({ ENV: { API_URL: process.env.API_URL } });
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -42,9 +46,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <DAppProvider themes={config.themes} config={config.wagmi}>
       <Outlet />
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
+        }}
+      />
     </DAppProvider>
   );
 }

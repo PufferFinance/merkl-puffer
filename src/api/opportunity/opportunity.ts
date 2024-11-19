@@ -1,4 +1,4 @@
-import { api } from "..";
+import { api } from "../index.server";
 
 export async function fetchOpportunities(
   request: Request,
@@ -21,5 +21,5 @@ export async function fetchOpportunities(
     {},
   );
 
-  return await api.v4.opportunity.get({ query });
+  return await api.v4.opportunities.get({ query });
 }

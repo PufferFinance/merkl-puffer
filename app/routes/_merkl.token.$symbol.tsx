@@ -2,14 +2,15 @@ import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Container } from "dappkit";
 import { useMemo } from "react";
-import { api } from "src/api";
+import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 import Tag, { type TagType } from "src/components/element/Tag";
+import { chainIdOrder } from "src/constants/chain";
 import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
-  const { data: tokens, ...res } = await api.v4.token.get({ query: { symbol } });
-  const { data: chains } = await api.v4.chain.get({ query: {} });
+  const { data: tokens, ...res } = await api.v4.tokens.get({ query: { symbol } });
+  const { data: chains } = await api.v4.chains.get({ query: {} });
 
   if (!tokens?.length) throw new Error("Unknown token");
 
@@ -21,13 +22,22 @@ export default function Index() {
   const token = tokens?.[0];
 
   const tags = useMemo(() => {
-    return tokens.map(
-      t =>
-        ({
-          type: "tokenChain",
-          value: { ...t, chain: chains?.find(c => c.id === t.chainId) },
-        }) satisfies TagType<"tokenChain">,
-    );
+    return tokens
+      .sort(({ chainId: a }, { chainId: b }) => {
+        const order = chainIdOrder;
+
+        if (order.indexOf(b) === -1) return -1;
+        if (order.indexOf(b) === -1 && order.indexOf(a) === -1) return 0;
+        if (order.indexOf(a) === -1) return 1;
+        return order.indexOf(b) - order.indexOf(a);
+      })
+      .map(
+        t =>
+          ({
+            type: "tokenChain",
+            value: { ...t, chain: chains?.find(c => c.id === t.chainId) },
+          }) satisfies TagType<"tokenChain">,
+      );
   }, [tokens, chains]);
 
   return (

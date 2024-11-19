@@ -1,6 +1,5 @@
 import type { Chain, Opportunity } from "@angleprotocol/merkl-api";
-import { Group, Icon, type Order } from "dappkit";
-import { Button } from "dappkit";
+import { Group, type Order } from "dappkit";
 import { useMemo } from "react";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import OpportunityFilters, { type OpportunityFilterProps } from "./OpportunityFilters";
@@ -42,15 +41,6 @@ export default function OpportunityLibrary({ opportunities, only, exclude, chain
       header={
         <Group className="justify-between w-full">
           <OpportunityFilters {...{ only, exclude, chains }} />
-          <Group>
-            <Button size="sm" look="base">
-              Sort
-              <Icon size="sm" remix="RiSortDesc" />
-            </Button>
-            <Button size="sm" look="base">
-              <Icon size="sm" remix="RiGridFill" />
-            </Button>
-          </Group>
         </Group>
       }>
       {rows}
