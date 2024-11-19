@@ -22,19 +22,16 @@ export default function useParticipate(
   protocolId?: string,
   identifier?: string,
   tokenAddress?: string,
-  amount?: number,
+  amount?: bigint,
 ) {
   const [balances, setBalances] = useState<{ [chainId: number]: { [address: string]: TokenBalances } }>();
   const [targets, setTargets] = useState<{ [chainId: number]: { [protocolId: string]: Targets } }>();
   const [transaction, setTransaction] = useState<Transaction>();
   const [protocols, setProtocols] = useState<Protocols>();
 
-  console.log('targets', targets);
-  
-
   const { address, config } = useWalletContext();
   const { sendTransaction } = useSendTransaction();
-  const {writeContract} = useWriteContract();
+  const { writeContract } = useWriteContract();
 
   const target = useMemo(() => {
     if (!chainId || !protocolId) return;
@@ -45,6 +42,10 @@ export default function useParticipate(
     if (!chainId || !address) return;
     return balances?.[chainId]?.[address];
   }, [chainId, address, balances]);
+
+  const token = useMemo(() => {
+    return balance?.find(({address})=> address === tokenAddress)
+  }, [tokenAddress, balance]);
 
   useEffect(() => {
     async function fetchTargets() {
@@ -103,7 +104,7 @@ export default function useParticipate(
       protocolId,
       identifier: target?.identifier,
       userAddress: address,
-      fromAmount: parseUnits(amount?.toString(), token.decimals)?.toString(),
+      fromAmount: amount?.toString(),
       fromTokenAddress: tokenAddress,
     };
   }, [chainId, protocolId, target, address, balance, tokenAddress, amount]);
@@ -128,10 +129,10 @@ export default function useParticipate(
     console.log("??", transaction.tx.to, transaction?.tx.data);
     
     const res = writeContract({
-      address: payload?.fromTokenAddress,
+      address: payload?.fromTokenAddress as `0x${string}`,
       abi,
       functionName: "approve",
-      args: [transaction.tx.to, BigInt(payload?.fromAmount ?? "0")],
+      args: [transaction.tx.to  as `0x${string}`, BigInt(payload?.fromAmount ?? "0")],
     })
 
     console.log(res);
@@ -146,13 +147,13 @@ export default function useParticipate(
     console.log("??", transaction.tx.to, transaction?.tx.data);
     
     const res = sendTransaction({
-      to: transaction.tx.to,
-      data: transaction?.tx.data
+      to: transaction.tx.to as `0x${string}`,
+      data: transaction?.tx.data  as `0x${string}`
     })
 
     console.log(res);
     
   }, [transaction, address]);
 
-  return { target, targets, protocols, balance, balances, address, deposit, approve, transaction };
+  return { target, targets, protocols, token, balance, balances, address, deposit, approve, transaction };
 }

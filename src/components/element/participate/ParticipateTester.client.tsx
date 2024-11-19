@@ -4,6 +4,7 @@ import useParticipate from "src/hooks/useParticipate";
 import { api as clientApi } from "src/api/index.client";
 import Token from "../token/Token";
 import { formatUnits } from "viem";
+import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
 
 type Chains = Awaited<ReturnType<typeof clientApi.v4.chains.get>>["data"];
 
@@ -16,15 +17,18 @@ export default function ParticipateTester({ chains }: ParticipateTesterProps) {
   const [protocolId, setProtocolId] = useState<string>();
   const [target, setTarget] = useState<string>();
   const [tokenAddress, setTokenAddress] = useState();
-  const [amount, setAmount] = useState(0.01);
+  const [amount, setAmount] = useState<bigint>(0n);
 
-  const { protocols, targets, balance, address, approve, deposit, transaction } = useParticipate(
-    chainId,
-    protocolId,
-    target,
-    tokenAddress,
-    amount,
-  );
+  const {
+    protocols,
+    targets,
+    balance,
+    address,
+    token: inputToken,
+    approve,
+    deposit,
+    transaction,
+  } = useParticipate(chainId, protocolId, target, tokenAddress, amount);
 
   const protocolOptions = useMemo(
     () =>
@@ -120,30 +124,40 @@ export default function ParticipateTester({ chains }: ParticipateTesterProps) {
         <Group className="flex-col">
           <Title h={5}>Target</Title>
           <Group className="items-center w-full">
-            <Select className="flex-1" state={[target, setTarget]} loading={!targetOptions} placeholder="Target" options={targetOptions} />
+            <Select
+              className="flex-1 grow w-full"
+              state={[target, setTarget]}
+              loading={!targetOptions}
+              placeholder="Target"
+              options={targetOptions}
+            />
             <Hash copy format="short">
               {target}
             </Hash>
           </Group>
         </Group>
         <Group className="flex-col">
-          <Title h={5}>Deposit With</Title>
-          <Select
-            state={[tokenAddress, setTokenAddress]}
-            loading={!balanceOptions}
-            placeholder="Target"
-            options={balanceOptions}
-          />
+          <Title h={5}>Deposit</Title>
+          <Group>
+            <Input.BigInt state={[amount, setAmount]} base={inputToken?.decimals ?? 18} placeholder="0.0" />
+            <Select
+              state={[tokenAddress, setTokenAddress]}
+              loading={!balanceOptions}
+              placeholder="Token"
+              options={balanceOptions}
+            />
+          </Group>
         </Group>
-        <Group>
-          <Input.BigInt base={3} placeholder="0.0" />
+        <Group className="[&>*]:grow w-full">
+          <Button className="justify-center" look="tint" onClick={approve} disabled={!transaction}>
+            Approve
+          </Button>
+          <TransactionButton tx={transaction?.tx}>Approve</TransactionButton>
+          <TransactionButton tx={transaction?.tx}>Participate</TransactionButton>
+          <Button className="justify-center" look="hype" onClick={deposit} disabled={!transaction}>
+            Participate
+          </Button>
         </Group>
-        <Button onClick={approve} disabled={!transaction}>
-          Approve {!!transaction ? "on" : "off"}
-        </Button>
-        <Button onClick={deposit} disabled={!transaction}>
-          Participate
-        </Button>
       </Box>
     </Suspense>
   );

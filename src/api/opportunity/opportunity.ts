@@ -21,8 +21,5 @@ export async function fetchOpportunities(
     {},
   );
 
-  console.log("QUERY", query);
-  
-
   return await api.v4.opportunities.get({ query });
 }

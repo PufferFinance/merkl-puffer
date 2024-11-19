@@ -16,7 +16,6 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
   if (!chain) throw "";
 
   const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
-  console.log(res);
 
   if (!opportunity) throw "Opportunity";
 
@@ -50,7 +49,7 @@ export default function Index() {
         tags={tags.map(tag => (
           <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
         ))}>
-        <Outlet />
+        {/* <Outlet /> */}
       </Heading>
     </Container>
   );
