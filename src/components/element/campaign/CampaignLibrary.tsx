@@ -10,7 +10,9 @@ export type CampaignProps = {
 };
 
 export default function CampaignLibrary({ campaigns }: CampaignProps) {
-  const [showInactive, setShowInactive] = useState(false);
+  const [showInactive, setShowInactive] = useState(campaigns?.every((c) => c.endTimestamp < moment().unix()));
+  console.log("IS", campaigns?.every((c) => c.endTimestamp > moment().unix()), moment().unix(), campaigns.map(c => c.endTimestamp));
+  
   const rows = useMemo(() => {
     const now = moment().unix();
     const shownCampaigns = campaigns.filter(c => showInactive || Number(c.endTimestamp) > now);
