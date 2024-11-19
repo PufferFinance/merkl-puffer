@@ -11,20 +11,22 @@ import useOpportunity from "src/hooks/resources/useOpportunity";
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chains.get({ query: { search: id } });
+  const { data: chains, ...l } = await api.v4.chains.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
   if (!chain) throw "DSS";
 
   const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
 
-  if (!opportunity) throw "No Opportunity"
-  
-  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
+  if (!opportunity) throw "No Opportunity";
+
+  const { data: campaigns, ...r } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
+
+  console.log(r);
 
   if (!opportunity || !campaigns) throw "DAZZ";
 
-  return json({ opportunity, campaigns });
+  return json({ opportunity, campaigns: campaigns.campaigns });
 }
 
 export default function Index() {

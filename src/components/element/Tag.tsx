@@ -4,11 +4,12 @@ import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
+import type Chain from "./chain/Chain";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
   token: Token;
-  tokenChain: Token;
+  tokenChain: Token & { chain?: Chain };
   protocol: Protocol;
   action: Action;
   status: Opportunity["status"];
@@ -177,6 +178,10 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider className="border-main-6" horizontal />
               {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="sm">
+                <Button to={`/chain/${token.chain?.name}`} size="sm" look="bold">
+                  <Icon size="sm" src={token.chain?.icon} />
+                  {token.chain?.name}
+                </Button>
                 <Button to={`/token/${token?.symbol}`} size="sm" look="bold">
                   {token?.symbol} on Merkl
                 </Button>

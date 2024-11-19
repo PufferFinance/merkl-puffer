@@ -1,10 +1,9 @@
+import { useWalletContext } from "dappkit/src/context/Wallet.context";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api as clientApi } from "src/api/index.client";
-import { useWalletContext } from "dappkit/src/context/Wallet.context";
-import { parseAbi, parseUnits } from "viem";
-import {useSendTransaction} from "wagmi";
-import { writeContract } from "viem/actions";
-import { useWriteContract } from 'wagmi'
+import { parseAbi } from "viem";
+import { useSendTransaction } from "wagmi";
+import { useWriteContract } from "wagmi";
 
 type Targets = Awaited<ReturnType<typeof clientApi.v4.participate.targets.get>>["data"];
 type Protocols = Awaited<ReturnType<typeof clientApi.v4.participate.protocols.get>>["data"];
@@ -13,9 +12,9 @@ type Payload = Parameters<typeof clientApi.v4.participate.transaction.get>[0]["q
 type Transaction = Awaited<ReturnType<typeof clientApi.v4.participate.transaction.get>>["data"];
 
 const abi = parseAbi([
-  'function approve(address, uint256) returns (bool)',
-  'function transferFrom(address, address, uint256) returns (bool)',
-])
+  "function approve(address, uint256) returns (bool)",
+  "function transferFrom(address, address, uint256) returns (bool)",
+]);
 
 export default function useParticipate(
   chainId?: number,
@@ -44,7 +43,7 @@ export default function useParticipate(
   }, [chainId, address, balances]);
 
   const token = useMemo(() => {
-    return balance?.find(({address})=> address === tokenAddress)
+    return balance?.find(({ address }) => address === tokenAddress);
   }, [tokenAddress, balance]);
 
   useEffect(() => {
@@ -55,7 +54,9 @@ export default function useParticipate(
 
       if (res.status === 200)
         setTargets(t => {
-          return Object.assign(t ? {...t} : {}, { [chainId]: Object.assign(t?.[chainId] ?? {}, { [protocolId]: targets }) });
+          return Object.assign(t ? { ...t } : {}, {
+            [chainId]: Object.assign(t?.[chainId] ?? {}, { [protocolId]: targets }),
+          });
         });
     }
 
@@ -82,20 +83,17 @@ export default function useParticipate(
 
       if (res.status === 200)
         setBalances(b =>
-          Object.assign(b ? {...b} : {}, { [chainId]: Object.assign(b?.[chainId] ?? {}, { [address]: tokens }) }),
+          Object.assign(b ? { ...b } : {}, { [chainId]: Object.assign(b?.[chainId] ?? {}, { [address]: tokens }) }),
         );
     }
 
     fetchTokenBalances();
   }, [chainId, address]);
 
-
-
-
   const payload: Payload | undefined = useMemo(() => {
     if (!chainId || !protocolId || !address || !amount || !tokenAddress || !target?.identifier) return;
-  
-    const token = balance?.find(({address: a}) => a === tokenAddress);
+
+    const token = balance?.find(({ address: a }) => a === tokenAddress);
 
     if (!token) return;
 
@@ -116,7 +114,7 @@ export default function useParticipate(
       const { data: transaction, ...res } = await clientApi.v4.participate.transaction.get({ query: payload });
 
       console.log("TX", res.status, transaction);
-      
+
       if (res.status === 200) setTransaction(transaction);
     }
 
@@ -127,32 +125,30 @@ export default function useParticipate(
     if (!transaction) return;
 
     console.log("??", transaction.tx.to, transaction?.tx.data);
-    
+
     const res = writeContract({
       address: payload?.fromTokenAddress as `0x${string}`,
       abi,
       functionName: "approve",
-      args: [transaction.tx.to  as `0x${string}`, BigInt(payload?.fromAmount ?? "0")],
-    })
+      args: [transaction.tx.to as `0x${string}`, BigInt(payload?.fromAmount ?? "0")],
+    });
 
     console.log(res);
-    
   }, [transaction, address]);
 
   const deposit = useCallback(() => {
     console.log("HELLO", transaction);
-    
+
     if (!transaction) return;
 
     console.log("??", transaction.tx.to, transaction?.tx.data);
-    
+
     const res = sendTransaction({
       to: transaction.tx.to as `0x${string}`,
-      data: transaction?.tx.data  as `0x${string}`
-    })
+      data: transaction?.tx.data as `0x${string}`,
+    });
 
     console.log(res);
-    
   }, [transaction, address]);
 
   return { target, targets, protocols, token, balance, balances, address, deposit, approve, transaction };

@@ -1,10 +1,10 @@
-import { Box, Icon, Select, Title, Group, Input, Button, Hash } from "packages/dappkit/src";
-import { Suspense, useMemo, useState } from "react";
-import useParticipate from "src/hooks/useParticipate";
-import { api as clientApi } from "src/api/index.client";
-import Token from "../token/Token";
-import { formatUnits } from "viem";
+import { Box, Button, Group, Hash, Icon, Input, Select, Title } from "packages/dappkit/src";
 import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
+import { Suspense, useMemo, useState } from "react";
+import type { api as clientApi } from "src/api/index.client";
+import useParticipate from "src/hooks/useParticipate";
+import { formatUnits } from "viem";
+import Token from "../token/Token";
 
 type Chains = Awaited<ReturnType<typeof clientApi.v4.chains.get>>["data"];
 

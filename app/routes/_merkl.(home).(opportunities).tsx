@@ -16,8 +16,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Index() {
   const { opportunities } = useLoaderData<typeof loader>();
 
-  
-
   return (
     <>
       <Space size="md" />

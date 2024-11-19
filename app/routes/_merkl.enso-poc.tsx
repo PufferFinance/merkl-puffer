@@ -1,20 +1,10 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Box, Button, Container, Divider, Group, Icon, Input, Select, Space, Title } from "dappkit";
-import { useWalletContext } from "dappkit/src/hooks/Wallet.context";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Container, Space } from "dappkit";
+import { Suspense } from "react";
 import { api } from "src/api/index.server";
-import { api as clientApi } from "src/api/index.client";
-import Chain from "src/components/element/chain/Chain";
-import Token from "src/components/element/token/Token";
-import Footer from "src/components/layout/Footer";
-import Header from "src/components/layout/Header";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
-import { formatUnits, parseUnits } from "viem";
-import { useSendTransaction, useWriteContract } from "wagmi";
-import useParticipate from "src/hooks/useParticipate";
-import ParticipateTester from "src/components/element/participate/ParticipateTester.client";
 import Heading from "src/components/composite/Heading";
+import ParticipateTester from "src/components/element/participate/ParticipateTester.client";
 
 const ENSO = "https://api.enso.finance/api";
 const route = "/v1/tokens?protocolSlug=aave-v3&chainId=42161&type=defi&page=1&includeMetadata=false'";
@@ -26,7 +16,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const {chains} = useLoaderData<typeof loader>();
+  const { chains } = useLoaderData<typeof loader>();
 
   return (
     <Container>
@@ -37,7 +27,7 @@ export default function Index() {
       />
       <Space size="md" />
       <Suspense>
-      <ParticipateTester chains={chains} />
+        <ParticipateTester chains={chains} />
       </Suspense>
     </Container>
   );

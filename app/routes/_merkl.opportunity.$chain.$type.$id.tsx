@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
-import { isRouteErrorResponse, Meta, Outlet, useLoaderData, useParams, useRouteError } from "@remix-run/react";
+import { Meta, Outlet, isRouteErrorResponse, useLoaderData, useParams, useRouteError } from "@remix-run/react";
 import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 
@@ -49,7 +49,7 @@ export default function Index() {
         tags={tags.map(tag => (
           <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
         ))}>
-        {/* <Outlet /> */}
+        <Outlet />
       </Heading>
     </Container>
   );
