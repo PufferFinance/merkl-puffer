@@ -8,8 +8,14 @@ export const [ClaimRewardsTokenTable, ClaimRewardsTokenRow, claimRewardsTokenCol
     className: "justify-start",
     main: true,
   },
-  value: {
-    name: "VALUE",
+  amount: {
+    name: "AMOUNT",
+    size: "minmax(min-content,150px)",
+    compactSize: "minmax(min-content,200px)",
+    className: "justify-center",
+  },
+  claimed: {
+    name: "CLAIMED",
     size: "minmax(min-content,150px)",
     compactSize: "minmax(min-content,200px)",
     className: "justify-center",

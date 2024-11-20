@@ -1,12 +1,16 @@
-import { Space } from "dappkit";
+import { Checkbox, Space, Text, Value } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { type PropsWithChildren, useState } from "react";
 import Token from "../token/Token";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
+import { Reward } from "@angleprotocol/merkl-api";
+import { formatUnits } from "viem";
 
-export type ClaimRewardsTokenTableRowProps = PropsWithChildren;
+export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
+  reward: Reward["rewards"][number]
+};
 
-export default function ClaimRewardsTokenTableRow(props: PropsWithChildren) {
+export default function ClaimRewardsTokenTableRow({reward, ...props}: ClaimRewardsTokenTableRowProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -14,12 +18,14 @@ export default function ClaimRewardsTokenTableRow(props: PropsWithChildren) {
       data-look={props?.look ?? "none"}
       {...props}
       onClick={() => setOpen(o => !o)}
-      tokenColumn={<Token token={{ symbol: "WETH" }} />}
-      valueColumn={"3m"}
-      claimColumn={"2m"}>
+      tokenColumn={<Token token={reward.token}/>}
+      amountColumn={<Value format="0,0.X">{formatUnits(reward.amount, reward.token.decimals)}</Value>}
+      claimedColumn={<Value format="0,0.X">{formatUnits(reward.claimed, reward.token.decimals)}</Value>}
+      claimColumn={<Checkbox/>}
+    >
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
-        {/* <Icon remix=""/> */}
+        {reward.breakdowns.sort().map(b => <Text>{b.opportunity?.name}</Text>)}
       </Collapsible>
     </ClaimRewardsTokenRow>
   );
