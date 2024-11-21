@@ -6,10 +6,13 @@ import Chain from "../chain/Chain";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
+import { Reward } from "@angleprotocol/merkl-api";
 
-export type ClaimRewardsChainTableRowProps = PropsWithChildren;
+export type ClaimRewardsChainTableRowProps = PropsWithChildren & {
+  reward: Reward;
+};
 
-export default function ClaimRewardsChainTableRow(props: ClaimRewardsChainTableRowProps) {
+export default function ClaimRewardsChainTableRow({reward, ...props}: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,7 +21,7 @@ export default function ClaimRewardsChainTableRow(props: ClaimRewardsChainTableR
       onClick={() => setOpen(o => !o)}
       chainColumn={
         <>
-          <Chain chain={{ name: "Ethereum" }} />
+          <Chain chain={reward.chain} />
           <Icon
             data-state={!open ? "closed" : "opened"}
             className="transition duration-150 ease-out data-[state=opened]:rotate-180"
@@ -43,9 +46,7 @@ export default function ClaimRewardsChainTableRow(props: ClaimRewardsChainTableR
           }
           size="sm"
           look="soft">
-          <ClaimRewardsTokenTableRow />
-          <ClaimRewardsTokenTableRow />
-          <ClaimRewardsTokenTableRow />
+            {reward.rewards.map((_reward) => <ClaimRewardsTokenTableRow reward={_reward}  />)}
         </ClaimRewardsTokenTable>
       </Collapsible>
     </ClaimRewardsChainRow>
