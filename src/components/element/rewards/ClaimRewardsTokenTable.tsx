@@ -28,7 +28,7 @@ export const [ClaimRewardsTokenTable, ClaimRewardsTokenRow, claimRewardsTokenCol
   },
   claim: {
     name: "",
-    size: "minmax(150px,200px)",
+    size: "minmax(40px,50px)",
     compactSize: "minmax(min-content,1fr)",
     className: "justify-end",
   },

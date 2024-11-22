@@ -46,9 +46,11 @@ export default function ClaimRewardsChainTableRow({ reward, ...props }: ClaimRew
           }
           size="sm"
           look="soft">
-          {reward.rewards.map(_reward => (
-            <ClaimRewardsTokenTableRow reward={_reward} />
-          ))}
+          {reward.rewards
+            .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
+            .map(_reward => (
+              <ClaimRewardsTokenTableRow reward={_reward} />
+            ))}
         </ClaimRewardsTokenTable>
       </Collapsible>
     </ClaimRewardsChainRow>
