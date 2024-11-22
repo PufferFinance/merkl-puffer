@@ -1,3 +1,4 @@
+import type { Reward } from "@angleprotocol/merkl-api";
 import { Button, Icon, Space, Text } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
@@ -6,13 +7,12 @@ import Chain from "../chain/Chain";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
-import { Reward } from "@angleprotocol/merkl-api";
 
 export type ClaimRewardsChainTableRowProps = PropsWithChildren & {
   reward: Reward;
 };
 
-export default function ClaimRewardsChainTableRow({reward, ...props}: ClaimRewardsChainTableRowProps) {
+export default function ClaimRewardsChainTableRow({ reward, ...props }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,7 +32,7 @@ export default function ClaimRewardsChainTableRow({reward, ...props}: ClaimRewar
       unclaimedColumn={"3m"}
       claimColumn={
         <EventBlocker>
-          <Button look="hype">Claim All</Button>
+          <Button look="hype">Claim</Button>
         </EventBlocker>
       }
       claimedColumn={""}>
@@ -46,7 +46,9 @@ export default function ClaimRewardsChainTableRow({reward, ...props}: ClaimRewar
           }
           size="sm"
           look="soft">
-            {reward.rewards.map((_reward) => <ClaimRewardsTokenTableRow reward={_reward}  />)}
+          {reward.rewards.map(_reward => (
+            <ClaimRewardsTokenTableRow reward={_reward} />
+          ))}
         </ClaimRewardsTokenTable>
       </Collapsible>
     </ClaimRewardsChainRow>
