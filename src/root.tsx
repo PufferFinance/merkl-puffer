@@ -1,9 +1,9 @@
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData } from "@remix-run/react";
-import "./tailwind.css";
+import "./index.css";
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
-import styles from "./tailwind.css?url";
+import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

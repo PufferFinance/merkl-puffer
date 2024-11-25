@@ -6,6 +6,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./customer/style/index.css";
+
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
