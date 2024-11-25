@@ -1,5 +1,5 @@
 import { useLocation } from "@remix-run/react";
-import { Divider, Group, Icon, type IconProps, Icons, Text, Title } from "dappkit";
+import { Box, Divider, Group, Icon, type IconProps, Icons, Text, Title } from "dappkit";
 import { Button } from "dappkit";
 import type { PropsWithChildren, ReactNode } from "react";
 
@@ -41,13 +41,13 @@ export default function Heading({ navigation, icons, title, description, tags, t
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}
           <Text>{description}</Text>
-          <Group className="mt-xl*2">
+          <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
             {tabs?.map(tab => (
               <Button look={location.pathname === tab.link ? "hype" : "soft"} to={tab.link} key={tab.link}>
                 {tab.label}
               </Button>
             ))}
-          </Group>
+          </Box>
         </Group>
       </Group>
       <Divider className="border-main-4" horizontal />

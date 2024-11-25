@@ -19,6 +19,26 @@ Run the dev server:
 npm run dev
 ```
 
+## Updating a fork
+
+When pulling changes from `merkl-lite`, you have to:
+
+```
+# (On the forked repository)
+
+# Fetch commits on merkl lite
+git fetch merkl-lite
+
+# Open a branch from main
+git checkout main
+git checkout -b sync
+
+# Merge changes from upstream
+git merge merkl-lite/main
+
+# Open a sync PR
+```
+
 ## Deployment
 
 First, build your app for production:
