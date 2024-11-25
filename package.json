@@ -7,8 +7,8 @@
     "start": "bun run scripts/start.ts",
     "build": "remix vite:build",
     "dev": "remix vite:dev --host",
-    "lint": "biome check --fix ./src ./app",
-    "lint:ci": "biome check --diagnostic-level error ./src ./app",
+    "lint": "biome check --fix ./src",
+    "lint:ci": "biome check --diagnostic-level error ./src",
     "serve": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },

@@ -19,7 +19,6 @@ COPY postcss.config.js ./
 
 COPY tsconfig.json ./
 
-COPY app app
 COPY src src
 COPY public public
 

@@ -15,4 +15,3 @@ services:
       - PORT=5173
     volumes:
       - ./src:/app/src
-      - ./app:/app/app
