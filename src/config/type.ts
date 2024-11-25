@@ -10,9 +10,15 @@ export type MerklConfig<T extends Themes> = {
   defaultTheme: keyof T;
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
+  link: {
+    [key: string]: string;
+  };
 };
 
-export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
+export function createConfig<T extends Themes>({
+  wagmi,
+  ...config
+}: MerklConfig<T>) {
   const wagmiConfig = createWagmiConfig(wagmi);
 
   return { wagmi: wagmiConfig, ...config };

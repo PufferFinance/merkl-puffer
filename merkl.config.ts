@@ -29,17 +29,39 @@ export default createConfig({
   defaultTheme: "merkl",
   themes: {
     merkl: {
-      base: createColoring(["#1F2333", "#B8AAFD", "#131620"], ["#FCF8F5", "#B8AAFD", "white"]),
-      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
-      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      base: createColoring(
+        ["#1F2333", "#B8AAFD", "#131620"],
+        ["#FCF8F5", "#B8AAFD", "white"]
+      ),
+      info: createColoring(
+        ["#2ABDFF", "#2ABDFF", "#131620"],
+        ["#FFFFFF", "#40B66B", "white"]
+      ),
+      good: createColoring(
+        ["#40B66B", "#40B66B", "#131620"],
+        ["#FFFFFF", "#40B66B", "white"]
+      ),
+      warn: createColoring(
+        ["#ff9600", "#ff9600", "#131620"],
+        ["#FFFFFF", "#40B66B", "white"]
+      ),
+      harm: createColoring(
+        ["#d22e14", "#d22e14", "#131620"],
+        ["#FFFFFF", "#40B66B", "white"]
+      ),
     },
   },
   sizing: {
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 2, sm: 4, md: 6, lg: 8, xl: 12 },
   }
+  link: {
+    merkl: "https://merkl.xyz/",
+    discord: "https://join.zksync.dev/",
+    telegram: "https://t.me/+2T0RNabX2ANkMzAx",
+    x: "https://x.com/zksyncignite",
+    github: "https://github.com/matter-labs",
+  },
 });
 
 

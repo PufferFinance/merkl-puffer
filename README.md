@@ -9,6 +9,7 @@
 3. `git submodule update`
 4. `bun i`
 5. `bun dev`
+6. Optional: Replace `--CLIENT--` by the client product name
 
 
 ## Development
