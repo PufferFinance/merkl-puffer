@@ -1,8 +1,7 @@
 import type { Reward } from "@angleprotocol/merkl-api";
-import { Checkbox, Divider, type GetSet, Group, Icon, Space, Value } from "dappkit";
+import { Checkbox, Divider, type GetSet, Group, Icon, Space } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { type PropsWithChildren, useMemo, useState } from "react";
-import { formatUnits } from "viem";
 import OpportuntiyButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
@@ -34,13 +33,21 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
         </Group>
       }
       amountColumn={
-        <ClaimRewardsTokenTablePrice amount={unclaimed} price={reward.token.price} decimals={reward.token.decimals}/>
+        <ClaimRewardsTokenTablePrice amount={unclaimed} price={reward.token.price} decimals={reward.token.decimals} />
       }
       claimedColumn={
-        <ClaimRewardsTokenTablePrice amount={reward.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
+        <ClaimRewardsTokenTablePrice
+          amount={reward.claimed}
+          price={reward.token.price}
+          decimals={reward.token.decimals}
+        />
       }
       pendingColumn={
-        <ClaimRewardsTokenTablePrice amount={reward.pending} price={reward.token.price} decimals={reward.token.decimals}/>
+        <ClaimRewardsTokenTablePrice
+          amount={reward.pending}
+          price={reward.token.price}
+          decimals={reward.token.decimals}
+        />
       }
       claimColumn={
         <Group className="items-center justify-center">
@@ -54,27 +61,41 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
           .map(b => {
             return (
               <>
-              <Divider className="border-main-2" horizontal/>
-              <ClaimRewardsTokenRow
-                {...props}
-                key={b.opportunity.identifier}
-                data-look={props?.look ?? "none"}
-                className="!px-0  !m-0 border-none"
-                onClick={() => setOpen(o => !o)}
-                tokenColumn={<Group className="flex-col justify-center"><OpportuntiyButton opportunity={b.opportunity} /></Group>}
-                amountColumn={
-        <ClaimRewardsTokenTablePrice amount={b.amount - b.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
-
-                }
-                claimedColumn={
-        <ClaimRewardsTokenTablePrice amount={b.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
-
-                }
-                pendingColumn={
-        <ClaimRewardsTokenTablePrice amount={b.pending} price={reward.token.price} decimals={reward.token.decimals}/>
-                }
-                claimColumn={<></>}
-              />
+                <Divider className="border-main-2" horizontal />
+                <ClaimRewardsTokenRow
+                  {...props}
+                  key={b.opportunity.identifier}
+                  data-look={props?.look ?? "none"}
+                  className="!px-0  !m-0 border-none"
+                  onClick={() => setOpen(o => !o)}
+                  tokenColumn={
+                    <Group className="flex-col justify-center">
+                      <OpportuntiyButton opportunity={b.opportunity} />
+                    </Group>
+                  }
+                  amountColumn={
+                    <ClaimRewardsTokenTablePrice
+                      amount={b.amount - b.claimed}
+                      price={reward.token.price}
+                      decimals={reward.token.decimals}
+                    />
+                  }
+                  claimedColumn={
+                    <ClaimRewardsTokenTablePrice
+                      amount={b.claimed}
+                      price={reward.token.price}
+                      decimals={reward.token.decimals}
+                    />
+                  }
+                  pendingColumn={
+                    <ClaimRewardsTokenTablePrice
+                      amount={b.pending}
+                      price={reward.token.price}
+                      decimals={reward.token.decimals}
+                    />
+                  }
+                  claimColumn={<></>}
+                />
               </>
             );
           })}
