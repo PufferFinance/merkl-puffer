@@ -1,21 +1,22 @@
 import type { Reward } from "@angleprotocol/merkl-api";
-import { Checkbox, Group, Icon, Space, Value } from "dappkit";
+import { Checkbox, Divider, type GetSet, Group, Icon, Space, Value } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { type PropsWithChildren, useMemo, useState } from "react";
 import { formatUnits } from "viem";
 import OpportuntiyButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
+import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 
 export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
   reward: Reward["rewards"][number];
+  checkedState?: GetSet<boolean>;
 };
 
-export default function ClaimRewardsTokenTableRow({ reward, ...props }: ClaimRewardsTokenTableRowProps) {
+export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...props }: ClaimRewardsTokenTableRowProps) {
   const [open, setOpen] = useState(false);
 
   const unclaimed = useMemo(() => reward.amount - reward.claimed, [reward]);
-  const [selected, setSelected] = useState(true);
 
   return (
     <ClaimRewardsTokenRow
@@ -33,23 +34,17 @@ export default function ClaimRewardsTokenTableRow({ reward, ...props }: ClaimRew
         </Group>
       }
       amountColumn={
-        <Value look={unclaimed.toString() === "0" ? "soft" : "base"} format="0,0.###">
-          {formatUnits(unclaimed, reward.token.decimals)}
-        </Value>
+        <ClaimRewardsTokenTablePrice amount={unclaimed} price={reward.token.price} decimals={reward.token.decimals}/>
       }
       claimedColumn={
-        <Value look={reward.claimed.toString() === "0" ? "soft" : "base"} format="0,0.###">
-          {formatUnits(reward.claimed, reward.token.decimals)}
-        </Value>
+        <ClaimRewardsTokenTablePrice amount={reward.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
       }
       pendingColumn={
-        <Value look={reward.pending.toString() === "0" ? "soft" : "base"} format="0,0.###">
-          {formatUnits(reward.pending, reward.token.decimals)}
-        </Value>
+        <ClaimRewardsTokenTablePrice amount={reward.pending} price={reward.token.price} decimals={reward.token.decimals}/>
       }
       claimColumn={
         <Group className="items-center justify-center">
-          <Checkbox state={[selected, setSelected]} className="m-auto" size="sm" />
+          <Checkbox state={checkedState} className="m-auto" size="sm" />
         </Group>
       }>
       <Collapsible state={[open, setOpen]}>
@@ -58,30 +53,29 @@ export default function ClaimRewardsTokenTableRow({ reward, ...props }: ClaimRew
           .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
           .map(b => {
             return (
+              <>
+              <Divider className="border-main-2" horizontal/>
               <ClaimRewardsTokenRow
                 {...props}
                 key={b.opportunity.identifier}
                 data-look={props?.look ?? "none"}
-                className="!p-0 !m-0 border-none"
+                className="!px-0  !m-0 border-none"
                 onClick={() => setOpen(o => !o)}
-                tokenColumn={<OpportuntiyButton opportunity={b.opportunity} />}
+                tokenColumn={<Group className="flex-col justify-center"><OpportuntiyButton opportunity={b.opportunity} /></Group>}
                 amountColumn={
-                  <Value look={(b.amount - b.claimed).toString() === "0" ? "soft" : "base"} format="0,0.###">
-                    {formatUnits(BigInt(b.amount - b.claimed), reward.token.decimals)}
-                  </Value>
+        <ClaimRewardsTokenTablePrice amount={b.amount - b.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
+
                 }
                 claimedColumn={
-                  <Value look={b.claimed.toString() === "0" ? "soft" : "base"} format="0,0.###">
-                    {formatUnits(BigInt(b.claimed), reward.token.decimals)}
-                  </Value>
+        <ClaimRewardsTokenTablePrice amount={b.claimed} price={reward.token.price} decimals={reward.token.decimals}/>
+
                 }
                 pendingColumn={
-                  <Value look={b.pending.toString() === "0" ? "soft" : "base"} format="0,0.###">
-                    {formatUnits(BigInt(b.pending), reward.token.decimals)}
-                  </Value>
+        <ClaimRewardsTokenTablePrice amount={b.pending} price={reward.token.price} decimals={reward.token.decimals}/>
                 }
                 claimColumn={<></>}
               />
+              </>
             );
           })}
       </Collapsible>

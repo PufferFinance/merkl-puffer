@@ -12,24 +12,18 @@ export const [ClaimRewardsTokenTable, ClaimRewardsTokenRow, claimRewardsTokenCol
     name: "PENDING",
     size: "minmax(min-content,150px)",
     compactSize: "minmax(min-content,200px)",
-    className: "justify-center",
+    className: "justify-end",
   },
   amount: {
     name: "UNCLAIMED",
     size: "minmax(min-content,150px)",
     compactSize: "minmax(min-content,200px)",
-    className: "justify-center",
+    className: "justify-end",
   },
   claimed: {
     name: "CLAIMED",
     size: "minmax(min-content,150px)",
     compactSize: "minmax(min-content,200px)",
-    className: "justify-center",
-  },
-  claim: {
-    name: "",
-    size: "minmax(40px,50px)",
-    compactSize: "minmax(min-content,1fr)",
     className: "justify-end",
   },
 });

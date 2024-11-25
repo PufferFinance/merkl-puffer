@@ -12,17 +12,11 @@ export const [ClaimRewardsChainTable, ClaimRewardsChainRow, claimRewardsChainCol
     name: "UNCLAIMED",
     size: "minmax(100px,150px)",
     compactSize: "minmax(min-content,1fr)",
-    className: "justify-center",
+    className: "justify-end",
   },
   claimed: {
     name: "CLAIMED",
     size: "minmax(100px,150px)",
-    compactSize: "minmax(min-content,1fr)",
-    className: "justify-center",
-  },
-  claim: {
-    name: "",
-    size: "minmax(100px,100px)",
     compactSize: "minmax(min-content,1fr)",
     className: "justify-end",
   },

@@ -1,5 +1,5 @@
 import type { Reward } from "@angleprotocol/merkl-api";
-import { Group, Text } from "dappkit";
+import { Group } from "dappkit";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";
 
@@ -12,7 +12,7 @@ export default function ClaimRewardsLibrary({ rewards }: ClaimRewardsLibraryProp
 
   return (
     <Group className="flex-row w-full [&>*]:flex-grow">
-      <ClaimRewardsChainTable header={<Text>23k$ to claim across 6 chains</Text>}>
+      <ClaimRewardsChainTable>
         {rewards?.map((reward, index) => (
           <ClaimRewardsChainTableRow reward={reward} key={reward.chain?.id ?? index} />
         ))}
