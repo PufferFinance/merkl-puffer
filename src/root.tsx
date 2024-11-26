@@ -4,6 +4,7 @@ import "./index.css";
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
 import styles from "./index.css?url";
+import { api } from "./api/index.server";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,7 +25,11 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader(_args: LoaderFunctionArgs) {
-  return json({ ENV: { API_URL: process.env.API_URL } });
+  const { data: chains } = await api.v4.chains.index.get({ query: { } });
+
+  if (!chains) throw '';
+
+  return json({ ENV: { API_URL: process.env.API_URL }, chains });
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -49,7 +54,7 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <DAppProvider themes={config.themes} config={config.wagmi}>
+    <DAppProvider chains={data.chains} themes={config.themes} config={config.wagmi}>
       <Outlet />
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV

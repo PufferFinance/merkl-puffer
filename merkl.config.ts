@@ -1,14 +1,13 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
 import { http } from "viem";
-import { optimism } from "viem/chains";
-import { zksync } from "viem/zksync";
+import { mainnet, optimism, rootstock, bsc, gnosis, thunderCore, fuse, polygon, manta, xLayer, fantom, fraxtal, filecoin, zksync, worldchain, astar, polygonZkEvm, coreDao, moonbeam, sei, astarZkEVM, mantle, base, immutableZkEvm, mode, arbitrum, avalanche, linea, bob, blast, taiko, scroll } from "viem/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Merkl",
   wagmi: {
-    chains: [zksync, optimism],
+    chains: [mainnet, optimism, rootstock, bsc, gnosis, thunderCore, fuse, polygon, manta, xLayer, fantom, fraxtal, filecoin, zksync, worldchain, astar, polygonZkEvm, coreDao, moonbeam, sei, astarZkEVM, mantle, base, immutableZkEvm, mode, arbitrum, avalanche, linea, bob, blast, taiko, scroll],
     connectors: [
       coinbaseWallet(),
       walletConnect({
