@@ -10,7 +10,13 @@ export type MerklConfig<T extends Themes> = {
   defaultTheme: keyof T;
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
-  link: {
+  routes: {
+    [key: string]: string;
+  };
+  socials: {
+    [key: string]: string;
+  };
+  links: {
     [key: string]: string;
   };
 };

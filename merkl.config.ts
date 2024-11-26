@@ -1,13 +1,79 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
 import { http } from "viem";
-import { mainnet, optimism, rootstock, bsc, gnosis, thunderCore, fuse, polygon, manta, xLayer, fantom, fraxtal, filecoin, zksync, worldchain, astar, polygonZkEvm, coreDao, moonbeam, sei, astarZkEVM, mantle, base, immutableZkEvm, mode, arbitrum, avalanche, linea, bob, blast, taiko, scroll } from "viem/chains";
+import {
+  mainnet,
+  optimism,
+  rootstock,
+  bsc,
+  gnosis,
+  thunderCore,
+  fuse,
+  polygon,
+  manta,
+  xLayer,
+  fantom,
+  fraxtal,
+  filecoin,
+  zksync,
+  worldchain,
+  astar,
+  polygonZkEvm,
+  coreDao,
+  moonbeam,
+  sei,
+  astarZkEVM,
+  mantle,
+  base,
+  immutableZkEvm,
+  mode,
+  arbitrum,
+  avalanche,
+  linea,
+  bob,
+  blast,
+  taiko,
+  scroll,
+} from "viem/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Merkl",
   wagmi: {
-    chains: [mainnet, optimism, rootstock, bsc, gnosis, thunderCore, fuse, polygon, manta, xLayer, fantom, fraxtal, filecoin, zksync, worldchain, astar, polygonZkEvm, coreDao, moonbeam, sei, astarZkEVM, mantle, base, immutableZkEvm, mode, arbitrum, avalanche, linea, bob, blast, taiko, scroll],
+    chains: [
+      mainnet,
+      optimism,
+      rootstock,
+      bsc,
+      gnosis,
+      thunderCore,
+      fuse,
+      polygon,
+      manta,
+      xLayer,
+      fantom,
+      fraxtal,
+      filecoin,
+      zksync,
+      worldchain,
+      astar,
+      polygonZkEvm,
+      coreDao,
+      moonbeam,
+      sei,
+      astarZkEVM,
+      mantle,
+      base,
+      immutableZkEvm,
+      mode,
+      arbitrum,
+      avalanche,
+      linea,
+      bob,
+      blast,
+      taiko,
+      scroll,
+    ],
     connectors: [
       coinbaseWallet(),
       walletConnect({
@@ -54,16 +120,20 @@ export default createConfig({
   sizing: {
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 2, sm: 4, md: 6, lg: 8, xl: 12 },
-  }
-  link: {
-    merkl: "https://merkl.xyz/",
-    discord: "https://join.zksync.dev/",
+  },
+  routes: {
+    dashboard: "/user",
+    opportunities: "/opportunities",
+    bridge: "/bridge",
+  },
+  socials: {
+    discord: "",
     telegram: "https://t.me/+2T0RNabX2ANkMzAx",
     x: "https://x.com/zksyncignite",
-    github: "https://github.com/matter-labs",
+    github: "",
+  },
+  links: {
+    discord: "https://join.zksync.dev/",
+    merkl: "https://merkl.xyz/",
   },
 });
-
-
-
-
