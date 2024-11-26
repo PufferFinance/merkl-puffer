@@ -12,7 +12,9 @@
     "serve": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@acab/ecsstatic": "^0.8.0",
     "@angleprotocol/merkl-api": "0.10.2",

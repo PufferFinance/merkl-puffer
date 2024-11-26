@@ -28,8 +28,14 @@ export default function Index() {
         description={"Lorem ipsum something cool about the chain"}
         tabs={[
           { label: "Opportunities", link: `/chain/${label?.toLowerCase()}` },
-          { label: "Leaderboard", link: `/chain/${label?.toLowerCase()}/leaderboard` },
-          { label: "Analytics", link: `/chain/${label?.toLowerCase()}/analytics` },
+          {
+            label: "Leaderboard",
+            link: `/chain/${label?.toLowerCase()}/leaderboard`,
+          },
+          {
+            label: "Analytics",
+            link: `/chain/${label?.toLowerCase()}/analytics`,
+          },
         ]}>
         <Outlet />
       </Heading>
@@ -46,7 +52,6 @@ export function ErrorBoundary() {
       <Group className="mx-auto my-auto flex-col p-xl*2 [&>*]:text-center max-w-fit justify-center">
         <Title h={3}>{error?.message ?? "Error"}</Title>
         {/* <Text h={3}>We don't support this chain</Text> */}
-        <div></div>
       </Group>
     </>
   );
