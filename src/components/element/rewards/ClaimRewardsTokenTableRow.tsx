@@ -15,7 +15,10 @@ export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
 export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...props }: ClaimRewardsTokenTableRowProps) {
   const [open, setOpen] = useState(false);
 
-  const unclaimed = useMemo(() => reward.amount - reward.claimed, [reward]);
+  const unclaimed = useMemo(() => BigInt(reward.amount) - BigInt(reward.claimed), [reward]);
+
+  console.log("WSH", reward.token.chainId, reward.amount, reward.claimed, BigInt(reward.amount) - BigInt(reward.claimed), unclaimed);
+  
 
   return (
     <ClaimRewardsTokenRow
@@ -37,14 +40,14 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
       }
       claimedColumn={
         <ClaimRewardsTokenTablePrice
-          amount={reward.claimed}
+          amount={BigInt(reward.claimed)}
           price={reward.token.price}
           decimals={reward.token.decimals}
         />
       }
       pendingColumn={
         <ClaimRewardsTokenTablePrice
-          amount={reward.pending}
+          amount={BigInt(reward.pending)}
           price={reward.token.price}
           decimals={reward.token.decimals}
         />

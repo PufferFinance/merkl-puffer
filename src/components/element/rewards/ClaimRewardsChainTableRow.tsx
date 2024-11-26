@@ -23,6 +23,8 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
 
   const { address: user } = useWalletContext();
   const isUserRewards = useMemo(() => user === from, [user, from]);
+  const isAbleToClaim = useMemo(() => isUserRewards && !reward.rewards.every(({amount, claimed}) => amount === claimed), [isUserRewards, reward]);
+
   const claimTransaction = useMemo(() => {
     const abi = parseAbi(["function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)"]);
 
@@ -90,7 +92,7 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
             remix={"RiArrowDropDownLine"}
           />
           <EventBlocker>
-          {isUserRewards && <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction} >
+          {isAbleToClaim  && <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction} >
             Claim
           </TransactionButton>}
           </EventBlocker>
