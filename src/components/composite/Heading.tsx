@@ -50,7 +50,7 @@ export default function Heading({
                 />
               ))}
             </Icons>
-            <Title h={1}>{title}</Title>
+            <Title h={1} size={3}>{title}</Title>
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}
           <Text>{description}</Text>

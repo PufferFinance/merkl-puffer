@@ -5,6 +5,24 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  outline: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased !important;
+  outline-offset: 2px;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+/* hide scrollbar in the div (Chrome, Safari and Opera) */
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb {
+  display: none;
+}
+
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

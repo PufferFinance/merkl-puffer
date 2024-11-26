@@ -122,9 +122,42 @@ export default createConfig({
     radius: { xs: 2, sm: 4, md: 6, lg: 8, xl: 12 },
   },
   routes: {
-    dashboard: "/user",
-    opportunities: "/opportunities",
-    bridge: "/bridge",
+    homepage: {
+      icon: "RiHomeFill",
+      route: "/",
+      key: crypto.randomUUID(),
+    },
+    dashboard: {
+      icon: "RiDashboard2Fill",
+      route: "/user",
+      key: crypto.randomUUID(),
+    },
+    opportunities: {
+      icon: "RiPlanetFill",
+      route: "/opportunities",
+      key: crypto.randomUUID(),
+    },
+    protocols: {
+      icon: "RiVipCrown2Fill",
+      route: "/protocols",
+      key: crypto.randomUUID(),
+    },
+    bridge: {
+      icon: "RiVipCrown2Fill",
+      route: "/bridge",
+      key: crypto.randomUUID(),
+    },
+    faq: { icon: "RiQuestionFill", route: "/faq", key: crypto.randomUUID() },
+    terms: {
+      icon: "RiCompassesLine",
+      route: "/terms",
+      key: crypto.randomUUID(),
+    },
+    privacy: {
+      icon: "RiInformationFill",
+      route: "/privacy",
+      key: crypto.randomUUID(),
+    },
   },
   socials: {
     discord: "",

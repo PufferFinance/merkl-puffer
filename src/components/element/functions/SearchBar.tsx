@@ -50,7 +50,7 @@ export default function SearchBar() {
 
     return (
       <Group className="flex-col flex-nowrap overflow-hidden">
-        <Scroll className="h-[80vh] w-full gap-xl" vertical>
+        <Scroll className="min-h-[70vh] w-full gap-xl z-10" vertical>
           {entries
             .filter(([_, res]) => res?.length)
             .map(([category, results]) => (
@@ -105,7 +105,7 @@ export default function SearchBar() {
 
   return (
     <Modal
-      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
+      className="h-full py-xl*2 w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[500px] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
       state={[opened, setOpened]}
       modal={
         <>
@@ -118,9 +118,9 @@ export default function SearchBar() {
         </>
       }
     >
-      <Button look="bold">
-        <Icon size="sm" remix={"RiSearch2Line"} />
+      <Button look="bold" className="w-full lg:w-fit justify-between gap-xl*2">
         Search
+        <Icon size="sm" remix={"RiSearch2Line"} />
       </Button>
     </Modal>
   );
