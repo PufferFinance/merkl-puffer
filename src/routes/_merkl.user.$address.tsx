@@ -1,10 +1,12 @@
 import { Outlet, useParams } from "@remix-run/react";
-import { Hash, Icon } from "dappkit";
+import { Button, Group, Hash, Icon } from "dappkit";
 import { Container } from "dappkit";
+import { useState } from "react";
 import Heading from "src/components/composite/Heading";
 
 export default function Index() {
   const { address } = useParams();
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
 
   return (
     <Container>
@@ -12,9 +14,14 @@ export default function Index() {
         icons={[{ remix: "RiUser6Fill" }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
-          <Hash value format="short">
-            {address}
-          </Hash>
+          <Group>
+            <Hash value format="short">
+              {address}
+            </Hash>
+            <Button onClick={() => setIsEditingAddress(e => !e)} look="soft">
+              <Icon remix="RiEdit2Line" />
+            </Button>
+          </Group>
         }
         description={"Inspect rewards, balances and positions."}
         tabs={[

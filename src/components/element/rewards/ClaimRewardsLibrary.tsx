@@ -5,16 +5,15 @@ import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";
 
 export type ClaimRewardsLibraryProps = {
   rewards: Reward[];
+  from: string;
 };
 
-export default function ClaimRewardsLibrary({ rewards }: ClaimRewardsLibraryProps) {
-  console.log("R", rewards);
-
+export default function ClaimRewardsLibrary({ from, rewards }: ClaimRewardsLibraryProps) {
   return (
     <Group className="flex-row w-full [&>*]:flex-grow">
       <ClaimRewardsChainTable>
         {rewards?.map((reward, index) => (
-          <ClaimRewardsChainTableRow reward={reward} key={reward.chain?.id ?? index} />
+          <ClaimRewardsChainTableRow {...{ from, reward }} key={reward.chain?.id ?? index} />
         ))}
       </ClaimRewardsChainTable>
     </Group>

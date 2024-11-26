@@ -11,16 +11,16 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 
   console.log(rewards);
 
-  return json({ rewards });
+  return json({ rewards, address });
 }
 
 export default function Index() {
-  const { rewards } = useLoaderData<typeof loader>();
+  const { rewards, address } = useLoaderData<typeof loader>();
 
   return (
     <>
       <Space size="md" />
-      <ClaimRewardsLibrary rewards={rewards} />
+      <ClaimRewardsLibrary from={address} rewards={rewards} />
     </>
   );
 }

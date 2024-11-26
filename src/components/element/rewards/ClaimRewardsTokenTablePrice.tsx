@@ -14,13 +14,29 @@ export default function ClaimRewardsTokenTablePrice({
   decimals,
   ...props
 }: ClaimRewardsTokenTablePriceProps) {
+  const value = formatUnits(amount, decimals);
+
   return (
     <Group size="sm" className="flex-col">
-      <Value className="text-right" look={amount.toString() === "0" ? "soft" : "base"} format="$0,0">
-        {Number.parseFloat(formatUnits(amount, decimals)) * price}
+      <Value
+        fallback={v => {
+          console.log(price);
+
+          if (price === 0) return "-";
+          return (v.toString() as string).includes("0.0") && "<0.1";
+        }}
+        className="text-right"
+        look={amount.toString() === "0" ? "soft" : "base"}
+        format="$0,0.#">
+        {Number.parseFloat(value) * price}
       </Value>{" "}
-      <Value size="xs" className="text-right" look={"soft"} format="0,0.###">
-        {formatUnits(amount, decimals)}
+      <Value
+        fallback={v => (v as string).includes("0.000") && "<0.001"}
+        size="xs"
+        className="text-right"
+        look={"soft"}
+        format="0,0.###">
+        {value}
       </Value>
     </Group>
   );
