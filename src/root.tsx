@@ -3,8 +3,8 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData } 
 import "./index.css";
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
-import styles from "./index.css?url";
 import { api } from "./api/index.server";
+import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,9 +25,9 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader(_args: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.index.get({ query: { } });
+  const { data: chains } = await api.v4.chains.index.get({ query: {} });
 
-  if (!chains) throw '';
+  if (!chains) throw "";
 
   return json({ ENV: { API_URL: process.env.API_URL }, chains });
 }
