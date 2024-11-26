@@ -23,8 +23,12 @@ export default function useParticipate(
   tokenAddress?: string,
   amount?: bigint,
 ) {
-  const [balances, setBalances] = useState<{ [chainId: number]: { [address: string]: TokenBalances } }>();
-  const [targets, setTargets] = useState<{ [chainId: number]: { [protocolId: string]: Targets } }>();
+  const [balances, setBalances] = useState<{
+    [chainId: number]: { [address: string]: TokenBalances };
+  }>();
+  const [targets, setTargets] = useState<{
+    [chainId: number]: { [protocolId: string]: Targets };
+  }>();
   const [transaction, setTransaction] = useState<Transaction>();
   const [protocols, setProtocols] = useState<Protocols>();
 
@@ -50,12 +54,16 @@ export default function useParticipate(
     async function fetchTargets() {
       if (!chainId || !protocolId) return;
 
-      const { data: targets, ...res } = await clientApi.v4.participate.targets.get({ query: { chainId, protocolId } });
+      const { data: targets, ...res } = await clientApi.v4.participate.targets.get({
+        query: { chainId, protocolId },
+      });
 
       if (res.status === 200)
         setTargets(t => {
           return Object.assign(t ? { ...t } : {}, {
-            [chainId]: Object.assign(t?.[chainId] ?? {}, { [protocolId]: targets }),
+            [chainId]: Object.assign(t?.[chainId] ?? {}, {
+              [protocolId]: targets,
+            }),
           });
         });
     }
@@ -83,7 +91,9 @@ export default function useParticipate(
 
       if (res.status === 200)
         setBalances(b =>
-          Object.assign(b ? { ...b } : {}, { [chainId]: Object.assign(b?.[chainId] ?? {}, { [address]: tokens }) }),
+          Object.assign(b ? { ...b } : {}, {
+            [chainId]: Object.assign(b?.[chainId] ?? {}, { [address]: tokens }),
+          }),
         );
     }
 
@@ -113,8 +123,6 @@ export default function useParticipate(
 
       const { data: transaction, ...res } = await clientApi.v4.participate.transaction.get({ query: payload });
 
-      console.log("TX", res.status, transaction);
-
       if (res.status === 200) setTransaction(transaction);
     }
 
@@ -123,9 +131,6 @@ export default function useParticipate(
 
   const approve = useCallback(() => {
     if (!transaction) return;
-
-    console.log("??", transaction.tx.to, transaction?.tx.data);
-
     const res = writeContract({
       address: payload?.fromTokenAddress as `0x${string}`,
       abi,
@@ -133,23 +138,30 @@ export default function useParticipate(
       args: [transaction.tx.to as `0x${string}`, BigInt(payload?.fromAmount ?? "0")],
     });
 
-    console.log(res);
-  }, [transaction, address]);
+    console.info(res);
+  }, [transaction, payload, writeContract]);
 
   const deposit = useCallback(() => {
-    console.log("HELLO", transaction);
-
     if (!transaction) return;
-
-    console.log("??", transaction.tx.to, transaction?.tx.data);
 
     const res = sendTransaction({
       to: transaction.tx.to as `0x${string}`,
       data: transaction?.tx.data as `0x${string}`,
     });
 
-    console.log(res);
-  }, [transaction, address]);
+    console.info(res);
+  }, [transaction, sendTransaction]);
 
-  return { target, targets, protocols, token, balance, balances, address, deposit, approve, transaction };
+  return {
+    target,
+    targets,
+    protocols,
+    token,
+    balance,
+    balances,
+    address,
+    deposit,
+    approve,
+    transaction,
+  };
 }

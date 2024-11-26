@@ -23,7 +23,6 @@ export default function ParticipateTester({ chains }: ParticipateTesterProps) {
     protocols,
     targets,
     balance,
-    address,
     token: inputToken,
     approve,
     deposit,

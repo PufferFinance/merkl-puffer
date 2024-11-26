@@ -1,28 +1,27 @@
 import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { Group } from "@ariakit/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { Space } from "packages/dappkit/src";
 import { api } from "src/api/index.server";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Participate from "src/components/element/participate/Participate";
-import useOpportunity from "src/hooks/resources/useOpportunity";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains, ...l } = await api.v4.chains.get({ query: { search: chainId } });
+  const { data: chains, ...l } = await api.v4.chains.get({
+    query: { search: chainId },
+  });
   const chain = chains?.[0];
 
   if (!chain) throw "DSS";
 
-  const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
+  const { data: opportunity } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
 
   if (!opportunity) throw "No Opportunity";
 
-  const { data: campaigns, ...r } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
-
-  console.log(r);
+  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
 
   if (!opportunity || !campaigns) throw "DAZZ";
 
@@ -31,9 +30,6 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
 
 export default function Index() {
   const { opportunity, campaigns } = useLoaderData<typeof loader>();
-  const { chain, id } = useParams();
-
-  const { tags, description, link } = useOpportunity(opportunity as Opportunity);
 
   return (
     <Group>

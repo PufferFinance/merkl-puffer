@@ -6,7 +6,7 @@ import Heading from "src/components/composite/Heading";
 
 export default function Index() {
   const { address } = useParams();
-  const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [_isEditingAddress, setIsEditingAddress] = useState(false);
 
   return (
     <Container>
