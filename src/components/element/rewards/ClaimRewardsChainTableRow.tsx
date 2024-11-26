@@ -1,16 +1,16 @@
 import type { Reward } from "@angleprotocol/merkl-api";
-import { Button, Icon, Space, Text, Value } from "dappkit";
+import { Icon, Space, Text, Value } from "dappkit";
+import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
-import { type PropsWithChildren, useCallback, useMemo, useState } from "react";
-import { encodeAbiParameters, encodeFunctionData, formatUnits, parseAbi, parseTransaction, toHex } from "viem";
+import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { type PropsWithChildren, useMemo, useState } from "react";
+import { encodeFunctionData, formatUnits, parseAbi } from "viem";
 import Chain from "../chain/Chain";
 import ClaimRewardsButton from "./ClaimRewardsButton";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
-import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
-import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 
 export type ClaimRewardsChainTableRowProps = PropsWithChildren & {
   from: string;
@@ -23,20 +23,28 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
 
   const { address: user } = useWalletContext();
   const isUserRewards = useMemo(() => user === from, [user, from]);
-  const isAbleToClaim = useMemo(() => isUserRewards && !reward.rewards.every(({amount, claimed}) => amount === claimed), [isUserRewards, reward]);
+  const isAbleToClaim = useMemo(
+    () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
+    [isUserRewards, reward],
+  );
 
   const claimTransaction = useMemo(() => {
     const abi = parseAbi(["function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)"]);
 
-    const tokenAddresses = reward.rewards.map(({token}) => token.address as `0x${string}`);
-    const accumulatedRewards = reward.rewards.map(({amount}) => amount);
-    const proofs = reward.rewards.map(({proofs}) => proofs as `0x${string}`[]);
+    const tokenAddresses = reward.rewards.map(({ token }) => token.address as `0x${string}`);
+    const accumulatedRewards = reward.rewards.map(({ amount }) => amount);
+    const proofs = reward.rewards.map(({ proofs }) => proofs as `0x${string}`[]);
 
     if (!reward || !user || !isUserRewards) return;
     return {
       to: reward.distributor,
-      data: encodeFunctionData({abi, functionName: "claim", args: [tokenAddresses.map(() => user as `0x${string}`), tokenAddresses, accumulatedRewards, proofs]})}
-  }, [user, reward, isUserRewards])
+      data: encodeFunctionData({
+        abi,
+        functionName: "claim",
+        args: [tokenAddresses.map(() => user as `0x${string}`), tokenAddresses, accumulatedRewards, proofs],
+      }),
+    };
+  }, [user, reward, isUserRewards]);
 
   const unclaimed = useMemo(() => {
     return reward.rewards.reduce(
@@ -92,9 +100,11 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
             remix={"RiArrowDropDownLine"}
           />
           <EventBlocker>
-          {isAbleToClaim  && <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction} >
-            Claim
-          </TransactionButton>}
+            {isAbleToClaim && (
+              <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction}>
+                Claim
+              </TransactionButton>
+            )}
           </EventBlocker>
         </>
       }

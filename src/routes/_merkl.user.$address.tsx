@@ -15,10 +15,12 @@ export default function Index() {
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
           <Group>
-          <Hash value format="short">
-            {address}
-          </Hash>
-          <Button onClick={()=> setIsEditingAddress(e => !e)} look="soft"><Icon remix="RiEdit2Line"/></Button>
+            <Hash value format="short">
+              {address}
+            </Hash>
+            <Button onClick={() => setIsEditingAddress(e => !e)} look="soft">
+              <Icon remix="RiEdit2Line" />
+            </Button>
           </Group>
         }
         description={"Inspect rewards, balances and positions."}

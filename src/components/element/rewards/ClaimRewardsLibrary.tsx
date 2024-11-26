@@ -13,7 +13,7 @@ export default function ClaimRewardsLibrary({ from, rewards }: ClaimRewardsLibra
     <Group className="flex-row w-full [&>*]:flex-grow">
       <ClaimRewardsChainTable>
         {rewards?.map((reward, index) => (
-          <ClaimRewardsChainTableRow {...{from, reward}} key={reward.chain?.id ?? index} />
+          <ClaimRewardsChainTableRow {...{ from, reward }} key={reward.chain?.id ?? index} />
         ))}
       </ClaimRewardsChainTable>
     </Group>
