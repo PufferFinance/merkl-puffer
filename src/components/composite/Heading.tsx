@@ -9,7 +9,7 @@ export type HeadingProps = PropsWithChildren<{
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
   tags?: ReactNode[];
-  tabs: { label: ReactNode; link: string }[];
+  tabs?: { label: ReactNode; link: string }[];
 }>;
 
 export default function Heading({ navigation, icons, title, description, tags, tabs, children }: HeadingProps) {

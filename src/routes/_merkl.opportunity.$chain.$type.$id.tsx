@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
-import { Meta, Outlet, isRouteErrorResponse, useLoaderData, useParams, useRouteError } from "@remix-run/react";
+import { Meta, Outlet, isRouteErrorResponse, useLoaderData, useRouteError } from "@remix-run/react";
 import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 
@@ -10,12 +10,12 @@ import useOpportunity from "src/hooks/resources/useOpportunity";
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains, ...resChain } = await api.v4.chains.get({ query: { search: chainId } });
+  const { data: chains } = await api.v4.chains.index.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
   if (!chain) throw "";
 
-  const { data: opportunity, ...res } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
+  const { data: opportunity } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
 
   if (!opportunity) throw "Opportunity";
 
@@ -29,8 +29,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
-  const { chain, id } = useParams();
-
   const { tags, description, link } = useOpportunity(opportunity);
 
   return (

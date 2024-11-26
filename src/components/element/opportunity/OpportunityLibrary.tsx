@@ -3,15 +3,17 @@ import { Group, type Order } from "dappkit";
 import { useMemo } from "react";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 import OpportunityFilters, { type OpportunityFilterProps } from "./OpportunityFilters";
+import OpportunityPagination from "./OpportunityPagination";
 import { OpportunityTable, type opportunityColumns } from "./OpportunityTable";
 import OpportunityTableRow from "./OpportunityTableRow";
 
 export type OpportunityLibrary = {
   opportunities: Opportunity[];
+  count?: number;
   chains?: Chain[];
 } & OpportunityFilterProps;
 
-export default function OpportunityLibrary({ opportunities, only, exclude, chains }: OpportunityLibrary) {
+export default function OpportunityLibrary({ opportunities, count, only, exclude, chains }: OpportunityLibrary) {
   const rows = useMemo(
     () =>
       opportunities?.map(o => <OpportunityTableRow key={`${o.chainId}_${o.type}_${o.identifier}`} opportunity={o} />),
@@ -38,6 +40,7 @@ export default function OpportunityLibrary({ opportunities, only, exclude, chain
       order={(sortIdAndOrder ?? [])?.[1]}
       sort={(sortIdAndOrder ?? [])?.[0] ?? "rewards"}
       onSort={onSort}
+      footer={count !== undefined && <OpportunityPagination count={count} />}
       header={
         <Group className="justify-between w-full">
           <OpportunityFilters {...{ only, exclude, chains }} />

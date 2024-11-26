@@ -1,8 +1,8 @@
 import { api } from "../index.server";
 
-export async function fetchOpportunities(
+function getQueryParams(
   request: Request,
-  overrideQuery?: Parameters<typeof api.v4.opportunity.get>[0]["query"],
+  overrideQuery?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
 ) {
   const status = new URL(request.url).searchParams.get("status");
   const action = new URL(request.url).searchParams.get("action");
@@ -16,10 +16,24 @@ export async function fetchOpportunities(
     { status, action, chainId, page, items, sort, order, name: search },
     overrideQuery ?? {},
   );
+
   const query = Object.entries(filters).reduce(
     (_query, [key, filter]) => Object.assign(_query, !filter ? {} : { [key]: filter }),
     {},
   );
 
-  return await api.v4.opportunities.get({ query });
+  return query;
+}
+
+export async function fetchOpportunities(
+  request: Request,
+  overrideQuery?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+) {
+  const query = getQueryParams(request, overrideQuery);
+
+  const { data: count } = await api.v4.opportunities.count.get({ query });
+  const { data: opportunities } = await api.v4.opportunities.index.get({ query });
+
+  if (count === null || !opportunities) throw "Cannot fetch opportunities";
+  return { opportunities, count };
 }

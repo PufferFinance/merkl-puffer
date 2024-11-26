@@ -6,11 +6,8 @@ import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 import ParticipateTester from "src/components/element/participate/ParticipateTester.client";
 
-const ENSO = "https://api.enso.finance/api";
-const route = "/v1/tokens?protocolSlug=aave-v3&chainId=42161&type=defi&page=1&includeMetadata=false'";
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.get({ query: {} });
+export async function loader(_args: LoaderFunctionArgs) {
+  const { data: chains } = await api.v4.chains.index.get({ query: {} });
 
   return json({ chains });
 }

@@ -8,23 +8,23 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 export async function loader({ params: { id: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId) throw new Error("Unsupported Chain");
 
-  const { data: chains } = await api.v4.chains.get({ query: { search: chainId } });
+  const { data: chains } = await api.v4.chains.index.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
   if (!chain) throw "";
 
-  const { data: opportunities, ...res } = await fetchOpportunities(request, { chainId: chain.id.toString() });
+  const { opportunities, count } = await fetchOpportunities(request, { chainId: chain.id.toString() });
 
-  return json({ opportunities });
+  return json({ opportunities, count });
 }
 
 export default function Index() {
-  const { opportunities } = useLoaderData<typeof loader>();
+  const { opportunities, count } = useLoaderData<typeof loader>();
 
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary exclude={["chain"]} opportunities={opportunities} />
+      <OpportunityLibrary exclude={["chain"]} count={count} opportunities={opportunities} />
     </>
   );
 }

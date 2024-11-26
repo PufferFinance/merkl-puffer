@@ -15,10 +15,10 @@ export function useMerklSearch(input: string, include?: Searchable[]) {
       if (!_input || _input?.replaceAll(" ", "") === "") return;
 
       const fetchers: { [S in Searchable]: (i: string) => Promise<Results[S] | null> } = {
-        chain: async i => (await api.v4.chains.get({ query: { search: i } }))?.data,
-        opportunity: async i => (await api.v4.opportunities.get({ query: { name: i } }))?.data,
-        protocol: async i => (await api.v4.protocols.get({ query: { name: i } }))?.data,
-        token: async i => (await api.v4.tokens.get({ query: { symbol: i } }))?.data ?? null,
+        chain: async i => (await api.v4.chains.index.get({ query: { search: i } }))?.data,
+        opportunity: async i => (await api.v4.opportunities.index.get({ query: { name: i } }))?.data,
+        protocol: async i => (await api.v4.protocols.index.get({ query: { name: i } }))?.data,
+        token: async i => (await api.v4.tokens.index.get({ query: { symbol: i } }))?.data ?? null,
       };
 
       const promises = (include ?? searchables).map(searchable =>

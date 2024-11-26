@@ -6,7 +6,7 @@ import useParticipate from "src/hooks/useParticipate";
 import { formatUnits } from "viem";
 import Token from "../token/Token";
 
-type Chains = Awaited<ReturnType<typeof clientApi.v4.chains.get>>["data"];
+type Chains = Awaited<ReturnType<typeof clientApi.v4.chains.index.get>>["data"];
 
 export type ParticipateTesterProps = {
   chains: Chains;

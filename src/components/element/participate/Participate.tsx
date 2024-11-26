@@ -5,7 +5,7 @@ export type ParticipateProps = {
   opportunity: Opportunity;
 };
 
-export default function Participate({ opportunity }: ParticipateProps) {
+export default function Participate(_props: ParticipateProps) {
   return (
     <>
       <Box>
