@@ -28,10 +28,10 @@ export default function OpportunityPagination({ only, exclude, chains, count }: 
 
   const pages = useMemo(() => (count ?? 0) / (itemsFilter ?? 20), [count, itemsFilter]);
   const pageOptions = useMemo(() => {
-    return [...Array(Math.max((Math.round(pages ?? 0)), 1)).fill(0)]
-    .map((_, index) => index + 1)
-    .reduce((obj, index) => Object.assign(obj, {[index]: index}), {})
-  }, [pages])
+    return [...Array(Math.max(Math.round(pages ?? 0), 1)).fill(0)]
+      .map((_, index) => index + 1)
+      .reduce((obj, index) => Object.assign(obj, { [index]: index }), {});
+  }, [pages]);
 
   return (
     <Group className="justify-between">
@@ -52,11 +52,7 @@ export default function OpportunityPagination({ only, exclude, chains, count }: 
         <Button>
           <Icon size="sm" remix="RiArrowLeftLine" />
         </Button>
-        <Select
-          state={[pageFilter, setPageFilter]}
-          look="bold"
-          options={pageOptions}
-        />
+        <Select state={[pageFilter, setPageFilter]} look="bold" options={pageOptions} />
         <Button>
           <Icon size="sm" remix="RiArrowRightLine" />
         </Button>
