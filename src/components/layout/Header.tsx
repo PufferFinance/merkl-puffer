@@ -60,7 +60,7 @@ export default function Header() {
               >
                 <Image
                   className="w-[140px] md:w-[200px]"
-                  alt="--CLIENT-- logo"
+                  alt={`${config.appName} logo`}
                   src={mode !== "dark" ? customerDarkLogo : customerLogo}
                 />
                 <Icon
@@ -73,7 +73,7 @@ export default function Header() {
               <Button to={config.routes.homepage.route} look="soft">
                 <Image
                   className="w-[200px]"
-                  alt="--CLIENT-- logo"
+                  alt={`${config.appName} logo`}
                   src={mode !== "dark" ? customerDarkLogo : customerLogo}
                 />
               </Button>

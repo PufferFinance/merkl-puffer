@@ -19,7 +19,7 @@ export default function Footer() {
             <Button to="/" look="soft" className="hidden md:flex">
               <Image
                 className="w-[125px] lg:w-[165px]"
-                alt="--CLIENT-- logo"
+                alt={`${config.appName} logo`}
                 src={mode !== "dark" ? customerDarkLogo : customerLogo}
               />
             </Button>
