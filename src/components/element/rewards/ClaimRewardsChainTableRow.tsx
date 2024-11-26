@@ -70,8 +70,6 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
             checkedState={[
               selectedTokens.has(_reward.token.address),
               checked => {
-                console.log("check", checked);
-
                 setSelectedTokens(t => {
                   if (checked) t.add(_reward.token.address);
                   else t.delete(_reward.token.address);

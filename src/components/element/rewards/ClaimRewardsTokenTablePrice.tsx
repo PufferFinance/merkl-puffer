@@ -8,20 +8,13 @@ export type ClaimRewardsTokenTablePriceProps = PropsWithChildren & {
   decimals: number;
 };
 
-export default function ClaimRewardsTokenTablePrice({
-  amount,
-  price,
-  decimals,
-  ...props
-}: ClaimRewardsTokenTablePriceProps) {
+export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }: ClaimRewardsTokenTablePriceProps) {
   const value = formatUnits(amount, decimals);
 
   return (
     <Group size="sm" className="flex-col">
       <Value
         fallback={v => {
-          console.log(price);
-
           if (price === 0) return "-";
           return (v.toString() as string).includes("0.0") && "<0.1";
         }}

@@ -7,9 +7,7 @@ import ClaimRewardsLibrary from "src/components/element/rewards/ClaimRewardsLibr
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address) throw "";
 
-  const { data: rewards, ...l } = await api.v4.users({ address }).rewards.full.get({ query: {} });
-
-  console.log(rewards);
+  const { data: rewards } = await api.v4.users({ address }).rewards.full.get({ query: {} });
 
   return json({ rewards, address });
 }

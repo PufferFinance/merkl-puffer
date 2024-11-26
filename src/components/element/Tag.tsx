@@ -4,7 +4,6 @@ import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
-import type Chain from "./chain/Chain";
 
 export type TagTypes = {
   chain: Opportunity["chain"];
@@ -15,13 +14,19 @@ export type TagTypes = {
   status: Opportunity["status"];
 };
 
-export type TagType<T extends keyof TagTypes = keyof TagTypes> = { type: T; value: TagTypes[T] };
-export type TagProps<T extends keyof TagTypes> = ButtonProps & { type: T; value: TagTypes[T] };
+export type TagType<T extends keyof TagTypes = keyof TagTypes> = {
+  type: T;
+  value: TagTypes[T];
+};
+export type TagProps<T extends keyof TagTypes> = ButtonProps & {
+  type: T;
+  value: TagTypes[T];
+};
 
 export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
   switch (type) {
     case "status": {
-      const status = statuses[value as TagTypes["status"]] ?? statuses["LIVE"];
+      const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
 
       return (
         <Dropdown

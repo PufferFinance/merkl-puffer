@@ -9,7 +9,7 @@ import { chainIdOrder } from "src/constants/chain";
 import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
-  const { data: tokens, ...res } = await api.v4.tokens.get({ query: { symbol } });
+  const { data: tokens } = await api.v4.tokens.get({ query: { symbol } });
   const { data: chains } = await api.v4.chains.get({ query: {} });
 
   if (!tokens?.length) throw new Error("Unknown token");
