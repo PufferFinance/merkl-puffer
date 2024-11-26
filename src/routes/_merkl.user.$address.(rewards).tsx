@@ -9,7 +9,7 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 
   const { data: rewards, ...res } = await api.v4.users({ address }).rewards.full.get({ query: {} });
 
-  console.log(res);
+  if (!rewards) throw ""
 
   return json({ rewards, address });
 }
