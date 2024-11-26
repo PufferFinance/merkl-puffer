@@ -1,19 +1,12 @@
-import type { Chain } from "@angleprotocol/merkl-api";
 import { Button, Group, Icon, List, Select } from "dappkit/src";
 import { useMemo } from "react";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 
-const filters = ["search", "action", "status", "chain"] as const;
-type OpportunityFilter = (typeof filters)[number];
-
 export type OpportunityPaginationProps = {
-  only?: OpportunityFilter[];
-  chains?: Chain[];
-  exclude?: OpportunityFilter[];
   count?: number;
 };
 
-export default function OpportunityPagination({ only, exclude, chains, count }: OpportunityPaginationProps) {
+export default function OpportunityPagination({ count }: OpportunityPaginationProps) {
   const [pageFilter, setPageFilter] = useSearchParamState<number>(
     "page",
     v => v.toString(),

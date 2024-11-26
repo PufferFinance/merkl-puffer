@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { Outlet, useLoaderData, useNavigate, useRouteError } from "@remix-run/react";
+import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { Group, Title } from "dappkit";
 import { Container } from "dappkit";
 import { api } from "src/api/index.server";
@@ -45,7 +45,6 @@ export default function Index() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  const navigate = useNavigate();
 
   return (
     <>

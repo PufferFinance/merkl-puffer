@@ -1,5 +1,5 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
-import { Meta, Outlet, isRouteErrorResponse, useLoaderData, useParams, useRouteError } from "@remix-run/react";
+import { Meta, Outlet, isRouteErrorResponse, useLoaderData, useRouteError } from "@remix-run/react";
 import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 
@@ -29,8 +29,6 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
-  const { chain, id } = useParams();
-
   const { tags, description, link } = useOpportunity(opportunity);
 
   return (

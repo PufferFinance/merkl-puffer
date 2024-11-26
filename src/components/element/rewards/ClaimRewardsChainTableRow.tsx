@@ -7,7 +7,6 @@ import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { type PropsWithChildren, useMemo, useState } from "react";
 import { encodeFunctionData, formatUnits, parseAbi } from "viem";
 import Chain from "../chain/Chain";
-import ClaimRewardsButton from "./ClaimRewardsButton";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
@@ -110,11 +109,6 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
         <Value size="lg" format="$0,0">
           {unclaimed}
         </Value>
-      }
-      claimColumn={
-        <EventBlocker>
-          <ClaimRewardsButton />
-        </EventBlocker>
       }
       claimedColumn={
         <Value size="lg" format="$0,0">
