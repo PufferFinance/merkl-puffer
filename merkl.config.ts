@@ -36,6 +36,10 @@ export default createConfig({
       harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
   },
+  sizing: {
+    spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
+    radius: { xs: 2, sm: 4, md: 6, lg: 8, xl: 12 },
+  }
 });
 
 

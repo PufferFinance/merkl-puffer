@@ -54,7 +54,7 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <DAppProvider chains={data.chains} themes={config.themes} config={config.wagmi}>
+    <DAppProvider chains={data.chains} themes={config.themes} sizing={config.sizing}  config={config.wagmi}>
       <Outlet />
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
