@@ -7,9 +7,7 @@ import { api } from "src/api/index.server";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Participate from "src/components/element/participate/Participate";
 
-export async function loader({
-  params: { id, type, chain: chainId },
-}: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const { data: chains, ...l } = await api.v4.chains.get({
@@ -19,15 +17,11 @@ export async function loader({
 
   if (!chain) throw "DSS";
 
-  const { data: opportunity } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .get();
+  const { data: opportunity } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
 
   if (!opportunity) throw "No Opportunity";
 
-  const { data: campaigns } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .campaigns.get();
+  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
 
   if (!opportunity || !campaigns) throw "DAZZ";
 

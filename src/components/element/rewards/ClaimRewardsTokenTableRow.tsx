@@ -12,17 +12,10 @@ export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
   checkedState?: GetSet<boolean>;
 };
 
-export default function ClaimRewardsTokenTableRow({
-  reward,
-  checkedState,
-  ...props
-}: ClaimRewardsTokenTableRowProps) {
+export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...props }: ClaimRewardsTokenTableRowProps) {
   const [open, setOpen] = useState(false);
 
-  const unclaimed = useMemo(
-    () => BigInt(reward.amount) - BigInt(reward.claimed),
-    [reward]
-  );
+  const unclaimed = useMemo(() => BigInt(reward.amount) - BigInt(reward.claimed), [reward]);
 
   console.log(
     "WSH",
@@ -30,14 +23,14 @@ export default function ClaimRewardsTokenTableRow({
     reward.amount,
     reward.claimed,
     BigInt(reward.amount) - BigInt(reward.claimed),
-    unclaimed
+    unclaimed,
   );
 
   return (
     <ClaimRewardsTokenRow
       data-look={props?.look ?? "none"}
       {...props}
-      onClick={() => setOpen((o) => !o)}
+      onClick={() => setOpen(o => !o)}
       tokenColumn={
         <Group>
           <Token token={reward.token} />
@@ -49,11 +42,7 @@ export default function ClaimRewardsTokenTableRow({
         </Group>
       }
       amountColumn={
-        <ClaimRewardsTokenTablePrice
-          amount={unclaimed}
-          price={reward.token.price}
-          decimals={reward.token.decimals}
-        />
+        <ClaimRewardsTokenTablePrice amount={unclaimed} price={reward.token.price} decimals={reward.token.decimals} />
       }
       claimedColumn={
         <ClaimRewardsTokenTablePrice
@@ -73,26 +62,21 @@ export default function ClaimRewardsTokenTableRow({
         <Group className="items-center justify-center">
           <Checkbox state={checkedState} className="m-auto" size="sm" />
         </Group>
-      }
-    >
+      }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
         {reward.breakdowns
           .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
-          .map((b) => {
+          .map(b => {
             return (
               <>
-                <Divider
-                  className="border-main-2"
-                  horizontal
-                  key={b.opportunity.identifier.concat("-divider")}
-                />
+                <Divider className="border-main-2" horizontal key={b.opportunity.identifier.concat("-divider")} />
                 <ClaimRewardsTokenRow
                   {...props}
                   key={b.opportunity.identifier}
                   data-look={props?.look ?? "none"}
                   className="!px-0  !m-0 border-none"
-                  onClick={() => setOpen((o) => !o)}
+                  onClick={() => setOpen(o => !o)}
                   tokenColumn={
                     <Group className="flex-col justify-center">
                       <OpportuntiyButton opportunity={b.opportunity} />

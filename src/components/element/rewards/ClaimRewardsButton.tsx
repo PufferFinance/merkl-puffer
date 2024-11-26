@@ -8,15 +8,8 @@ export type ClaimRewardsButtonProps = {
   proofs: string[];
 };
 
-export default function ClaimRewardsButton({
-  receivers,
-  tokens,
-  amounts,
-  proofs,
-}: ClaimRewardsButtonProps) {
-  const abi = parseAbi([
-    "function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)",
-  ]);
+export default function ClaimRewardsButton({ receivers, tokens, amounts, proofs }: ClaimRewardsButtonProps) {
+  const abi = parseAbi(["function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)"]);
   const _data = encodeFunctionData({
     abi: abi,
     functionName: "claim",

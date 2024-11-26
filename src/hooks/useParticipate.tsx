@@ -5,21 +5,11 @@ import { parseAbi } from "viem";
 import { useSendTransaction } from "wagmi";
 import { useWriteContract } from "wagmi";
 
-type Targets = Awaited<
-  ReturnType<typeof clientApi.v4.participate.targets.get>
->["data"];
-type Protocols = Awaited<
-  ReturnType<typeof clientApi.v4.participate.protocols.get>
->["data"];
-type TokenBalances = Awaited<
-  ReturnType<typeof clientApi.v4.tokens.balances.get>
->["data"];
-type Payload = Parameters<
-  typeof clientApi.v4.participate.transaction.get
->[0]["query"];
-type Transaction = Awaited<
-  ReturnType<typeof clientApi.v4.participate.transaction.get>
->["data"];
+type Targets = Awaited<ReturnType<typeof clientApi.v4.participate.targets.get>>["data"];
+type Protocols = Awaited<ReturnType<typeof clientApi.v4.participate.protocols.get>>["data"];
+type TokenBalances = Awaited<ReturnType<typeof clientApi.v4.tokens.balances.get>>["data"];
+type Payload = Parameters<typeof clientApi.v4.participate.transaction.get>[0]["query"];
+type Transaction = Awaited<ReturnType<typeof clientApi.v4.participate.transaction.get>>["data"];
 
 const abi = parseAbi([
   "function approve(address, uint256) returns (bool)",
@@ -31,7 +21,7 @@ export default function useParticipate(
   protocolId?: string,
   identifier?: string,
   tokenAddress?: string,
-  amount?: bigint
+  amount?: bigint,
 ) {
   const [balances, setBalances] = useState<{
     [chainId: number]: { [address: string]: TokenBalances };
@@ -48,9 +38,7 @@ export default function useParticipate(
 
   const target = useMemo(() => {
     if (!chainId || !protocolId) return;
-    return targets?.[chainId]?.[protocolId]?.find(
-      ({ identifier: id }) => id === identifier
-    );
+    return targets?.[chainId]?.[protocolId]?.find(({ identifier: id }) => id === identifier);
   }, [chainId, protocolId, targets, identifier]);
 
   const balance = useMemo(() => {
@@ -66,13 +54,12 @@ export default function useParticipate(
     async function fetchTargets() {
       if (!chainId || !protocolId) return;
 
-      const { data: targets, ...res } =
-        await clientApi.v4.participate.targets.get({
-          query: { chainId, protocolId },
-        });
+      const { data: targets, ...res } = await clientApi.v4.participate.targets.get({
+        query: { chainId, protocolId },
+      });
 
       if (res.status === 200)
-        setTargets((t) => {
+        setTargets(t => {
           return Object.assign(t ? { ...t } : {}, {
             [chainId]: Object.assign(t?.[chainId] ?? {}, {
               [protocolId]: targets,
@@ -86,8 +73,7 @@ export default function useParticipate(
 
   useEffect(() => {
     async function fetchProtocols() {
-      const { data: protocols, ...res } =
-        await clientApi.v4.participate.protocols.get({ query: {} });
+      const { data: protocols, ...res } = await clientApi.v4.participate.protocols.get({ query: {} });
 
       if (res.status === 200) setProtocols(protocols);
     }
@@ -104,10 +90,10 @@ export default function useParticipate(
       });
 
       if (res.status === 200)
-        setBalances((b) =>
+        setBalances(b =>
           Object.assign(b ? { ...b } : {}, {
             [chainId]: Object.assign(b?.[chainId] ?? {}, { [address]: tokens }),
-          })
+          }),
         );
     }
 
@@ -115,15 +101,7 @@ export default function useParticipate(
   }, [chainId, address]);
 
   const payload: Payload | undefined = useMemo(() => {
-    if (
-      !chainId ||
-      !protocolId ||
-      !address ||
-      !amount ||
-      !tokenAddress ||
-      !target?.identifier
-    )
-      return;
+    if (!chainId || !protocolId || !address || !amount || !tokenAddress || !target?.identifier) return;
 
     const token = balance?.find(({ address: a }) => a === tokenAddress);
 
@@ -143,8 +121,7 @@ export default function useParticipate(
     async function fetchTransaction() {
       if (!payload) return;
 
-      const { data: transaction, ...res } =
-        await clientApi.v4.participate.transaction.get({ query: payload });
+      const { data: transaction, ...res } = await clientApi.v4.participate.transaction.get({ query: payload });
 
       if (res.status === 200) setTransaction(transaction);
     }
@@ -158,10 +135,7 @@ export default function useParticipate(
       address: payload?.fromTokenAddress as `0x${string}`,
       abi,
       functionName: "approve",
-      args: [
-        transaction.tx.to as `0x${string}`,
-        BigInt(payload?.fromAmount ?? "0"),
-      ],
+      args: [transaction.tx.to as `0x${string}`, BigInt(payload?.fromAmount ?? "0")],
     });
 
     console.info(res);
