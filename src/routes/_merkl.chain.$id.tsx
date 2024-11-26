@@ -6,7 +6,7 @@ import { api } from "src/api/index.server";
 import Heading from "src/components/composite/Heading";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.get({ query: { search: id } });
+  const { data: chains } = await api.v4.chains.index.get({ query: { search: id } });
   const chain = chains?.[0];
 
   if (!chain) throw new Error("Unsupported Chain");

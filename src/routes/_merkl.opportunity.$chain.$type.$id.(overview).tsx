@@ -10,7 +10,7 @@ import Participate from "src/components/element/participate/Participate";
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains, ...l } = await api.v4.chains.get({
+  const { data: chains, ...l } = await api.v4.chains.index.get({
     query: { search: chainId },
   });
   const chain = chains?.[0];

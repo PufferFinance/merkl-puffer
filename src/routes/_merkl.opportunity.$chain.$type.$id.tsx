@@ -10,7 +10,7 @@ import useOpportunity from "src/hooks/resources/useOpportunity";
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains, ...resChain } = await api.v4.chains.get({ query: { search: chainId } });
+  const { data: chains, ...resChain } = await api.v4.chains.index.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
   if (!chain) throw "";

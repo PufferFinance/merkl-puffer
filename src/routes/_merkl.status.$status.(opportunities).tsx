@@ -11,21 +11,21 @@ export async function loader({ params: { status: _status }, request }: LoaderFun
 
   if (!status) throw new Error("Unknown status");
 
-  const { data: opportunities, ...res } = await fetchOpportunities(request, { status });
-  const { data: chains } = await api.v4.chains.get({ query: {} });
+  const { opportunities, count } = await fetchOpportunities(request, { status });
+  const { data: chains } = await api.v4.chains.index.get({ query: {} });
 
   if (!opportunities || !chains) throw new Error("Unknown opportunity");
 
-  return json({ opportunities, chains });
+  return json({ opportunities, chains, count });
 }
 
 export default function Index() {
-  const { opportunities, chains } = useLoaderData<typeof loader>();
+  const { opportunities, chains, count } = useLoaderData<typeof loader>();
 
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary exclude={["status"]} opportunities={opportunities} chains={chains} />
+      <OpportunityLibrary exclude={["status"]} count={count} opportunities={opportunities} chains={chains} />
     </>
   );
 }

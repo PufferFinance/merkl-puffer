@@ -7,20 +7,20 @@ import { fetchOpportunities } from "src/api/opportunity/opportunity";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { data: opportunities } = await fetchOpportunities(request);
-  const { data: chains } = await api.v4.chains.get({ query: {} });
+  const { opportunities, count } = await fetchOpportunities(request);
+  const { data: chains } = await api.v4.chains.index.get({ query: {} });
 
   if (!chains || !opportunities) throw "";
-  return json({ opportunities, chains });
+  return json({ opportunities, chains, count });
 }
 
 export default function Index() {
-  const { opportunities, chains } = useLoaderData<typeof loader>();
+  const { opportunities, chains, count } = useLoaderData<typeof loader>();
 
   return (
     <>
       <Space size="md" />
-      <OpportunityLibrary chains={chains} opportunities={opportunities as Opportunity[]} />
+      <OpportunityLibrary chains={chains} count={count} opportunities={opportunities as Opportunity[]} />
     </>
   );
 }

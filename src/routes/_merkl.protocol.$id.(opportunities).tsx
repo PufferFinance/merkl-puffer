@@ -10,16 +10,16 @@ export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
 
   if (!protocol) throw new Error("Unsupported Protocol");
 
-  const { data: opportunities, ...res } = await fetchOpportunities(request, { mainProtocolType: protocol.type });
-  const { data: chains } = await api.v4.chains.get({ query: {} });
+  const { opportunities, count } = await fetchOpportunities(request, { mainProtocolId: id });
+  const { data: chains } = await api.v4.chains.index.get({ query: {} });
 
   if (!opportunities || !chains) throw new Error("");
 
-  return json({ opportunities, chains });
+  return json({ opportunities, chains, count });
 }
 
 export default function Index() {
-  const { opportunities, chains } = useLoaderData<typeof loader>();
+  const { opportunities, chains, count } = useLoaderData<typeof loader>();
 
   return (
     <>

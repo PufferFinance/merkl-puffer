@@ -75,12 +75,12 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
     v => v?.split(","),
   );
 
-  const [innerSearch, setInnerSearch] = useState<string>();
   const [search, setSearch] = useSearchParamState<string>(
     "search",
     v => v,
     v => v,
   );
+  const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
 
   const fields = useMemo(() => {
     if (only) return filters.filter(f => only.includes(f));
