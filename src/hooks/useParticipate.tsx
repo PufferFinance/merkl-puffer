@@ -32,7 +32,7 @@ export default function useParticipate(
   const [transaction, setTransaction] = useState<Transaction>();
   const [protocols, setProtocols] = useState<Protocols>();
 
-  const { address, config } = useWalletContext();
+  const { address } = useWalletContext();
   const { sendTransaction } = useSendTransaction();
   const { writeContract } = useWriteContract();
 
