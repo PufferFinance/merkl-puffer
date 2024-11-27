@@ -5,7 +5,11 @@ import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
+import {
+  type Results,
+  type Searchable,
+  useMerklSearch,
+} from "src/hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -46,7 +50,7 @@ export default function SearchBar() {
 
     return (
       <Group className="flex-col flex-nowrap overflow-hidden">
-        <Scroll className="h-[80vh] w-full gap-xl" vertical>
+        <Scroll className="min-h-[70vh] w-full gap-xl z-10" vertical>
           {entries
             .filter(([_, res]) => res?.length)
             .map(([category, results]) => (
@@ -57,7 +61,11 @@ export default function SearchBar() {
                     switch (category) {
                       case "chain":
                         return (
-                          <Button to={`/chain/${results[i].name}`} size="lg" look="bold">
+                          <Button
+                            to={`/chain/${results[i].name}`}
+                            size="lg"
+                            look="bold"
+                          >
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -65,13 +73,21 @@ export default function SearchBar() {
                         return <OpportunityResult opportunity={results[i]} />;
                       case "token":
                         return (
-                          <Button to={`/token/${results[i].symbol}`} size="lg" look="bold">
+                          <Button
+                            to={`/token/${results[i].symbol}`}
+                            size="lg"
+                            look="bold"
+                          >
                             <Icon src={results[i].icon} /> {results[i].symbol}
                           </Button>
                         );
                       case "protocol":
                         return (
-                          <Button to={`/protocol/${results[i].name}`} size="lg" look="bold">
+                          <Button
+                            to={`/protocol/${results[i].name}`}
+                            size="lg"
+                            look="bold"
+                          >
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -89,17 +105,22 @@ export default function SearchBar() {
 
   return (
     <Modal
-      className="h-full py-xl*2 w-[500px] [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
+      className="h-full py-xl*2 w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[500px] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
       state={[opened, setOpened]}
       modal={
         <>
-          <Input look="bold" state={[searchInput, setSearchInput]} placeholder="Search Merkl..." />
+          <Input
+            look="bold"
+            state={[searchInput, setSearchInput]}
+            placeholder="Search Merkl..."
+          />
           {Results}
         </>
-      }>
-      <Button look="bold">
+      }
+    >
+      <Button look="bold" className="w-full lg:w-fit justify-between gap-xl*2">
+        Search
         <Icon size="sm" remix={"RiSearch2Line"} />
-        Search... ctrl+k
       </Button>
     </Modal>
   );

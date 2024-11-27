@@ -12,7 +12,15 @@ export type HeadingProps = PropsWithChildren<{
   tabs?: { label: ReactNode; link: string }[];
 }>;
 
-export default function Heading({ navigation, icons, title, description, tags, tabs, children }: HeadingProps) {
+export default function Heading({
+  navigation,
+  icons,
+  title,
+  description,
+  tags,
+  tabs,
+  children,
+}: HeadingProps) {
   const location = useLocation();
 
   return (
@@ -20,24 +28,29 @@ export default function Heading({ navigation, icons, title, description, tags, t
       <Group className="flex-row justify-between pb-md">
         <Group size="sm" className="mt-xl flex-col">
           <Group>
-            {/** Disabled and set opacity to 0 when undefined to preserve layout height */}
+            {/** Disabled and set invisible when undefined to preserve layout height */}
             <Button
-              className={!navigation ? "opacity-0" : ""}
+              className={!navigation ? "invisible" : ""}
               disabled={!navigation?.link}
               to={navigation?.link}
               look="soft"
-              size="sm">
+              size="sm"
+            >
               <Icon size="sm" remix="RiArrowLeftSLine" />
               {navigation?.label}
             </Button>
           </Group>
           <Group>
             <Icons size="lg">
-              {icons?.map(icon => (
-                <Icon className="text-main-12" key={`${Object.values(icon)}`} {...icon} />
+              {icons?.map((icon) => (
+                <Icon
+                  className="text-main-12"
+                  key={`${Object.values(icon)}`}
+                  {...icon}
+                />
               ))}
             </Icons>
-            <Title h={1}>{title}</Title>
+            <Title h={1} size={3}>{title}</Title>
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}
           <Text>{description}</Text>
