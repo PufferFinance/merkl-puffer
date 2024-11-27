@@ -17,15 +17,6 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
 
   const unclaimed = useMemo(() => BigInt(reward.amount) - BigInt(reward.claimed), [reward]);
 
-  console.log(
-    "WSH",
-    reward.token.chainId,
-    reward.amount,
-    reward.claimed,
-    BigInt(reward.amount) - BigInt(reward.claimed),
-    unclaimed,
-  );
-
   return (
     <ClaimRewardsTokenRow
       data-look={props?.look ?? "none"}

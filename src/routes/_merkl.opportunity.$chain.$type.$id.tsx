@@ -6,11 +6,14 @@ import Heading from "src/components/composite/Heading";
 import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
 import useOpportunity from "src/hooks/resources/useOpportunity";
+import type { Campaign } from "@angleprotocol/merkl-api";
+import moment from "moment";
+import { useMemo } from "react";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chains.index.get({ query: { search: chainId } });
+  const { data: chains } = await api.v4.chains.get({ query: { search: chainId } });
   const chain = chains?.[0];
 
   if (!chain) throw "";
@@ -19,39 +22,16 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
 
   if (!opportunity) throw "Opportunity";
 
-  return json(opportunity);
+  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
+  if (!campaigns || !opportunity) throw "DAZZ";
+
+  return json({ opportunity, campaigns: campaigns.campaigns });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (data?.error) return [{ title: "404 on Merkl" }];
   return [{ title: `${data?.name} on Merkl` }];
 };
-
-export default function Index() {
-  const opportunity = useLoaderData<typeof loader>();
-  const { tags, description, link } = useOpportunity(opportunity);
-
-  return (
-    <Container>
-      <Meta />
-      <Heading
-        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={opportunity.name}
-        description={description}
-        tabs={[
-          { label: "Overview", link },
-          { label: "Leaderboard", link: `${link}/leaderboard` },
-          { label: "Analytics", link: `${link}/analytics` },
-        ]}
-        tags={tags.map(tag => (
-          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
-        ))}>
-        <Outlet />
-      </Heading>
-    </Container>
-  );
-}
 
 export function ErrorBoundary() {
   const error = useRouteError();
@@ -77,4 +57,36 @@ export function ErrorBoundary() {
     );
   }
   return <h1>Unknown Error</h1>;
+}
+
+export default function Index() {
+  const { opportunity, campaigns } = useLoaderData<typeof loader>();
+
+  const { tags, description, link } = useOpportunity(opportunity);
+
+  const filteredCampaigns = useMemo(() => {
+    const now = moment().unix();
+    return campaigns.filter((c: Campaign) => Number(c.endTimestamp) > now);
+  }, [campaigns]);
+
+  return (
+    <Container>
+      <Meta />
+      <Heading
+        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
+        navigation={{ label: "Back to opportunities", link: "/" }}
+        title={opportunity.name}
+        description={description}
+        tabs={[
+          { label: "Overview", link },
+          { label: "Leaderboard", link: `${link}/leaderboard` },
+        ]}
+        tags={tags.map(tag => (
+          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
+        ))}
+        campaigns={filteredCampaigns}>
+        <Outlet />
+      </Heading>
+    </Container>
+  );
 }

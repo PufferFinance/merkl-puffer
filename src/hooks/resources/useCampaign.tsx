@@ -23,7 +23,7 @@ export default function useCampaign(campaign: Campaign) {
         return (
           <Group size="xl" className="flex-nowrap [&>*]:flex-col [&>*]:justify-center">
             {[
-              { label: "FEES", value: params.weightFees / 10000 },
+              { label: "Fees", value: params.weightFees / 10000 },
               { label: params.symbolToken0, value: params.weightToken0 / 10000 },
               { label: params.symbolToken1, value: params.weightToken1 / 10000 },
             ].map(({ label, value }) => {

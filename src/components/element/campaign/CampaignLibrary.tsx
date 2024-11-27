@@ -10,7 +10,7 @@ export type CampaignProps = {
 };
 
 export default function CampaignLibrary({ campaigns }: CampaignProps) {
-  const [showInactive, setShowInactive] = useState(campaigns?.every(c => c.endTimestamp < moment().unix()));
+  const [showInactive, setShowInactive] = useState(false);
 
   const rows = useMemo(() => {
     const now = moment().unix();
@@ -34,7 +34,19 @@ export default function CampaignLibrary({ campaigns }: CampaignProps) {
         </Group>
       }
       footer={"Something"}>
-      {rows}
+      {!!rows.length ? (
+        rows
+      ) : (
+        <Group className="flex-col text-center">
+          <Text>No active campaign</Text>
+          <div className="w-full">
+            <Button onClick={() => setShowInactive(r => !r)} look="soft" className="m-auto">
+              <Icon size="sm" remix={showInactive ? "RiEyeLine" : "RiEyeOffLine"} /> {!showInactive ? "Show" : "Hide"}{" "}
+              Inactive
+            </Button>
+          </div>
+        </Group>
+      )}
     </CampaignTable>
   );
 }
