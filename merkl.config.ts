@@ -166,7 +166,6 @@ export default createConfig({
     github: "",
   },
   links: {
-    discord: "https://join.zksync.dev/",
     merkl: "https://merkl.xyz/",
   },
 });
