@@ -13,6 +13,7 @@ export type routesType = {
 export type MerklConfig<T extends Themes> = {
   themes: T;
   sizing: {
+    width: { [Size in (typeof sizeScale)[number]]: number };
     spacing: { [Size in (typeof sizeScale)[number]]: number };
     radius: { [Size in (typeof sizeScale)[number]]: number };
   };

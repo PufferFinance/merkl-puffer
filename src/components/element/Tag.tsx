@@ -1,5 +1,15 @@
 import type { Opportunity, Token } from "@angleprotocol/merkl-api";
-import { Button, Divider, Dropdown, Group, Hash, Icon, Text, Title } from "dappkit";
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Group,
+  Hash,
+  Icon,
+  Text,
+  Tag as PrimitiveTag,
+  Title,
+} from "dappkit";
 import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
@@ -23,7 +33,11 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & {
   value: TagTypes[T];
 };
 
-export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
+export default function Tag<T extends keyof TagTypes>({
+  type,
+  value,
+  ...props
+}: TagProps<T>) {
   switch (type) {
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
@@ -47,11 +61,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 Open
               </Button>
             </>
-          }>
-          <Button key={value} {...props}>
+          }
+        >
+          <PrimitiveTag look="soft" key={value} {...props}>
             <Icon size={props?.size} {...status.icon} />
             {status?.label}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
@@ -77,11 +92,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 Open
               </Button>
             </>
-          }>
-          <Button key={value} {...props}>
+          }
+        >
+          <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={chain?.icon} />
             {chain?.name}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
@@ -109,11 +125,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 Open
               </Button>
             </>
-          }>
-          <Button key={value} {...props}>
+          }
+        >
+          <PrimitiveTag look="bold" key={value} {...props}>
             <Icon size={props?.size} {...action.icon} />
             {action?.label}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
@@ -150,11 +167,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 </Button>
               </Group>
             </>
-          }>
-          <Button key={value} {...props}>
+          }
+        >
+          <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.icon} />
             {token?.symbol}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
@@ -183,7 +201,11 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider className="border-main-6" horizontal />
               {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="sm">
-                <Button to={`/chain/${token.chain?.name}`} size="sm" look="bold">
+                <Button
+                  to={`/chain/${token.chain?.name}`}
+                  size="sm"
+                  look="bold"
+                >
                   <Icon size="sm" src={token.chain?.icon} />
                   {token.chain?.name}
                 </Button>
@@ -195,11 +217,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 </Button>
               </Group>
             </>
-          }>
-          <Button key={value} {...props}>
+          }
+        >
+          <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.chain.icon} />
             {token.chain.name}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
@@ -225,7 +248,11 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider className="border-main-6" horizontal />
               {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="sm">
-                <Button to={`/protocol/${protocol?.name}`} size="sm" look="bold">
+                <Button
+                  to={`/protocol/${protocol?.name}`}
+                  size="sm"
+                  look="bold"
+                >
                   {protocol?.name} on Merkl
                 </Button>
                 <Button size="sm" look="bold">
@@ -233,15 +260,16 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 </Button>
               </Group>
             </>
-          }>
-          <Button key={value} {...props}>
-            <Icon size={props?.size} src={protocol?.icon} />
+          }
+        >
+          <PrimitiveTag look="tint" key={value} {...props}>
+            <Icon src={protocol?.icon} />
             {value?.name}
-          </Button>
+          </PrimitiveTag>
         </Dropdown>
       );
     }
     default:
-      return <Button {...props}>{value}</Button>;
+      return <PrimitiveTag {...props}>{value}</PrimitiveTag>;
   }
 }
