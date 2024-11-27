@@ -11,7 +11,7 @@ import {
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
 import { api } from "./api/index.server";
-import dappkitStyles from "../packages/dappkit/src/style.css";
+import dappkitStyles from "../packages/dappkit/src/style.css?url";
 import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
