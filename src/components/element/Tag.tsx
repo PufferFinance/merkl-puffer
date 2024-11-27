@@ -7,7 +7,7 @@ import {
   Hash,
   Icon,
   Text,
-  Tag as PrimitiveTag,
+  PrimitiveTag,
   Title,
 } from "dappkit";
 import type { ButtonProps } from "dappkit";

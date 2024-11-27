@@ -120,6 +120,7 @@ export default function SearchBar() {
         <>
           <Input
             look="bold"
+            size="md"
             state={[searchInput, setSearchInput]}
             placeholder="Search Merkl..."
           />
