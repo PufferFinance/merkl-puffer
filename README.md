@@ -10,7 +10,6 @@
 4. `bun i`
 5. `bun dev`
 
-
 ## Development
 
 Run the dev server:
@@ -68,4 +67,20 @@ Make sure to deploy the output of `npm run build`
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
 
+## License
 
+This project is licensed under the **BSD 3-Clause License with Specific Usage Restrictions**.
+
+### Key Terms
+
+- **Permitted Use**: This software may only be used to develop applications (frontend or backend) that directly interface with the Merkl incentive distribution solution.
+- **Prohibited Uses**:
+  - Developing standalone applications unrelated to the original backend.
+  - Creating competitive backend services or applications.
+  - Reverse engineering the core backend logic.
+  - Developing alternative backend implementations.
+- **Commercial Use**: Commercial use of this software, including incorporating it into paid products or services, is **strictly prohibited without prior written approval** from Angle Labs, Inc. For inquiries regarding commercial use, contact [contact@merkl.xyz](contact@merkl.xyz)
+
+### Full License
+
+For detailed terms and conditions, refer to the [`LICENSE`](./LICENSE) file in this repository.
