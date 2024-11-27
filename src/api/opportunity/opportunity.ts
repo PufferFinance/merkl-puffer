@@ -8,17 +8,20 @@ function getQueryParams(
   const action = new URL(request.url).searchParams.get("action");
   const chainId = new URL(request.url).searchParams.get("chain");
   const page = new URL(request.url).searchParams.get("page");
+  console.log("PAGE", page);
+
   const items = new URL(request.url).searchParams.get("items");
   const search = new URL(request.url).searchParams.get("search");
   const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
   const filters = Object.assign(
-    { status, action, chainId, page, items, sort, order, name: search },
+    { status, action, chainId, items, sort, order, name: search, page },
     overrideQuery ?? {},
+    page !== null && { page: Number(page) - 1 },
   );
 
   const query = Object.entries(filters).reduce(
-    (_query, [key, filter]) => Object.assign(_query, !filter ? {} : { [key]: filter }),
+    (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
     {},
   );
 

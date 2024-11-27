@@ -19,17 +19,33 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
     v => Number.parseInt(v),
   );
 
-  const pages = useMemo(() => (count ?? 0) / (itemsFilter ?? 20), [count, itemsFilter]);
+  const pages = useMemo(() => Math.round((count ?? 0) / (itemsFilter ?? 20)) - 1, [count, itemsFilter]);
   const pageOptions = useMemo(() => {
     return [...Array(Math.max(Math.round(pages ?? 0), 1)).fill(0)]
       .map((_, index) => index + 1)
       .reduce((obj, index) => Object.assign(obj, { [index]: index }), {});
   }, [pages]);
 
-  return (
-    <Group className="justify-between">
+  const renderPageNavigator = useMemo(() => {
+    return (
       <List flex="row">
-        <Button>
+        <Button disabled={(pageFilter ?? 0) <= 1} onClick={() => setPageFilter(Math.max(1, (pageFilter ?? 0) - 1))}>
+          <Icon size="sm" remix="RiArrowLeftLine" />
+        </Button>
+        <Select state={[pageFilter, setPageFilter]} look="bold" options={pageOptions} />
+        <Button
+          disabled={(pageFilter ?? 0) >= pages}
+          onClick={() => setPageFilter(Math.min(pages, (pageFilter ?? 0) + 1))}>
+          <Icon size="sm" remix="RiArrowRightLine" />
+        </Button>
+      </List>
+    );
+  }, [pageFilter, setPageFilter, pageOptions]);
+
+  const renderPageSizeConfigurator = useMemo(() => {
+    return (
+      <List flex="row">
+        <Button onClick={() => setItemsFilter(Math.min(50, (itemsFilter ?? 0) + 10))}>
           More <Icon size="sm" remix="RiArrowDownLine" />
         </Button>
         <Select
@@ -37,19 +53,17 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
           look="bold"
           options={{ 10: "10", 20: "20", 30: "30", 40: "40", 50: "50" }}
         />
-        <Button>
+        <Button onClick={() => setItemsFilter(Math.max(10, (itemsFilter ?? 0) - 10))}>
           Less <Icon size="sm" remix="RiArrowUpLine" />
         </Button>
       </List>
-      <List flex="row">
-        <Button>
-          <Icon size="sm" remix="RiArrowLeftLine" />
-        </Button>
-        <Select state={[pageFilter, setPageFilter]} look="bold" options={pageOptions} />
-        <Button>
-          <Icon size="sm" remix="RiArrowRightLine" />
-        </Button>
-      </List>
+    );
+  }, [itemsFilter, setItemsFilter]);
+
+  return (
+    <Group className="justify-between">
+      {renderPageSizeConfigurator}
+      {renderPageNavigator}
     </Group>
   );
 }

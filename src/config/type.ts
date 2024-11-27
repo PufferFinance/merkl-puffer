@@ -1,6 +1,6 @@
+import type * as RemixIcon from "@remixicon/react";
 import type { Themes, sizeScale } from "dappkit";
 import { createConfig as createWagmiConfig } from "wagmi";
-import type * as RemixIcon from "@remixicon/react";
 
 export type routesType = {
   [key: string]: {
@@ -28,10 +28,7 @@ export type MerklConfig<T extends Themes> = {
   };
 };
 
-export function createConfig<T extends Themes>({
-  wagmi,
-  ...config
-}: MerklConfig<T>) {
+export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
   const wagmiConfig = createWagmiConfig(wagmi);
 
   return { wagmi: wagmiConfig, ...config };

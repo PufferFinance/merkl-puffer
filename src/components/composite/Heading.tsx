@@ -12,15 +12,7 @@ export type HeadingProps = PropsWithChildren<{
   tabs?: { label: ReactNode; link: string }[];
 }>;
 
-export default function Heading({
-  navigation,
-  icons,
-  title,
-  description,
-  tags,
-  tabs,
-  children,
-}: HeadingProps) {
+export default function Heading({ navigation, icons, title, description, tags, tabs, children }: HeadingProps) {
   const location = useLocation();
 
   return (
@@ -34,23 +26,20 @@ export default function Heading({
               disabled={!navigation?.link}
               to={navigation?.link}
               look="soft"
-              size="sm"
-            >
+              size="sm">
               <Icon size="sm" remix="RiArrowLeftSLine" />
               {navigation?.label}
             </Button>
           </Group>
           <Group>
             <Icons size="lg">
-              {icons?.map((icon) => (
-                <Icon
-                  className="text-main-12"
-                  key={`${Object.values(icon)}`}
-                  {...icon}
-                />
+              {icons?.map(icon => (
+                <Icon className="text-main-12" key={`${Object.values(icon)}`} {...icon} />
               ))}
             </Icons>
-            <Title h={1} size={3}>{title}</Title>
+            <Title h={1} size={3}>
+              {title}
+            </Title>
           </Group>
           {tags && <Group className="mb-lg">{tags}</Group>}
           <Text>{description}</Text>

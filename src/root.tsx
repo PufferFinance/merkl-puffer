@@ -1,17 +1,9 @@
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData } from "@remix-run/react";
 import { DAppProvider } from "dappkit";
 import config from "../merkl.config";
-import { api } from "./api/index.server";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
+import { api } from "./api/index.server";
 import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
@@ -57,12 +49,7 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <DAppProvider
-      chains={data.chains}
-      themes={config.themes}
-      sizing={config.sizing}
-      config={config.wagmi}
-    >
+    <DAppProvider chains={data.chains} themes={config.themes} sizing={config.sizing} config={config.wagmi}>
       <Outlet />
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
