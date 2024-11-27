@@ -4,8 +4,8 @@ import Image from "../../../packages/dappkit/src/components/primitives/Image";
 import config from "merkl.config";
 import merklDarkLogo from "src/assets/images/by-merkl-dark.svg";
 import merklLogo from "src/assets/images/by-merkl.svg";
-import customerDarkLogo from "src/customer/images/customer-dark-logo.svg";
-import customerLogo from "src/customer/images/customer-logo.svg";
+import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
+import customerLogo from "src/customer/assets/images/customer-logo.svg";
 import Socials from "../element/Socials";
 
 export default function Footer() {

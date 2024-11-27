@@ -8,8 +8,8 @@ import {
   Dropdown,
 } from "dappkit";
 import SearchBar from "../element/functions/SearchBar";
-import customerDarkLogo from "src/customer/images/customer-dark-logo.svg";
-import customerLogo from "src/customer/images/customer-logo.svg";
+import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
+import customerLogo from "src/customer/assets/images/customer-logo.svg";
 import { Image } from "dappkit";
 
 import { motion } from "framer-motion";
