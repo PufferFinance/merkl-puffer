@@ -59,7 +59,7 @@ export default function Hero({
   return (
     <>
       <Group
-        className="flex-row justify-between aspect-[1440/440] bg-cover bg-no-repeat"
+        className="flex-row justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
         style={{ backgroundImage: `url('${config.images.hero}')` }}
       >
         <Container>
