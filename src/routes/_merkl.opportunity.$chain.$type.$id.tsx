@@ -10,6 +10,7 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
+import { useMemo } from "react";
 import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";
 
@@ -45,6 +46,18 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export default function Index() {
   const opportunity = useLoaderData<typeof loader>();
   const { tags, description, link } = useOpportunity(opportunity);
+  const styleName = useMemo(() => {
+    const spaced = opportunity?.name.split(' ');
+
+    return spaced.map((str, index) => {
+      // biome-ignore lint/suspicious/noArrayIndexKey: required
+      if (!str.match(/[\p{Letter}\p{Mark}]+/gu)) return [<span key={str + index} className="text-main-11">{str}</span>];
+      if (str.includes('-')) return str.split('-').flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">-</span>])
+      if (str.includes('/')) return str.split('/').flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>])
+      // biome-ignore lint/suspicious/noArrayIndexKey: required
+      return [<span key={str + index}>{str}</span>]
+    }).flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "])
+  }, [opportunity])
 
   return (
     <>
@@ -52,7 +65,7 @@ export default function Index() {
       <Hero
         icons={opportunity.tokens.map((t) => ({ src: t.icon }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
-        title={opportunity.name}
+        title={styleName}
         description={description}
         tabs={[
           { label: "Overview", link },
