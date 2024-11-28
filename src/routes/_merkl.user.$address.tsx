@@ -1,6 +1,5 @@
 import { Outlet, useParams } from "@remix-run/react";
-import { Button, Group, Hash, Icon, Title } from "dappkit";
-import { Container } from "dappkit";
+import { Group, Hash, Icon, Value, Text, Button } from "dappkit";
 import { useState } from "react";
 import Hero from "src/components/composite/Hero";
 
@@ -10,18 +9,46 @@ export default function Index() {
 
   return (
     <Hero
-      icons={[{ remix: "RiAccountCircleFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
-        <Group>
-          <Title h={1}>
-            <Hash format="short" copy>
-              {address}
-            </Hash>
-          </Title>
+        <Group className="w-full gap-xl md:gap-xl*4 items-center">
+          {/* TODO: Make it dynamic this */}
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $6k
+            </Text>
+            <Text size="xl" className="!font-bold">
+              Total earned
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $1.2k
+            </Text>
+            <Text size={"xl"} className="!font-bold">
+              Earned today
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $3k
+            </Text>
+            <Text size={"xl"} className="!font-bold">
+              Claimable
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Button look="hype" size="lg">
+              Claim
+            </Button>
+          </Group>
         </Group>
       }
-      description={"Inspect rewards, balances and positions."}
+      description={
+        <Hash size={4} className="text-main-12" format="short" copy>
+          {address}
+        </Hash>
+      }
       tabs={[
         {
           label: (

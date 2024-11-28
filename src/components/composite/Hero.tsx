@@ -13,12 +13,18 @@ import {
   Value,
 } from "dappkit";
 import { Button } from "dappkit";
-import { useMemo, type PropsWithChildren, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import config from "merkl.config";
 import { formatUnits, parseUnits } from "viem";
 
 export type HeroProps = PropsWithChildren<{
-  icons: IconProps[];
+  icons?: IconProps[];
   title: ReactNode;
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
@@ -90,15 +96,17 @@ export default function Hero({
               <Group className="flex-col flex-1 gap-xl lg:!gap-lg*2">
                 <Group>
                   <Group className="items-center !gap-0 md:!gap-xl">
-                    <Icons size="lg">
-                      {icons?.map((icon) => (
-                        <Icon
-                          className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
-                          key={`${Object.values(icon)}`}
-                          {...icon}
-                        />
-                      ))}
-                    </Icons>
+                    {!!icons && (
+                      <Icons size="lg">
+                        {icons?.map((icon) => (
+                          <Icon
+                            className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
+                            key={`${Object.values(icon)}`}
+                            {...icon}
+                          />
+                        ))}
+                      </Icons>
+                    )}
                     <Title h={1} size={2}>
                       {title}
                     </Title>
@@ -117,34 +125,40 @@ export default function Hero({
                   </Text>
                 )}
               </Group>
-              <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
-                <Group className="flex-col">
-                  <Value
-                    look={totalRewards === "0" ? "soft" : "base"}
-                    format="$0,0"
-                    size={3}
-                  >
-                    {totalRewards}
-                  </Value>
+              {/* TODO: Show "Opportunities" or "Campaigns" according to the page */}
+              {/* TODO: Hide this part when we are on _merkl.user page */}
+              {!location?.pathname.includes("user") && (
+                <Group
+                  className="w-full lg:w-auto lg:flex-col mr-xl*2"
+                  size="xl"
+                >
+                  <Group className="flex-col">
+                    <Value
+                      look={totalRewards === "0" ? "soft" : "base"}
+                      format="$0,0"
+                      size={3}
+                    >
+                      {totalRewards}
+                    </Value>
 
-                  <Text size="xl" className="font-bold">
-                    Daily rewards
-                  </Text>
+                    <Text size="xl" className="font-bold">
+                      Daily rewards
+                    </Text>
+                  </Group>
+                  <Group className="flex-col">
+                    <Text size={3}>todo</Text>
+                    <Text size={"xl"} className="font-bold">
+                      APR
+                    </Text>
+                  </Group>
+                  <Group className="flex-col">
+                    <Text size={3}>{campaigns?.length}</Text>
+                    <Text size={"xl"} className="font-bold">
+                      Active campaigns
+                    </Text>
+                  </Group>
                 </Group>
-                <Group className="flex-col">
-                  <Text size={3}>todo</Text>
-                  <Text size={"xl"} className="font-bold">
-                    APR
-                  </Text>
-                </Group>
-                {/* TODO: Show "Opportunities" or "Campaigns" according to the page */}
-                <Group className="flex-col">
-                  <Text size={3}>{campaigns?.length}</Text>
-                  <Text size={"xl"} className="font-bold">
-                    Active campaigns
-                  </Text>
-                </Group>
-              </Group>
+              )}
               {/* {!!tabs && (
                 <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
                   {tabs?.map((tab) => (
