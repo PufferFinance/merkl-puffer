@@ -21,6 +21,9 @@ export type MerklConfig<T extends Themes> = {
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
   routes: routesType;
+  images: {
+    [name: string]: string;
+  };
   socials: {
     [key: string]: string;
   };

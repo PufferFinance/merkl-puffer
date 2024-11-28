@@ -36,6 +36,7 @@ import {
   scroll,
 } from "viem/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
+import hero from "src/customer/assets/images/hero.jpg?url";
 
 export default createConfig({
   appName: "Merkl",
@@ -121,6 +122,9 @@ export default createConfig({
     width: { xs: 14, sm: 16, md: 18, lg: 20, xl: 24 },
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
+  },
+  images: {
+    hero: hero,
   },
   routes: {
     homepage: {

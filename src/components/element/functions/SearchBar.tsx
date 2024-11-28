@@ -128,10 +128,17 @@ export default function SearchBar() {
         </>
       }
     >
-      <Button look="bold" className="w-full lg:w-fit justify-between gap-xl*2">
-        Search
-        <Icon size="sm" remix={"RiSearch2Line"} />
-      </Button>
+      <Form>
+        <Input
+          name="search"
+          value={searchInput}
+          state={[searchInput, setSearchInput]}
+          placeholder="Search"
+          suffix={
+            <Icon size="sm" className="text-main-12" remix="RiSearchLine" />
+          }
+        />
+      </Form>
     </Modal>
   );
 }

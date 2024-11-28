@@ -11,9 +11,8 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import { api } from "src/api/index.server";
-import Heading from "src/components/composite/Heading";
+import Hero from "src/components/composite/Hero";
 
-import { Container } from "dappkit";
 import Tag from "src/components/element/Tag";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
@@ -48,9 +47,9 @@ export default function Index() {
   const { tags, description, link } = useOpportunity(opportunity);
 
   return (
-    <Container>
+    <>
       <Meta />
-      <Heading
+      <Hero
         icons={opportunity.tokens.map((t) => ({ src: t.icon }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={opportunity.name}
@@ -69,8 +68,8 @@ export default function Index() {
         ))}
       >
         <Outlet />
-      </Heading>
-    </Container>
+      </Hero>
+    </>
   );
 }
 

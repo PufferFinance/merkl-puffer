@@ -2,7 +2,7 @@ import { Outlet, useParams } from "@remix-run/react";
 import { Button, Group, Hash, Icon } from "dappkit";
 import { Container } from "dappkit";
 import { useState } from "react";
-import Heading from "src/components/composite/Heading";
+import Hero from "src/components/composite/Hero";
 
 export default function Index() {
   const { address } = useParams();
@@ -10,7 +10,7 @@ export default function Index() {
 
   return (
     <Container>
-      <Heading
+      <Hero
         icons={[{ remix: "RiUser6Fill" }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
@@ -18,7 +18,7 @@ export default function Index() {
             <Hash value format="short">
               {address}
             </Hash>
-            <Button onClick={() => setIsEditingAddress(e => !e)} look="soft">
+            <Button onClick={() => setIsEditingAddress((e) => !e)} look="soft">
               <Icon remix="RiEdit2Line" />
             </Button>
           </Group>
@@ -52,9 +52,10 @@ export default function Index() {
             ),
             link: `/user/${address}/claims`,
           },
-        ]}>
+        ]}
+      >
         <Outlet />
-      </Heading>
+      </Hero>
     </Container>
   );
 }

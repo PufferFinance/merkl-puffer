@@ -8,7 +8,7 @@ export default function Index() {
     <>
       <Group size="xl" className="!gap-0 min-h-[100vh] flex-col">
         <Header />
-        <main className="grow h-full mt-xl*4">
+        <main className="grow h-full">
           <Outlet />
         </main>
         <Footer />

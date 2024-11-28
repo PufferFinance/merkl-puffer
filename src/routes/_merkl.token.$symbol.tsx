@@ -3,7 +3,7 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import { Container } from "dappkit";
 import { useMemo } from "react";
 import { api } from "src/api/index.server";
-import Heading from "src/components/composite/Heading";
+import Hero from "src/components/composite/Hero";
 import Tag, { type TagType } from "src/components/element/Tag";
 import { chainIdOrder } from "src/constants/chain";
 import config from "../../merkl.config";
@@ -42,7 +42,7 @@ export default function Index() {
 
   return (
     <Container>
-      <Heading
+      <Hero
         icons={[{ src: tokens.find((t) => t.icon && t.icon !== "")?.icon }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={
@@ -67,7 +67,7 @@ export default function Index() {
         ))}
       >
         <Outlet />
-      </Heading>
+      </Hero>
     </Container>
   );
 }

@@ -47,7 +47,7 @@ export default function Header() {
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full fixed top-0 z-0 backdrop-blur"
+      className="w-full sticky left-0 top-0 z-0 backdrop-blur"
     >
       <Container className="py-xl">
         <Group className="justify-between items-center">
