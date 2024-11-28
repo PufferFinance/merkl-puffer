@@ -70,7 +70,7 @@ export default function Hero({
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
             <Group className="items-center">
-              {/* TODO: Build the breadcrumbs */}
+              {/* TODO: Build dynamic breadcrumbs */}
               {/** Disabled and set invisible when undefined to preserve layout height */}
               <Button
                 className={!navigation ? "invisible" : ""}
@@ -81,16 +81,26 @@ export default function Hero({
               >
                 Home
               </Button>
-              <Button
-                className={"!text-main-11"}
-                disabled={!navigation?.link}
-                to={navigation?.link}
-                look="soft"
-                size="xs"
-              >
-                <Icon remix="RiArrowRightSLine" />
-                {navigation?.label}
-              </Button>
+
+              {location.pathname.includes("opportunity") && (
+                <Button to={"/"} look="soft" size="xs">
+                  <Icon remix="RiArrowRightSLine" />
+                  Opportunities
+                </Button>
+              )}
+              {location.pathname.includes("user") && (
+                <Button to={"/"} look="soft" size="xs">
+                  <Icon remix="RiArrowRightSLine" />
+                  User
+                </Button>
+              )}
+
+              {!location.pathname.includes("user") && (
+                <Button look="soft" size="xs" className="!text-main-11">
+                  <Icon remix="RiArrowRightSLine" />
+                  {title}
+                </Button>
+              )}
             </Group>
             <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
               <Group className="flex-col flex-1 gap-xl lg:!gap-lg*2">
@@ -126,7 +136,6 @@ export default function Hero({
                 )}
               </Group>
               {/* TODO: Show "Opportunities" or "Campaigns" according to the page */}
-              {/* TODO: Hide this part when we are on _merkl.user page */}
               {!location?.pathname.includes("user") && (
                 <Group
                   className="w-full lg:w-auto lg:flex-col mr-xl*2"
