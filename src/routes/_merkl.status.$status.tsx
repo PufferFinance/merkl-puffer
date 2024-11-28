@@ -19,21 +19,19 @@ export default function Index() {
   const status = statuses[_status as Status];
 
   return (
-    <Container>
-      <Hero
-        icons={[status.icon]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={status.label}
-        description={status.description}
-        tabs={[
-          {
-            label: "Opportunities",
-            link: `/status/${status.label?.toLowerCase()}`,
-          },
-        ]}
-      >
-        <Outlet />
-      </Hero>
-    </Container>
+    <Hero
+      icons={[status.icon]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={status.label}
+      description={status.description}
+      tabs={[
+        {
+          label: "Opportunities",
+          link: `/status/${status.label?.toLowerCase()}`,
+        },
+      ]}
+    >
+      <Outlet />
+    </Hero>
   );
 }

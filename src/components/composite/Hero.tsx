@@ -54,7 +54,6 @@ export default function Hero({
     if (!sum) return "0.0";
     return formatUnits(sum, 18);
   }, [campaigns]);
-  console.log(config.images.hero);
 
   return (
     <>
@@ -89,25 +88,34 @@ export default function Hero({
             </Group>
             <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
               <Group className="flex-col flex-1 gap-xl lg:!gap-lg*2">
-                <Group className="items-center !gap-0 md:!gap-xl">
-                  <Icons size="lg">
-                    {icons?.map((icon) => (
-                      <Icon
-                        className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
-                        key={`${Object.values(icon)}`}
-                        {...icon}
-                      />
-                    ))}
-                  </Icons>
-                  <Title h={1} size={2}>
-                    {title}
-                  </Title>
+                <Group>
+                  <Group className="items-center !gap-0 md:!gap-xl">
+                    <Icons size="lg">
+                      {icons?.map((icon) => (
+                        <Icon
+                          className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
+                          key={`${Object.values(icon)}`}
+                          {...icon}
+                        />
+                      ))}
+                    </Icons>
+                    <Title h={1} size={2}>
+                      {title}
+                    </Title>
+                  </Group>
+                  {tags && (
+                    <Text size="xl" className="!font-bold">
+                      {description}
+                    </Text>
+                  )}
                 </Group>
-                {!tags && <Divider className="border-main-11" horizontal />}
+                <Divider className="border-main-11" horizontal />
                 {tags && <Group className="mb-lg">{tags}</Group>}
-                <Text size="xl" className="!font-bold">
-                  {description}
-                </Text>
+                {!tags && (
+                  <Text size="xl" className="!font-bold">
+                    {description}
+                  </Text>
+                )}
               </Group>
               <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
                 <Group className="flex-col">

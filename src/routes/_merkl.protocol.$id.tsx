@@ -16,21 +16,19 @@ export default function Index() {
   const { protocol } = useLoaderData<typeof loader>();
 
   return (
-    <Container>
-      <Hero
-        icons={[{ src: protocol?.icon }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={protocol?.name}
-        description={"Protocol"}
-        tabs={[
-          {
-            label: "Opportunities",
-            link: `/protocol/${protocol.name?.toLowerCase()}`,
-          },
-        ]}
-      >
-        <Outlet />
-      </Hero>
-    </Container>
+    <Hero
+      icons={[{ src: protocol?.icon }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={protocol?.name}
+      description={"Protocol"}
+      tabs={[
+        {
+          label: "Opportunities",
+          link: `/protocol/${protocol.name?.toLowerCase()}`,
+        },
+      ]}
+    >
+      <Outlet />
+    </Hero>
   );
 }

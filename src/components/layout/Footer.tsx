@@ -26,7 +26,7 @@ export default function Footer() {
             <Socials />
           </Group>
           <Group className="items-center gap-xl*2">
-            <Group className="items-center">
+            <Group className="items-center" size='xl'>
               <Text size="sm" className="text-main-11">
                 ©{new Date().getFullYear()} Merkl. All rights reserved.
               </Text>

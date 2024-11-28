@@ -41,33 +41,31 @@ export default function Index() {
   }, [tokens, chains]);
 
   return (
-    <Container>
-      <Hero
-        icons={[{ src: tokens.find((t) => t.icon && t.icon !== "")?.icon }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={
-          <>
-            {token.name}{" "}
-            <span className="font-mono text-main-8">({token.symbol})</span>
-          </>
-        }
-        description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
-        tabs={[
-          {
-            label: "Opportunities",
-            link: `/token/${token.symbol?.toLowerCase()}`,
-          },
-        ]}
-        tags={tags.map((tag) => (
-          <Tag
-            key={`${tag.type}_${tag.value?.address ?? tag.value}`}
-            {...tag}
-            size="lg"
-          />
-        ))}
-      >
-        <Outlet />
-      </Hero>
-    </Container>
+    <Hero
+      icons={[{ src: tokens.find((t) => t.icon && t.icon !== "")?.icon }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={
+        <>
+          {token.name}{" "}
+          <span className="font-mono text-main-8">({token.symbol})</span>
+        </>
+      }
+      description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
+      tabs={[
+        {
+          label: "Opportunities",
+          link: `/token/${token.symbol?.toLowerCase()}`,
+        },
+      ]}
+      tags={tags.map((tag) => (
+        <Tag
+          key={`${tag.type}_${tag.value?.address ?? tag.value}`}
+          {...tag}
+          size="lg"
+        />
+      ))}
+    >
+      <Outlet />
+    </Hero>
   );
 }

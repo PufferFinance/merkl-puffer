@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "@remix-run/react";
-import { Button, Group, Hash, Icon } from "dappkit";
+import { Button, Group, Hash, Icon, Title } from "dappkit";
 import { Container } from "dappkit";
 import { useState } from "react";
 import Hero from "src/components/composite/Hero";
@@ -9,53 +9,50 @@ export default function Index() {
   const [_isEditingAddress, setIsEditingAddress] = useState(false);
 
   return (
-    <Container>
-      <Hero
-        icons={[{ remix: "RiUser6Fill" }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={
-          <Group>
-            <Hash value format="short">
+    <Hero
+      icons={[{ remix: "RiAccountCircleFill" }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={
+        <Group>
+          <Title h={1}>
+            <Hash format="short" copy>
               {address}
             </Hash>
-            <Button onClick={() => setIsEditingAddress((e) => !e)} look="soft">
-              <Icon remix="RiEdit2Line" />
-            </Button>
-          </Group>
-        }
-        description={"Inspect rewards, balances and positions."}
-        tabs={[
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiGift2Fill" />
-                Rewards
-              </>
-            ),
-            link: `/user/${address}`,
-          },
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiDropFill" />
-                Liquidity
-              </>
-            ),
-            link: `/user/${address}/liquidity`,
-          },
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiListCheck3" />
-                Claims
-              </>
-            ),
-            link: `/user/${address}/claims`,
-          },
-        ]}
-      >
-        <Outlet />
-      </Hero>
-    </Container>
+          </Title>
+        </Group>
+      }
+      description={"Inspect rewards, balances and positions."}
+      tabs={[
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiGift2Fill" />
+              Rewards
+            </>
+          ),
+          link: `/user/${address}`,
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiDropFill" />
+              Liquidity
+            </>
+          ),
+          link: `/user/${address}/liquidity`,
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiListCheck3" />
+              Claims
+            </>
+          ),
+          link: `/user/${address}/claims`,
+        },
+      ]}
+    >
+      <Outlet />
+    </Hero>
   );
 }
