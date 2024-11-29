@@ -82,28 +82,23 @@ export default function Header() {
 
           <motion.div variants={item}>
             <Group className="gap-xl items-center">
-              {!mdScreens && (
-                <>
-                  {Object.entries(config.routes)
-                    .filter(
-                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
-                    )
-                    .map(([key, { route }]) => {
-                      return (
-                        <Button
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          to={route}
-                        >
-                          {key}
-                        </Button>
-                      );
-                    })}
-
-                  <SearchBar />
-                </>
-              )}
+              {!mdScreens &&
+                Object.entries(config.routes)
+                  .filter(
+                    ([key]) => !["homepage", "privacy", "terms"].includes(key)
+                  )
+                  .map(([key, { route }]) => {
+                    return (
+                      <Button
+                        look="soft"
+                        size="lg"
+                        key={`${key}-link`}
+                        to={route}
+                      >
+                        {key}
+                      </Button>
+                    );
+                  })}
               <Button look="base" onClick={toggleMode}>
                 <Icon
                   size="sm"
