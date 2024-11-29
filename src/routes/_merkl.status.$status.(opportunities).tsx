@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Space } from "dappkit";
+import { Container, Space } from "dappkit";
 import { api } from "src/api/index.server";
 import { fetchOpportunities } from "src/api/opportunity/opportunity";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
@@ -23,9 +23,9 @@ export default function Index() {
   const { opportunities, chains, count } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <Container>
       <Space size="md" />
       <OpportunityLibrary exclude={["status"]} count={count} opportunities={opportunities} chains={chains} />
-    </>
+    </Container>
   );
 }

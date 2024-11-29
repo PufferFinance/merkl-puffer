@@ -13,6 +13,7 @@ export type routesType = {
 export type MerklConfig<T extends Themes> = {
   themes: T;
   sizing: {
+    width: { [Size in (typeof sizeScale)[number]]: number };
     spacing: { [Size in (typeof sizeScale)[number]]: number };
     radius: { [Size in (typeof sizeScale)[number]]: number };
   };
@@ -20,6 +21,9 @@ export type MerklConfig<T extends Themes> = {
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
   routes: routesType;
+  images: {
+    [name: string]: string;
+  };
   socials: {
     [key: string]: string;
   };
