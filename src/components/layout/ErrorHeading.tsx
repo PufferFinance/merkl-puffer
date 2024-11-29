@@ -1,7 +1,7 @@
 import { Meta, Outlet, isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import { Container } from "packages/dappkit/src";
 import { useMemo } from "react";
-import Heading from "../composite/Heading";
+import Hero from "../composite/Hero";
 
 export function ErrorHeading() {
   const error = useRouteError();
@@ -19,13 +19,13 @@ export function ErrorHeading() {
   return (
     <Container>
       <Meta />
-      <Heading
+      <Hero
         icons={[{ remix: "RiAlertFill" }]}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={errorTitle}
         description={errorDetails}>
         <Outlet />
-      </Heading>
+      </Hero>
     </Container>
   );
 }
