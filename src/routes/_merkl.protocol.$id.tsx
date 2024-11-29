@@ -1,12 +1,10 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { api } from "src/api/index.server";
+import { ProtocolService } from "src/api/services/protocol.service";
 import Hero from "src/components/composite/Hero";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const { data: protocol } = await api.v4.protocols({ id: id ?? "" }).get();
-
-  if (!protocol) throw new Error("Unsupported Protocol");
+  const protocol = await ProtocolService.get({ id: id ?? ""})
 
   return json({ protocol });
 }

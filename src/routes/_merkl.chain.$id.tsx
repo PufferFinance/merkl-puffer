@@ -1,17 +1,11 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { Group, Title } from "dappkit";
-import { api } from "src/api/index.server";
+import { ChainService } from "src/api/services/chain.service";
 import Hero from "src/components/composite/Hero";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.index.get({
-    query: { search: id },
-  });
-  const chain = chains?.[0];
-
-  if (!chain) throw new Error("Unsupported Chain");
-  if (chains?.length > 1 || chain.name.toLowerCase() !== id?.toLowerCase()) throw new Error("Unsupported Chain");
+  const chain = await ChainService.get({ search: id });
 
   return json({ chain });
 }

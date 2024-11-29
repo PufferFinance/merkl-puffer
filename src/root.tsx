@@ -5,6 +5,7 @@ import config from "../merkl.config";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
 import { api } from "./api/index.server";
 import styles from "./index.css?url";
+import { ChainService } from "./api/services/chain.service";
 
 export const links: LinksFunction = () => [
   {
@@ -20,7 +21,7 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader(_args: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.index.get({ query: {} });
+  const chains = await ChainService.getAll();
 
   if (!chains) throw new Response("Unable to fetch chains", { status: 500 });
 

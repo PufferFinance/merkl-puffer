@@ -7,22 +7,16 @@ import { useMemo } from "react";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
+import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity.service";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chains.index.get({
-    query: { search: chainId },
-  });
-  const chain = chains?.[0];
-
-  if (!chain) throw new Response(`Chain ${chainId} could not be found`, { status: 404 });
-
-  const { data: opportunity, status } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
-
-  if (status === 404) throw new Response("Opportunity not found", { status });
-  if (status === 500) throw new Response("Opportunity unavailable", { status });
-  if (!opportunity) throw new Response("Opportunity unavailable", { status });
+  const chain = await ChainService.get({ search: chainId });
+  const opportunityId = {chainId: chain.id, type, identifier: id};
+  
+  const opportunity = await OpportunityService.get(opportunityId);
 
   return json(opportunity);
 }
