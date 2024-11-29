@@ -57,7 +57,7 @@ export default function Tag<T extends keyof TagTypes>({
               </Group>
               <Divider className="border-main-6" horizontal />
               <Text size="xs">{status?.description}</Text>
-              <Button to={`/status/${status?.label}`} size="sm" look="bold">
+              <Button to={`/status/${status?.label}`} size="xs" look="soft">
                 Open
               </Button>
             </>
