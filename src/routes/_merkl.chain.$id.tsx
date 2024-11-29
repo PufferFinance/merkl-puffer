@@ -1,7 +1,6 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { Group, Title } from "dappkit";
-import { Container } from "dappkit";
 import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";
 
@@ -12,8 +11,7 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const chain = chains?.[0];
 
   if (!chain) throw new Error("Unsupported Chain");
-  if (chains?.length > 1 || chain.name.toLowerCase() !== id?.toLowerCase())
-    throw new Error("Unsupported Chain");
+  if (chains?.length > 1 || chain.name.toLowerCase() !== id?.toLowerCase()) throw new Error("Unsupported Chain");
 
   return json({ chain });
 }
@@ -38,8 +36,7 @@ export default function Index() {
           label: "Analytics",
           link: `/chain/${label?.toLowerCase()}/analytics`,
         },
-      ]}
-    >
+      ]}>
       <Outlet />
     </Hero>
   );

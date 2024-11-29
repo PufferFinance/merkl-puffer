@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Container, Space } from "dappkit";
+import { Space } from "dappkit";
 import { Suspense } from "react";
 import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";

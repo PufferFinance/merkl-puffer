@@ -6,10 +6,9 @@ import { Container, Space } from "packages/dappkit/src";
 import { api } from "src/api/index.server";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Participate from "src/components/element/participate/Participate";
+import { ErrorContent } from "src/components/layout/ErrorContent";
 
-export async function loader({
-  params: { id, type, chain: chainId },
-}: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const { data: chains } = await api.v4.chains.index.get({
@@ -17,17 +16,13 @@ export async function loader({
   });
   const chain = chains?.[0];
 
-  if (!chain) throw "DSS";
+  if (!chain) throw new Response(`Chain ${chainId} could not be found`, { status: 404 });
 
-  const { data: opportunity } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .get();
+  const { data: opportunity } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).get();
 
   if (!opportunity) throw "No Opportunity";
 
-  const { data: campaigns } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .campaigns.get();
+  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
 
   if (!opportunity || !campaigns) throw "DAZZ";
 
@@ -50,4 +45,8 @@ export default function Index() {
       </Group>
     </Container>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorContent />;
 }

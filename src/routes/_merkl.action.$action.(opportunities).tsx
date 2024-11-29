@@ -6,10 +6,7 @@ import { fetchOpportunities } from "src/api/opportunity/opportunity";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
 import { getAction } from "src/config/actions";
 
-export async function loader({
-  params: { action: _action },
-  request,
-}: LoaderFunctionArgs) {
+export async function loader({ params: { action: _action }, request }: LoaderFunctionArgs) {
   const action = getAction(_action ?? "");
 
   if (!action) throw new Error("Unknown action");
@@ -33,7 +30,7 @@ export default function Index() {
       <OpportunityLibrary
         exclude={["action"]}
         count={count}
-        opportunities={opportunities.filter((o) => o)}
+        opportunities={opportunities.filter(o => o)}
         chains={chains}
       />
     </Container>

@@ -1,6 +1,5 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { Container } from "dappkit";
 import { useMemo } from "react";
 import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";
@@ -32,22 +31,21 @@ export default function Index() {
         return order.indexOf(b) - order.indexOf(a);
       })
       .map(
-        (t) =>
+        t =>
           ({
             type: "tokenChain",
-            value: { ...t, chain: chains?.find((c) => c.id === t.chainId) },
-          } satisfies TagType<"tokenChain">)
+            value: { ...t, chain: chains?.find(c => c.id === t.chainId) },
+          }) satisfies TagType<"tokenChain">,
       );
   }, [tokens, chains]);
 
   return (
     <Hero
-      icons={[{ src: tokens.find((t) => t.icon && t.icon !== "")?.icon }]}
+      icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <>
-          {token.name}{" "}
-          <span className="font-mono text-main-8">({token.symbol})</span>
+          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
         </>
       }
       description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
@@ -57,14 +55,7 @@ export default function Index() {
           link: `/token/${token.symbol?.toLowerCase()}`,
         },
       ]}
-      tags={tags.map((tag) => (
-        <Tag
-          key={`${tag.type}_${tag.value?.address ?? tag.value}`}
-          {...tag}
-          size="lg"
-        />
-      ))}
-    >
+      tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}>
       <Outlet />
     </Hero>
   );

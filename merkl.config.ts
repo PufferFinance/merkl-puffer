@@ -39,7 +39,7 @@ import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import hero from "src/customer/assets/images/hero.jpg?url";
 
 export default createConfig({
-  appName: "Merkl",
+  appName: "Puffer",
   wagmi: {
     chains: [
       mainnet,
@@ -81,7 +81,7 @@ export default createConfig({
         customStoragePrefix: "wagmi",
         projectId: "26c912aadd2132cd869a5edc00aeea0f",
         metadata: {
-          name: "Merkl Lite",
+          name: "Puffer",
           description: "Merkl Lite",
           url: "https://app.merkl.xyz.com",
           icons: [],
@@ -93,12 +93,13 @@ export default createConfig({
       [optimism.id]: http(),
     },
   },
-  defaultTheme: "merkl",
+  defaultTheme: "puffer",
+  modes: ["light"],
   themes: {
-    merkl: {
+    puffer: {
       base: createColoring(
-        ["#1F2333", "#B8AAFD", "#131620"],
-        ["#FCF8F5", "#B8AAFD", "white"]
+        ["#F5F9FF", "#2A35BD", "#FFFFFF"],
+        ["#F5F9FF", "#2A35BD", "#FFFFFF"]
       ),
       info: createColoring(
         ["#2ABDFF", "#2ABDFF", "#131620"],

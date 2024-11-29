@@ -16,12 +16,7 @@ export type OpportunityTableRowProps = {
   opportunity: Opportunity;
 } & BoxProps;
 
-export default function OpportunityTableRow({
-  hideTags,
-  opportunity,
-  className,
-  ...props
-}: OpportunityTableRowProps) {
+export default function OpportunityTableRow({ hideTags, opportunity, className, ...props }: OpportunityTableRowProps) {
   const { tags, link, icons } = useOpportunity(opportunity);
 
   return (
@@ -33,12 +28,7 @@ export default function OpportunityTableRow({
         {...props}
         aprColumn={
           <Group className="py-xl">
-            <Button
-              look={
-                (opportunity?.aprRecord?.cummulated ?? 0) > 0 ? "hype" : "soft"
-              }
-              className="font-mono"
-            >
+            <Button look={(opportunity?.aprRecord?.cummulated ?? 0) > 0 ? "hype" : "soft"} className="font-mono">
               <Value value format="0a%">
                 {opportunity.apr / 100}
               </Value>
@@ -47,10 +37,7 @@ export default function OpportunityTableRow({
         }
         tvlColumn={
           <Group className="py-xl">
-            <Button
-              look={(opportunity?.tvlRecord?.total ?? 0) > 0 ? "soft" : "soft"}
-              className="font-mono"
-            >
+            <Button look={(opportunity?.tvlRecord?.total ?? 0) > 0 ? "soft" : "soft"} className="font-mono">
               <Value value format="$0,0.0a">
                 {opportunity.tvl ?? 0}
               </Value>
@@ -59,12 +46,7 @@ export default function OpportunityTableRow({
         }
         rewardsColumn={
           <Group className="py-xl">
-            <Button
-              look={
-                (opportunity?.rewardsRecord?.total ?? 0) > 0 ? "soft" : "soft"
-              }
-              className="font-mono"
-            >
+            <Button look={(opportunity?.rewardsRecord?.total ?? 0) > 0 ? "soft" : "soft"} className="font-mono">
               <Value value format="$0,0.0a">
                 {opportunity.dailyRewards ?? 0}
               </Value>
@@ -78,20 +60,15 @@ export default function OpportunityTableRow({
               <Title
                 h={3}
                 size={4}
-                className="text-nowrap whitespace-nowrap text-ellipsis min-w-0 inline-block overflow-hidden"
-              >
+                className="text-nowrap whitespace-nowrap text-ellipsis min-w-0 inline-block overflow-hidden">
                 {opportunity.name}
               </Title>
             </Group>
             <Group>
               {tags
                 ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
-                .map((tag) => (
-                  <Tag
-                    key={`${tag.type}_${tag.value?.address ?? tag.value}`}
-                    {...tag}
-                    size="xs"
-                  />
+                .map(tag => (
+                  <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="xs" />
                 ))}
             </Group>
           </Group>

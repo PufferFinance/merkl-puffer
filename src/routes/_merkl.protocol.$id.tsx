@@ -1,6 +1,5 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { Container } from "dappkit";
 import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";
 
@@ -26,8 +25,7 @@ export default function Index() {
           label: "Opportunities",
           link: `/protocol/${protocol.name?.toLowerCase()}`,
         },
-      ]}
-    >
+      ]}>
       <Outlet />
     </Hero>
   );
