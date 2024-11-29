@@ -3,35 +3,23 @@ import { Group } from "@ariakit/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "packages/dappkit/src";
-import { api } from "src/api/index.server";
+import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity.service";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import Participate from "src/components/element/participate/Participate";
+import { ErrorContent } from "src/components/layout/ErrorContent";
 
-export async function loader({
-  params: { id, type, chain: chainId },
-}: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+  //TODO:  assess where to handle these
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chains.index.get({
-    query: { search: chainId },
-  });
-  const chain = chains?.[0];
+  const chain = await ChainService.get({ search: chainId });
+  const opportunityId = { chainId: chain.id, type, identifier: id };
 
-  if (!chain) throw "DSS";
+  const opportunity = await OpportunityService.get(opportunityId);
+  const campaigns = await OpportunityService.getCampaigns(opportunityId);
 
-  const { data: opportunity } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .get();
-
-  if (!opportunity) throw "No Opportunity";
-
-  const { data: campaigns } = await api.v4
-    .opportunities({ id: `${chain.id}-${type}-${id}` })
-    .campaigns.get();
-
-  if (!opportunity || !campaigns) throw "DAZZ";
-
-  return json({ opportunity, campaigns: campaigns.campaigns });
+  return json({ opportunity, campaigns });
 }
 
 export default function Index() {
@@ -50,4 +38,8 @@ export default function Index() {
       </Group>
     </Container>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorContent />;
 }

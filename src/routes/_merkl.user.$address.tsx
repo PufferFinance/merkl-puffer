@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "@remix-run/react";
-import { Group, Hash, Icon, Value, Text, Button } from "dappkit";
+import { Button, Group, Hash, Icon, Text } from "dappkit";
 import { useState } from "react";
 import Hero from "src/components/composite/Hero";
 
@@ -77,8 +77,7 @@ export default function Index() {
           ),
           link: `/user/${address}/claims`,
         },
-      ]}
-    >
+      ]}>
       <Outlet />
     </Hero>
   );

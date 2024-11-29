@@ -1,5 +1,5 @@
 import type * as RemixIcon from "@remixicon/react";
-import type { Themes, sizeScale } from "dappkit";
+import type { Mode, Themes, sizeScale } from "dappkit";
 import { createConfig as createWagmiConfig } from "wagmi";
 
 export type routesType = {
@@ -17,7 +17,9 @@ export type MerklConfig<T extends Themes> = {
     spacing: { [Size in (typeof sizeScale)[number]]: number };
     radius: { [Size in (typeof sizeScale)[number]]: number };
   };
+  tags?: string[];
   defaultTheme: keyof T;
+  modes: Mode[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
   routes: routesType;

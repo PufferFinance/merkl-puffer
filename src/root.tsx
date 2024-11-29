@@ -1,9 +1,9 @@
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData } from "@remix-run/react";
-import { DAppProvider } from "dappkit";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData, useRouteError } from "@remix-run/react";
+import { DAppProvider, Group, Icon, Title } from "dappkit";
 import config from "../merkl.config";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
-import { api } from "./api/index.server";
+import { ChainService } from "./api/services/chain.service";
 import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
@@ -20,11 +20,32 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader(_args: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.index.get({ query: {} });
+  const chains = await ChainService.getAll();
 
-  if (!chains) throw "";
+  if (!chains) throw new Response("Unable to fetch chains", { status: 500 });
 
   return json({ ENV: { API_URL: process.env.API_URL }, chains });
+}
+
+export default function App() {
+  const data = useLoaderData<typeof loader>();
+
+  return (
+    <DAppProvider
+      chains={data.chains}
+      modes={config.modes}
+      themes={config.themes}
+      sizing={config.sizing}
+      config={config.wagmi}>
+      <Outlet />
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
+        }}
+      />
+    </DAppProvider>
+  );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -45,18 +66,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  const data = useLoaderData<typeof loader>();
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
 
   return (
-    <DAppProvider chains={data.chains} themes={config.themes} sizing={config.sizing} config={config.wagmi}>
-      <Outlet />
-      <script
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: needed for browser ENV
-        dangerouslySetInnerHTML={{
-          __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
-        }}
-      />
+    <DAppProvider chains={[]} modes={config.modes} themes={config.themes} sizing={config.sizing} config={config.wagmi}>
+      <Group className="h-full flex-col justify-center m-auto w-min">
+        <Icon size="xl" className="!w-[100px] h-[100px]" remix="RiAlertFill" />
+        <Title h={1} className="text-nowrap">
+          Service unavailable
+        </Title>
+      </Group>
     </DAppProvider>
   );
 }

@@ -1,13 +1,13 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Container, Space } from "dappkit";
+import { Space } from "dappkit";
 import { Suspense } from "react";
-import { api } from "src/api/index.server";
+import { ChainService } from "src/api/services/chain.service";
 import Hero from "src/components/composite/Hero";
 import ParticipateTester from "src/components/element/participate/ParticipateTester.client";
 
 export async function loader(_args: LoaderFunctionArgs) {
-  const { data: chains } = await api.v4.chains.index.get({ query: {} });
+  const chains = await ChainService.getAll();
 
   return json({ chains });
 }

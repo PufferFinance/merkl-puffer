@@ -6,10 +6,7 @@ import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+  return [{ title: "New Remix App" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
 export const config = createConfig({
@@ -39,8 +36,7 @@ export default function Index() {
       icons={[{ remix: "RiPlanetFill" }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={"Opportunities"}
-      description={"Lorem ipsum something cool"}
-    >
+      description={"Lorem ipsum something cool"}>
       <Outlet />
     </Hero>
   );

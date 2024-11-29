@@ -26,8 +26,8 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
       .reduce((obj, index) => Object.assign(obj, { [index]: index }), {});
   }, [pages]);
 
-  const renderPageNavigator = useMemo(() => {
-    return (
+  return (
+    <Group className="justify-between">
       <List flex="row">
         <Button disabled={(pageFilter ?? 0) <= 1} onClick={() => setPageFilter(Math.max(1, (pageFilter ?? 0) - 1))}>
           <Icon size="sm" remix="RiArrowLeftLine" />
@@ -39,11 +39,6 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
           <Icon size="sm" remix="RiArrowRightLine" />
         </Button>
       </List>
-    );
-  }, [pageFilter, setPageFilter, pageOptions]);
-
-  const renderPageSizeConfigurator = useMemo(() => {
-    return (
       <List flex="row">
         <Button onClick={() => setItemsFilter(Math.min(50, (itemsFilter ?? 0) + 10))}>
           More <Icon size="sm" remix="RiArrowDownLine" />
@@ -57,13 +52,6 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
           Less <Icon size="sm" remix="RiArrowUpLine" />
         </Button>
       </List>
-    );
-  }, [itemsFilter, setItemsFilter]);
-
-  return (
-    <Group className="justify-between">
-      {renderPageSizeConfigurator}
-      {renderPageNavigator}
     </Group>
   );
 }

@@ -1,24 +1,11 @@
 import type { Opportunity } from "@angleprotocol/merkl-api";
 import { Form, useLocation } from "@remix-run/react";
-import {
-  Group,
-  Icon,
-  Icons,
-  Input,
-  List,
-  Modal,
-  Title,
-  useShortcut,
-} from "dappkit";
+import { Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import {
-  type Results,
-  type Searchable,
-  useMerklSearch,
-} from "src/hooks/useMerklSearch";
+import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -70,11 +57,7 @@ export default function SearchBar() {
                     switch (category) {
                       case "chain":
                         return (
-                          <Button
-                            to={`/chain/${results[i].name}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/chain/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -82,21 +65,13 @@ export default function SearchBar() {
                         return <OpportunityResult opportunity={results[i]} />;
                       case "token":
                         return (
-                          <Button
-                            to={`/token/${results[i].symbol}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/token/${results[i].symbol}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].symbol}
                           </Button>
                         );
                       case "protocol":
                         return (
-                          <Button
-                            to={`/protocol/${results[i].name}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/protocol/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -118,25 +93,17 @@ export default function SearchBar() {
       state={[opened, setOpened]}
       modal={
         <>
-          <Input
-            look="bold"
-            size="md"
-            state={[searchInput, setSearchInput]}
-            placeholder="Search Merkl..."
-          />
+          <Input look="bold" size="md" state={[searchInput, setSearchInput]} placeholder="Search Merkl..." />
           {Results}
         </>
-      }
-    >
+      }>
       <Form>
         <Input
           name="search"
           value={searchInput}
           state={[searchInput, setSearchInput]}
           placeholder="Search"
-          suffix={
-            <Icon size="sm" className="text-main-12" remix="RiSearchLine" />
-          }
+          suffix={<Icon size="sm" className="text-main-12" remix="RiSearchLine" />}
         />
       </Form>
     </Modal>
