@@ -108,13 +108,21 @@ export default function Hero({
                   <Group className="items-center !gap-0 md:!gap-xl">
                     {!!icons && (
                       <Icons size="lg">
-                        {icons?.map((icon) => (
-                          <Icon
-                            className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
-                            key={`${Object.values(icon)}`}
-                            {...icon}
-                          />
-                        ))}
+                        {icons?.length > 1
+                          ? icons?.map((icon) => (
+                              <Icon
+                                className="hidden md:block text-main-12 !w-lg*4 !h-lg*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
+                            ))
+                          : icons?.map((icon) => (
+                              <Icon
+                                className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
+                            ))}
                       </Icons>
                     )}
                     <Title h={1} size={2}>
