@@ -58,7 +58,7 @@ export abstract class OpportunityService {
   ): Promise<{ opportunities: Opportunity[]; count: number }> {
     //TODO: updates tags to take an array
     const opportunities = await OpportunityService.#fetch(async () =>
-      api.v4.opportunities.index.get({ query: { ...query, tags: config.tags?.[0] } }),
+      api.v4.opportunities.index.get({ query: Object.assign({ ...query }, config.tags?.[0] ? { tags: config.tags?.[0] }: {}) }),
     );
     const count = await OpportunityService.#fetch(async () => api.v4.opportunities.count.get({ query }));
 
@@ -83,7 +83,7 @@ export abstract class OpportunityService {
     );
 
     //TODO: updates tags to take an array
-    if (!opportunity.tags.includes(config.tags?.[0])) throw new Response("Opportunity inacessible", { status: 403 });
+    if (config.tags && !opportunity.tags.includes(config.tags?.[0])) throw new Response("Opportunity inacessible", { status: 403 });
 
     return opportunity;
   }

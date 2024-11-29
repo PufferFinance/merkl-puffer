@@ -4,6 +4,7 @@ import { Container, Space } from "dappkit";
 import { ChainService } from "src/api/services/chain.service";
 import { OpportunityService } from "src/api/services/opportunity.service";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
+import { ErrorContent } from "src/components/layout/ErrorContent";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { opportunities, count } = await OpportunityService.getManyFromRequest(request);
@@ -21,4 +22,8 @@ export default function Index() {
       <OpportunityLibrary {...{ chains, count, opportunities }} />
     </Container>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorContent />;
 }
