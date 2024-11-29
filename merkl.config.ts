@@ -39,7 +39,6 @@ import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import hero from "src/customer/assets/images/hero.jpg?url";
 
 export default createConfig({
-  tags: ["zksync"],
   appName: "Merkl",
   modes: ["dark", "light"],
   defaultTheme: "merkl",
