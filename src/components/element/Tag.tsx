@@ -1,5 +1,14 @@
-import type { Chain, Opportunity, Token } from "@angleprotocol/merkl-api";
-import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, Text, Title } from "dappkit";
+import type { Opportunity, Token } from "@angleprotocol/merkl-api";
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Group,
+  Hash,
+  Icon,
+  Text,
+  PrimitiveTag,
+} from "dappkit";
 import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
@@ -23,31 +32,40 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & {
   value: TagTypes[T];
 };
 
-export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
+export default function Tag<T extends keyof TagTypes>({
+  type,
+  value,
+  ...props
+}: TagProps<T>) {
   switch (type) {
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
+            <Group className="flex-col">
               <Group size="xs" className="flex-col">
-                <Group className="justify-between">
-                  <Text size="xs">Status</Text>
-                </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} {...status.icon} />
-                  <Title h={4}>{status?.label}</Title>
+                  <Icon {...status.icon} />
+                  <Text size="sm" className="text-main-12 !font-bold">
+                    {status?.label}
+                  </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-6" horizontal />
-              <Text size="xs">{status?.description}</Text>
-              <Button to={`/status/${status?.label}`} size="xs" look="soft">
-                Open
-              </Button>
-            </>
-          }>
+              <Divider className="border-main-8" horizontal />
+              <Group className="flex-col">
+                <Text size="xs">{status?.description}</Text>
+                <Button to={`/status/${status?.label}`} size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
+                  Open
+                </Button>
+              </Group>
+            </Group>
+          }
+        >
           <PrimitiveTag look="soft" key={value} {...props}>
             <Icon size={props?.size} {...status.icon} />
             {status?.label}
@@ -60,24 +78,29 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
-              <Group size="xs" className="flex-col">
-                <Group className="justify-between">
-                  <Text size="xs">Chain</Text>
-                  <Text size="xs">id: {chain?.id}</Text>
-                </Group>
+            <Group className="flex-col">
+              <Group className="w-full justify-between items-center" size="xl">
                 <Group size="sm">
-                  <Icon size={props?.size} src={chain?.icon} />
-                  <Title h={4}>{chain?.name}</Title>
+                  <Icon src={chain?.icon} />
+                  <Text size="sm" className="text-main-12 !font-bold">
+                    {chain?.name}
+                  </Text>
                 </Group>
+                <Text size="xs">id: {chain?.id}</Text>
               </Group>
-              <Divider className="border-main-6" horizontal />
-              <Button to={`/chain/${chain?.name}`} size="sm" look="bold">
-                Open
-              </Button>
-            </>
-          }>
+
+              <Divider className="border-main-8" horizontal />
+              <Group className="flex-col">
+                <Button to={`/chain/${chain?.name}`} size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" /> Open
+                </Button>
+              </Group>
+            </Group>
+          }
+        >
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={chain?.icon} />
             {chain?.name}
@@ -92,24 +115,27 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
+            <Group className="flex-col">
               <Group size="xs" className="flex-col">
-                <Group className="justify-between">
-                  <Text size="xs">Action</Text>
-                </Group>
                 <Group size="sm">
-                  <Icon size={props?.size} {...action.icon} />
-                  <Title h={4}>{action?.label}</Title>
+                  <Icon {...action.icon} />
+                  <Text size="sm" className="text-main-12 !font-bold">
+                    {action?.label}
+                  </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-6" horizontal />
+              <Divider className="border-main-8" horizontal />
               <Text size="xs">{action?.description}</Text>
-              <Button to={`/action/${action?.label}`} size="sm" look="bold">
+              <Button to={`/action/${action?.label}`} size="xs" look="soft">
+                <Icon remix="RiArrowRightLine" />
                 Open
               </Button>
-            </>
-          }>
+            </Group>
+          }
+        >
           <PrimitiveTag look="bold" key={value} {...props}>
             <Icon size={props?.size} {...action.icon} />
             {action?.label}
@@ -125,32 +151,38 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
-              <Group size="xs" className="flex-col">
-                <Group className="justify-between">
-                  <Text size="xs">Token</Text>
-                  <Hash format="short" size="xs">
-                    {token.address}
-                  </Hash>
-                </Group>
+            <Group className="flex-col">
+              <Group className="w-full justify-between items-center" size="xl">
                 <Group size="sm">
                   <Icon size={props?.size} src={token.icon} />
-                  <Title h={4}>{token?.name}</Title>
+                  <Text size="sm" className="text-main-12 !font-bold">
+                    {token?.name}
+                  </Text>
                 </Group>
+                <Text size="xs">
+                  <Hash copy format="short" size="xs">
+                    {token.address}
+                  </Hash>
+                </Text>
               </Group>
-              <Divider className="border-main-6" horizontal />
-              {/* <Text size="xs">{token?.description}</Text> */}
-              <Group className="flex-col" size="sm">
-                <Button to={`/token/${token?.symbol}`} size="sm" look="bold">
+              <Divider className="border-main-8" horizontal />
+              <Group className="flex-col" size="md">
+                {/* <Text size="xs">{token?.description}</Text> */}
+                <Button to={`/token/${token?.symbol}`} size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Merkl
                 </Button>
-                <Button size="sm" look="bold">
+                <Button size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Etherscan
                 </Button>
               </Group>
-            </>
-          }>
+            </Group>
+          }
+        >
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.icon} />
             {token?.symbol}
@@ -166,10 +198,12 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
+            <Group className="flex-col">
               <Group size="xs" className="flex-col">
-                <Group className="justify-between">
+                <Group className="justify-between" size="xl">
                   <Text size="xs">Token</Text>
                   <Hash format="short" size="xs">
                     {token.address}
@@ -177,25 +211,34 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                 </Group>
                 <Group size="sm">
                   <Icon size={props?.size} src={token.logoURI} />
-                  <Title h={4}>{token?.name}</Title>
+                  <Text size="sm" className="text-main-12 !font-bold">
+                    {token?.name}
+                  </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-6" horizontal />
-              {/* <Text size="xs">{token?.description}</Text> */}
-              <Group className="flex-col" size="sm">
-                <Button to={`/chain/${token.chain?.name}`} size="sm" look="bold">
+              <Divider className="border-main-8" horizontal />
+              <Group className="flex-col" size="md">
+                {/* <Text size="xs">{token?.description}</Text> */}
+                <Button
+                  to={`/chain/${token.chain?.name}`}
+                  size="sm"
+                  look="bold"
+                >
                   <Icon size="sm" src={token.chain?.icon} />
                   {token.chain?.name}
                 </Button>
-                <Button to={`/token/${token?.symbol}`} size="sm" look="bold">
+                <Button to={`/token/${token?.symbol}`} size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Merkl
                 </Button>
-                <Button size="sm" look="bold">
+                <Button size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Etherscan
                 </Button>
               </Group>
-            </>
-          }>
+            </Group>
+          }
+        >
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.chain.icon} />
             {token.chain.name}
@@ -211,29 +254,35 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
       return (
         <Dropdown
+          size="lg"
+          padding="xs"
           content={
-            <>
-              <Group size="xs" className="flex-col">
-                <Group className="justify-between">
-                  <Text size="xs">Protocol</Text>
-                </Group>
-                <Group size="sm">
-                  <Icon size={props?.size} src={protocol?.icon} />
-                  <Title h={4}>{value?.name}</Title>
-                </Group>
+            <Group className="flex-col">
+              <Group size="sm">
+                <Icon size={props?.size} src={protocol?.icon} />
+                <Text size="sm" className="text-main-12 !font-bold">
+                  {value?.name}
+                </Text>
               </Group>
-              <Divider className="border-main-6" horizontal />
-              {/* <Text size="xs">{token?.description}</Text> */}
-              <Group className="flex-col" size="sm">
-                <Button to={`/protocol/${protocol?.name}`} size="sm" look="bold">
+              <Divider className="border-main-8" horizontal />
+              <Group className="flex-col" size="md">
+                {/* <Text size="xs">{token?.description}</Text> */}
+                <Button
+                  to={`/protocol/${protocol?.name}`}
+                  size="xs"
+                  look="soft"
+                >
+                  <Icon remix="RiArrowRightLine" />
                   {protocol?.name} on Merkl
                 </Button>
-                <Button size="sm" look="bold">
+                <Button size="xs" look="soft">
+                  <Icon remix="RiArrowRightLine" />
                   {protocol?.name}
                 </Button>
               </Group>
-            </>
-          }>
+            </Group>
+          }
+        >
           <PrimitiveTag look="tint" key={value} {...props}>
             <Icon src={protocol?.icon} />
             {value?.name}
