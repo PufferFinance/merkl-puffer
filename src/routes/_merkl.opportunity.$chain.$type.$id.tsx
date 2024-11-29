@@ -1,21 +1,20 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
-import { api } from "src/api/index.server";
 import Hero from "src/components/composite/Hero";
 
 import { useMemo } from "react";
+import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity.service";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import { ChainService } from "src/api/services/chain.service";
-import { OpportunityService } from "src/api/services/opportunity.service";
 
 export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
-  const opportunityId = {chainId: chain.id, type, identifier: id};
-  
+  const opportunityId = { chainId: chain.id, type, identifier: id };
+
   const opportunity = await OpportunityService.get(opportunityId);
 
   return json(opportunity);

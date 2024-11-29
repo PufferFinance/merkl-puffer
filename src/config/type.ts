@@ -17,6 +17,7 @@ export type MerklConfig<T extends Themes> = {
     spacing: { [Size in (typeof sizeScale)[number]]: number };
     radius: { [Size in (typeof sizeScale)[number]]: number };
   };
+  tags?: string[];
   defaultTheme: keyof T;
   modes: Mode[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];

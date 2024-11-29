@@ -1,12 +1,12 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { useMemo } from "react";
+import { ChainService } from "src/api/services/chain.service";
+import { TokenService } from "src/api/services/token.service";
 import Hero from "src/components/composite/Hero";
 import Tag, { type TagType } from "src/components/element/Tag";
 import { chainIdOrder } from "src/constants/chain";
 import config from "../../merkl.config";
-import { TokenService } from "src/api/services/token.service";
-import { ChainService } from "src/api/services/chain.service";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
   const tokens = await TokenService.getSymbol(symbol);

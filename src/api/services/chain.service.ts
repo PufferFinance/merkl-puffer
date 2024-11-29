@@ -1,5 +1,5 @@
-import { api } from "../index.server";
 import type { Chain } from "@angleprotocol/merkl-api";
+import { api } from "../index.server";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class ChainService {
@@ -32,7 +32,7 @@ export abstract class ChainService {
   static async get(query: Parameters<typeof api.v4.chains.index.get>[0]["query"]): Promise<Chain> {
     const chains = await ChainService.#fetch(async () => api.v4.chains.index.get({ query }));
 
-    if (chains.length === 0) throw new Response("Chain not found", {status: 404});
+    if (chains.length === 0) throw new Response("Chain not found", { status: 404 });
 
     //TODO: add some cache here
     return chains?.[0];

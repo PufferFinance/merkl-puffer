@@ -1,5 +1,6 @@
-import { api } from "../index.server";
 import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
+import config from "merkl.config";
+import { api } from "../index.server";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class OpportunityService {
@@ -21,55 +22,69 @@ export abstract class OpportunityService {
    * @param override params for which to override value
    * @returns query
    */
-  static #getQueryFromRequest(request: Request, override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"]) {
+  static #getQueryFromRequest(
+    request: Request,
+    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+  ) {
     const status = new URL(request.url).searchParams.get("status");
     const action = new URL(request.url).searchParams.get("action");
     const chainId = new URL(request.url).searchParams.get("chain");
     const page = new URL(request.url).searchParams.get("page");
-  
+
     const items = new URL(request.url).searchParams.get("items");
     const search = new URL(request.url).searchParams.get("search");
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
-  
+
     const filters = Object.assign(
       { status, action, chainId, items, sort, order, name: search, page },
       override ?? {},
       page !== null && { page: Number(page) - 1 },
     );
-  
+
     const query = Object.entries(filters).reduce(
       (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
       {},
     );
-  
+
     return query;
   }
 
   static async getManyFromRequest(request: Request) {
-    return OpportunityService.getMany(OpportunityService.#getQueryFromRequest(request))
+    return OpportunityService.getMany(OpportunityService.#getQueryFromRequest(request));
   }
 
-  static async getMany(query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"]): Promise<{opportunities: Opportunity[], count: number}> {
-    const opportunities = await OpportunityService.#fetch(async () => api.v4.opportunities.index.get({ query }));
-    const count = await OpportunityService.#fetch(async () => api.v4.opportunities.count.get({ query }))
+  static async getMany(
+    query: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+  ): Promise<{ opportunities: Opportunity[]; count: number }> {
+    //TODO: updates tags to take an array
+    const opportunities = await OpportunityService.#fetch(async () =>
+      api.v4.opportunities.index.get({ query: { ...query, tags: config.tags?.[0] } }),
+    );
+    const count = await OpportunityService.#fetch(async () => api.v4.opportunities.count.get({ query }));
 
-    return { opportunities: opportunities.filter((o) => o !== null), count };
+    return { opportunities: opportunities.filter(o => o !== null), count };
   }
 
-  static async getCampaigns(query: {chainId: number, type: string, identifier: string}): Promise<Campaign[]> {
-    const {chainId, type, identifier} = query;
+  static async getCampaigns(query: { chainId: number; type: string; identifier: string }): Promise<Campaign[]> {
+    const { chainId, type, identifier } = query;
 
-    type T = Parameters<typeof api.v4.campaigns.index.get>[0]["query"]["type"]
-    const campaigns = await OpportunityService.#fetch(async () => api.v4.campaigns.index.get({ query: {chainId, type: type as T, identifier}}));
+    type T = Parameters<typeof api.v4.campaigns.index.get>[0]["query"]["type"];
+    const campaigns = await OpportunityService.#fetch(async () =>
+      api.v4.campaigns.index.get({ query: { chainId, type: type as T, identifier } }),
+    );
 
     return campaigns.filter(c => c !== null);
   }
 
-  static async get(query: {chainId: number, type: string, identifier: string}): Promise<Opportunity> {
-    const {chainId, type, identifier} = query;
-    const opportunity = await OpportunityService.#fetch(async () => api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).get());
+  static async get(query: { chainId: number; type: string; identifier: string }): Promise<Opportunity> {
+    const { chainId, type, identifier } = query;
+    const opportunity = await OpportunityService.#fetch(async () =>
+      api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).get(),
+    );
+
+    //TODO: updates tags to take an array
+    if (!opportunity.tags.includes(config.tags?.[0])) throw new Response("Opportunity inacessible", { status: 403 });
 
     return opportunity;
   }
-
 }

@@ -1,5 +1,5 @@
-import { api } from "../index.server";
 import type { Campaign } from "@angleprotocol/merkl-api";
+import { api } from "../index.server";
 
 class CampaignService {
   // ------ Fetch all campaigns

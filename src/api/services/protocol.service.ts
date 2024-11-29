@@ -1,5 +1,5 @@
-import { api } from "../index.server";
 import type { Protocol } from "@angleprotocol/merkl-api";
+import { api } from "../index.server";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class ProtocolService {
@@ -15,10 +15,9 @@ export abstract class ProtocolService {
     return data;
   }
 
-  static async get(query: {id: string}): Promise<Protocol> {
-    const protocol = await ProtocolService.#fetch(async () => api.v4.protocols(query).get({query}));
+  static async get(query: { id: string }): Promise<Protocol> {
+    const protocol = await ProtocolService.#fetch(async () => api.v4.protocols(query).get({ query }));
 
     return protocol;
   }
-
 }

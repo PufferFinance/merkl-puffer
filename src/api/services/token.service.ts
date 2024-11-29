@@ -1,5 +1,5 @@
+import type { Token } from "@angleprotocol/merkl-api";
 import { api } from "../index.server";
-import type { Chain, Token } from "@angleprotocol/merkl-api";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class TokenService {
@@ -22,11 +22,11 @@ export abstract class TokenService {
   }
 
   static async getSymbol(symbol: string | undefined): Promise<Token[]> {
-    if (!symbol) throw new Response('Token not found');
+    if (!symbol) throw new Response("Token not found");
 
     const tokens = await TokenService.#fetch(async () => api.v4.tokens.index.get({ query: { symbol } }));
 
-    if (tokens.length === 0) throw new Response('Token not found', { status: 404 });
+    if (tokens.length === 0) throw new Response("Token not found", { status: 404 });
     return tokens;
   }
 }

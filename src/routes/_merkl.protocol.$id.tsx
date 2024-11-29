@@ -4,7 +4,7 @@ import { ProtocolService } from "src/api/services/protocol.service";
 import Hero from "src/components/composite/Hero";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
-  const protocol = await ProtocolService.get({ id: id ?? ""})
+  const protocol = await ProtocolService.get({ id: id ?? "" });
 
   return json({ protocol });
 }

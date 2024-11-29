@@ -1,5 +1,5 @@
-import { api } from "../index.server";
 import type { Reward } from "@angleprotocol/merkl-api";
+import { api } from "../index.server";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class RewardService {

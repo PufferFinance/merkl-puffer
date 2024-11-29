@@ -3,9 +3,8 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, json, useLoaderData, u
 import { DAppProvider, Group, Icon, Title } from "dappkit";
 import config from "../merkl.config";
 import dappkitStyles from "../packages/dappkit/src/style.css?url";
-import { api } from "./api/index.server";
-import styles from "./index.css?url";
 import { ChainService } from "./api/services/chain.service";
+import styles from "./index.css?url";
 
 export const links: LinksFunction = () => [
   {

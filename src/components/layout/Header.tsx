@@ -57,7 +57,7 @@ export default function Header() {
                 <Icon size="lg" className="text-main-12" remix="RiArrowDownSLine" />
               </Dropdown>
             ) : (
-              <Button to={config.routes.homepage.route} look="soft">
+              <Button size="lg" to={config.routes.homepage.route} look="soft">
                 <Image
                   className="w-[200px]"
                   alt={`${config.appName} logo`}
@@ -80,7 +80,7 @@ export default function Header() {
                     );
                   })}
               {canSwitchModes && (
-                <Button look="base" onClick={toggleMode}>
+                <Button size="lg" look="base" onClick={toggleMode}>
                   <Icon size="sm" remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"} />
                 </Button>
               )}

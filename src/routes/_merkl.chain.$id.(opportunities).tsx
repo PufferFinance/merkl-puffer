@@ -7,7 +7,7 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 
 export async function loader({ params: { id: chainId }, request }: LoaderFunctionArgs) {
   const chain = await ChainService.get({ search: chainId });
-  const { opportunities, count } = await OpportunityService.getMany({ chainId: chain.id.toString(),});
+  const { opportunities, count } = await OpportunityService.getMany({ chainId: chain.id.toString() });
 
   return json({ opportunities, count });
 }

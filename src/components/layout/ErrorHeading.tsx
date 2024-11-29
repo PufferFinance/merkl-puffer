@@ -17,15 +17,15 @@ export function ErrorHeading() {
   console.error(error);
 
   return (
-    <Container>
-      <Meta />
-      <Hero
-        icons={[{ remix: "RiAlertFill" }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={errorTitle}
-        description={errorDetails}>
+    <Hero
+      icons={[{ remix: "RiAlertFill" }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={errorTitle}
+      description={errorDetails}>
+      <Container>
+        <Meta />
         <Outlet />
-      </Hero>
-    </Container>
+      </Container>
+    </Hero>
   );
 }

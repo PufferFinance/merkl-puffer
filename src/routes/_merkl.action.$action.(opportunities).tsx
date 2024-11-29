@@ -7,7 +7,6 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 import { getAction } from "src/config/actions";
 
 export async function loader({ params: { action: _action }, request }: LoaderFunctionArgs) {
-
   //TODo: isolate this elsewhere
   const action = getAction(_action ?? "");
   if (!action) throw new Error("Unknown action");

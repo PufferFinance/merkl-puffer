@@ -3,7 +3,6 @@ import { Group } from "@ariakit/react";
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Container, Space } from "packages/dappkit/src";
-import { api } from "src/api/index.server";
 import { ChainService } from "src/api/services/chain.service";
 import { OpportunityService } from "src/api/services/opportunity.service";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
@@ -15,9 +14,9 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
-  const opportunityId = {chainId: chain.id, type, identifier: id};
+  const opportunityId = { chainId: chain.id, type, identifier: id };
 
-  const opportunity = await OpportunityService.get(opportunityId)
+  const opportunity = await OpportunityService.get(opportunityId);
   const campaigns = await OpportunityService.getCampaigns(opportunityId);
 
   return json({ opportunity, campaigns });
