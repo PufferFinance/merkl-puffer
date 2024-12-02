@@ -10,7 +10,7 @@ export const LayerMenu: FC<{
   setOpen: (open: boolean) => void;
 }> = ({ nav, setOpen }) => {
   return (
-    <div className="layermenu z-50 min-w-64 bg-main-2 py-lg px-md flex flex-col">
+    <div className="layermenu z-50 min-w-64 bg-main-2 flex flex-col">
       <main className="flex-1 overflow-y-scroll w-full">
         <ul className="min-w-max list-none">
           {Object.entries(nav)
@@ -20,9 +20,9 @@ export const LayerMenu: FC<{
                 <NavLink
                   onClick={() => setOpen(false)}
                   to={value.route}
-                  className="flex items-center gap-md text-main-12 capitalize">
-                  <Icon remix={value.icon} className="text-main-11" />
-                  <Text size="lg" className="font-bold">
+                  className="flex items-center gap-md capitalize">
+                  <Icon remix={value.icon} className="text-xl text-main-11" />
+                  <Text size="lg" bold className="text-main-12">
                     {key}
                   </Text>
                 </NavLink>

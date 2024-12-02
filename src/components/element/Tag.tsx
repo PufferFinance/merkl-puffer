@@ -50,12 +50,12 @@ export default function Tag<T extends keyof TagTypes>({
               <Group size="xs" className="flex-col">
                 <Group size="sm">
                   <Icon {...status.icon} />
-                  <Text size="sm" className="text-main-12 !font-bold">
+                  <Text size="sm" className="text-main-12" bold>
                     {status?.label}
                   </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Group className="flex-col">
                 <Text size="xs">{status?.description}</Text>
                 <Button to={`/status/${status?.label}`} size="xs" look="soft">
@@ -85,14 +85,14 @@ export default function Tag<T extends keyof TagTypes>({
               <Group className="w-full justify-between items-center" size="xl">
                 <Group size="sm">
                   <Icon src={chain?.icon} />
-                  <Text size="sm" className="text-main-12 !font-bold">
+                  <Text size="sm" className="text-main-12" bold>
                     {chain?.name}
                   </Text>
                 </Group>
                 <Text size="xs">id: {chain?.id}</Text>
               </Group>
 
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Group className="flex-col">
                 <Button to={`/chain/${chain?.name}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" /> Open
@@ -122,12 +122,12 @@ export default function Tag<T extends keyof TagTypes>({
               <Group size="xs" className="flex-col">
                 <Group size="sm">
                   <Icon {...action.icon} />
-                  <Text size="sm" className="text-main-12 !font-bold">
+                  <Text size="sm" className="text-main-12" bold>
                     {action?.label}
                   </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Text size="xs">{action?.description}</Text>
               <Button to={`/action/${action?.label}`} size="xs" look="soft">
                 <Icon remix="RiArrowRightLine" />
@@ -158,7 +158,7 @@ export default function Tag<T extends keyof TagTypes>({
               <Group className="w-full justify-between items-center" size="xl">
                 <Group size="sm">
                   <Icon size={props?.size} src={token.icon} />
-                  <Text size="sm" className="text-main-12 !font-bold">
+                  <Text size="sm" className="text-main-12" bold>
                     {token?.name}
                   </Text>
                 </Group>
@@ -168,7 +168,7 @@ export default function Tag<T extends keyof TagTypes>({
                   </Hash>
                 </Text>
               </Group>
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
                 <Button to={`/token/${token?.symbol}`} size="xs" look="soft">
@@ -211,12 +211,12 @@ export default function Tag<T extends keyof TagTypes>({
                 </Group>
                 <Group size="sm">
                   <Icon size={props?.size} src={token.logoURI} />
-                  <Text size="sm" className="text-main-12 !font-bold">
+                  <Text size="sm" className="text-main-12" bold>
                     {token?.name}
                   </Text>
                 </Group>
               </Group>
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
                 <Button
@@ -260,11 +260,11 @@ export default function Tag<T extends keyof TagTypes>({
             <Group className="flex-col">
               <Group size="sm">
                 <Icon size={props?.size} src={protocol?.icon} />
-                <Text size="sm" className="text-main-12 !font-bold">
+                <Text size="sm" className="text-main-12" bold>
                   {value?.name}
                 </Text>
               </Group>
-              <Divider className="border-main-8" horizontal />
+              <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
                 <Button

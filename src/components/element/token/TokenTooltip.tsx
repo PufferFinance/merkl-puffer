@@ -1,5 +1,13 @@
 import type { Token } from "@angleprotocol/merkl-api";
-import { Button, Divider, Group, Hash, Icon, Text, Title } from "packages/dappkit/src";
+import {
+  Button,
+  Divider,
+  Group,
+  Hash,
+  Icon,
+  Text,
+  Title,
+} from "packages/dappkit/src";
 
 export type TokenTooltipProps = {
   token: Token;
@@ -23,7 +31,7 @@ export default function TokenTooltip({ token }: TokenTooltipProps) {
           </Title>
         </Group>
       </Group>
-      <Divider className="border-main-6" horizontal />
+      <Divider look="soft" horizontal />
       {/* <Text size="xs">{token?.description}</Text> */}
       <Group className="flex-col" size="sm">
         <Button to={`/token/${token?.symbol}`} size="sm" look="bold">

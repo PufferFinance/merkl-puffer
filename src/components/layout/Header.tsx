@@ -58,6 +58,8 @@ export default function Header() {
           <motion.div variants={item}>
             {mdScreens ? (
               <Dropdown
+                size="lg"
+                padding="xs"
                 open={open}
                 content={<LayerMenu nav={config.routes} setOpen={setOpen} />}
                 className="flex gap-sm md:gap-lg items-center"

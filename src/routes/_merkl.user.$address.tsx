@@ -17,7 +17,7 @@ export default function Index() {
             <Text size={2} className="text-main-12">
               $6k
             </Text>
-            <Text size="xl" className="!font-bold">
+            <Text size="xl" bold>
               Total earned
             </Text>
           </Group>
@@ -25,7 +25,7 @@ export default function Index() {
             <Text size={2} className="text-main-12">
               $1.2k
             </Text>
-            <Text size={"xl"} className="!font-bold">
+            <Text size={"xl"} bold>
               Earned today
             </Text>
           </Group>
@@ -33,7 +33,7 @@ export default function Index() {
             <Text size={2} className="text-main-12">
               $3k
             </Text>
-            <Text size={"xl"} className="!font-bold">
+            <Text size={"xl"} bold>
               Claimable
             </Text>
           </Group>

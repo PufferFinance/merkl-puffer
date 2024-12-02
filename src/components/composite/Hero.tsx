@@ -99,15 +99,15 @@ export default function Hero({ navigation, icons, title, description, tags, tabs
                     </Title>
                   </Group>
                   {tags && (
-                    <Text size="xl" className="!font-bold">
+                    <Text size="xl" bold>
                       {description}
                     </Text>
                   )}
                 </Group>
-                <Divider className="border-main-11" horizontal />
+                <Divider look="base" />
                 {tags && <Group className="mb-lg">{tags}</Group>}
                 {!tags && (
-                  <Text size="xl" className="!font-bold">
+                  <Text size="xl" bold>
                     {description}
                   </Text>
                 )}
