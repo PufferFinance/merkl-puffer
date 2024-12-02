@@ -6,6 +6,7 @@ import type { routesType } from "src/config/type";
 import SearchBar from "../element/functions/SearchBar";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
+import SwitchMode from "../element/SwitchMode";
 
 export const LayerMenu: FC<{
   nav: routesType;
@@ -39,7 +40,10 @@ export const LayerMenu: FC<{
       </main>
       <footer className="mt-lg">
         <Group className="flex-col items-stretch">
-          <SearchBar />
+          <Group className="items-center">
+            <SearchBar />
+            <SwitchMode />
+          </Group>
           {!!smScreens && (
             <>
               <Divider look="soft" />

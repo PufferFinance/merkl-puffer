@@ -18,6 +18,7 @@ import { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
 import { LayerMenu } from "./LayerMenu";
+import SwitchMode from "../element/SwitchMode";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -38,13 +39,10 @@ const item = {
 };
 
 export default function Header() {
-  const { mode, toggleMode } = useTheme();
+  const { mode } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
-  const canSwitchModes = useMemo(
-    () => !(!config.modes || config.modes?.length === 1),
-    []
-  );
+ 
   const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
 
   return (
@@ -52,7 +50,7 @@ export default function Header() {
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full sticky left-0 top-0 z-0 backdrop-blur"
+      className="w-full sticky left-0 top-0 z-10 backdrop-blur"
     >
       <Container className="py-xl">
         <Group className="justify-between items-center">
@@ -104,16 +102,7 @@ export default function Header() {
                       );
                     })}
                   <Group className="items-center">
-                    {canSwitchModes && (
-                      <Button look="base" onClick={toggleMode}>
-                        <Icon
-                          remix={
-                            mode === "dark" ? "RiMoonClearLine" : "RiSunLine"
-                          }
-                        />
-                      </Button>
-                    )}
-                    <SearchBar icon={true} />
+                    <SwitchMode /> <SearchBar icon={true} />
                   </Group>
                 </>
               )}

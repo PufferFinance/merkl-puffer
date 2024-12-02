@@ -26,7 +26,23 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
         content="sm"
         className={mergeClass("", className)}
         {...props}
-        aprColumn={
+        actionsColumn={
+          <Group className="py-xl">
+            {tags
+              ?.filter(({ type }) => !hideTags || hideTags.includes(type))
+              .map((tag) => {
+                console.table(tag);
+                return (
+                  <Tag
+                    key={`${tag.type}_${tag.value?.address ?? tag.value}`}
+                    {...tag}
+                    size="lg"
+                  />
+                );
+              })}
+          </Group>
+        }
+        apyColumn={
           <Group className="py-xl">
             <Button look={(opportunity?.aprRecord?.cummulated ?? 0) > 0 ? "hype" : "soft"} className="font-mono">
               <Value value format="0a%">
