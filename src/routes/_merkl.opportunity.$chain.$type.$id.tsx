@@ -23,18 +23,11 @@ export async function loader({
   const opportunityId = { chainId: chain.id, type, identifier: id };
 
   const opportunity = await OpportunityService.get(opportunityId);
-  const campaigns = await CampaignService.get();
 
-  // get Campaigns
-  // const { data: campaigns } = await api.v4.campaigns.index.get({
-  //   query: {
-  //     chainId: chains?.[0]?.id,
-  //     type: type as Parameters<
-  //       typeof api.v4.campaigns.index.get
-  //     >[0]["query"]["type"],
-  //     identifier: id,
-  //   },
-  // });
+  // get opportunity and populate campaigns
+  const campaigns = await CampaignService.getByParams({
+    opportunityId: opportunity.id,
+  });
 
   if (!campaigns || !opportunity) throw "DAZZ";
 

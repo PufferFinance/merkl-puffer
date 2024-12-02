@@ -76,23 +76,6 @@ export abstract class OpportunityService {
     return { opportunities: opportunities.filter((o) => o !== null), count };
   }
 
-  static async getCampaigns(query: {
-    chainId: number;
-    type: string;
-    identifier: string;
-  }): Promise<Campaign[]> {
-    const { chainId, type, identifier } = query;
-
-    type T = Parameters<typeof api.v4.campaigns.index.get>[0]["query"]["type"];
-    const campaigns = await OpportunityService.#fetch(async () =>
-      api.v4.campaigns.index.get({
-        query: { chainId, type: type as T, identifier },
-      })
-    );
-
-    return campaigns.filter((c) => c !== null);
-  }
-
   static async get(query: {
     chainId: number;
     type: string;
