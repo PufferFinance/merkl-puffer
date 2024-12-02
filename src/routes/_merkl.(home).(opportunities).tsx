@@ -7,7 +7,9 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 import { ErrorContent } from "src/components/layout/ErrorContent";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request);
+  const { opportunities, count } = await OpportunityService.getManyFromRequest(
+    request
+  );
   const chains = await ChainService.getAll();
 
   return json({ opportunities, chains, count });
@@ -19,7 +21,11 @@ export default function Index() {
   return (
     <Container>
       <Space size="md" />
-      <OpportunityLibrary {...{ chains, count, opportunities }} />
+      <OpportunityLibrary
+        opportunities={opportunities}
+        chains={chains}
+        count={count}
+      />
     </Container>
   );
 }

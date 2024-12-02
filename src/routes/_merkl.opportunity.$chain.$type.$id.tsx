@@ -24,7 +24,6 @@ export async function loader({
 
   const opportunity = await OpportunityService.get(opportunityId);
   const campaigns = await campaignService.get();
-  console.log({ opportunity });
 
   // get Campaigns
   // const { data: campaigns } = await api.v4.campaigns.index.get({
