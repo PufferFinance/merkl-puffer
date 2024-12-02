@@ -1,35 +1,16 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
 import { Group } from "@ariakit/react";
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useOutletContext } from "@remix-run/react";
 import { Space } from "packages/dappkit/src";
-import { api } from "src/api/index.server";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 
-export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
-  if (!chainId || !id || !type) throw "";
-
-  const { data: chains } = await api.v4.chains.index.get({
-    query: { search: chainId },
-  });
-  const chain = chains?.[0];
-
-  if (!chain) throw "DSS";
-
-  const { data: campaigns } = await api.v4.opportunities({ id: `${chain.id}-${type}-${id}` }).campaigns.get();
-
-  if (!campaigns) throw "DAZZ";
-
-  return json({ campaigns: campaigns.campaigns });
-}
-
 export default function Index() {
-  const { campaigns } = useLoaderData<typeof loader>();
+  const { opportunity, campaigns } = useOutletContext();
+  console.log({ opportunity, campaigns });
 
   return (
     <Group>
       <Space size="md" />
-      <CampaignLibrary campaigns={campaigns as Campaign[]} />
+      <CampaignLibrary campaigns={campaigns} />
       {/* <Group className="grid grid-cols-1 gap-md md:grid-cols-[1fr,300px]"> */}
       {/* <Group className="flex-col">
           <Participate opportunity={opportunity as Opportunity} />

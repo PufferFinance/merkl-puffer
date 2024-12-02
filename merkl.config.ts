@@ -39,6 +39,9 @@ import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Merkl",
+  images: {
+    hero: "todo",
+  },
   wagmi: {
     chains: [
       mainnet,
