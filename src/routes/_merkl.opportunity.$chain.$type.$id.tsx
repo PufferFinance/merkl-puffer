@@ -11,8 +11,8 @@ import { OpportunityService } from "src/api/services/opportunity.service";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import { campaignService } from "src/api/services/campaign.service";
 import type { Campaign } from "@angleprotocol/merkl-api";
+import { CampaignService } from "src/api/services/campaign.service";
 
 export async function loader({
   params: { id, type, chain: chainId },
@@ -23,7 +23,7 @@ export async function loader({
   const opportunityId = { chainId: chain.id, type, identifier: id };
 
   const opportunity = await OpportunityService.get(opportunityId);
-  const campaigns = await campaignService.get();
+  const campaigns = await CampaignService.get();
 
   // get Campaigns
   // const { data: campaigns } = await api.v4.campaigns.index.get({
