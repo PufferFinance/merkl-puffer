@@ -3,6 +3,7 @@ import { json, useLoaderData } from "@remix-run/react";
 import { Group, Text } from "packages/dappkit/src";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
 import { api } from "src/api/index.server";
+import { CampaignService } from "src/api/services/campaign.service";
 import LeaderboardLibrary from "src/components/element/leaderboard/LeaderboardLibrary";
 
 export type DummyLeaderboard = {
@@ -28,22 +29,23 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const chain = chains?.[0];
   if (!chain) throw "DSS";
 
-  console.log({ chain: chains?.[0]?.id, id: params.id, type: params.type });
-
-  const { data: campaigns } = await api.v4.campaigns.index.get({
-    query: {
-      chainId: chains?.[0]?.id,
-      type: params.type as Parameters<
-        typeof api.v4.campaigns.index.get
-      >[0]["query"]["type"],
-      identifier: params.id,
-    },
+  const campaigns = await CampaignService.getByParams({
+    chainId: chain.id,
+    type: params.type as Parameters<
+      typeof api.v4.campaigns.index.get
+    >[0]["query"]["type"],
+    identifier: params.id,
   });
+
+  console.log({ campaigns });
 
   const campaignIdentifiers = campaigns?.map(
     (campaign) => campaign?.identifier
   );
+
   if (!campaignIdentifiers) throw "DSS";
+
+  // const rewards = await RewardService.getByCampaignsId();
 
   const { data: rewards } = await api.v4.rewards.breakdown.get({
     query: {
@@ -58,7 +60,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  // const { opportunity, campaigns } = useOutletContext();
   const { leaderboard, rewards } = useLoaderData<typeof loader>();
 
   return (

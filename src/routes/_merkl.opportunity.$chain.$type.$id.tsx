@@ -96,7 +96,6 @@ export default function Index() {
         tabs={[
           { label: "Overview", link },
           { label: "Leaderboard", link: `${link}/leaderboard` },
-          { label: "Analytics", link: `${link}/analytics` },
         ]}
         tags={tags.map((tag) => (
           <Tag

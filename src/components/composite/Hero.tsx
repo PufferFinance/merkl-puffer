@@ -1,6 +1,7 @@
 import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { useLocation } from "@remix-run/react";
 import {
+  Box,
   Container,
   Divider,
   Group,
@@ -37,6 +38,7 @@ export default function Hero({
   children,
   campaigns,
   opportunity,
+  tabs,
 }: HeroProps) {
   const location = useLocation();
 
@@ -182,23 +184,23 @@ export default function Hero({
                   </Group>
                 </Group>
               )}
-              {/* {!!tabs && (
-                <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
-                  {tabs?.map((tab) => (
-                    <Button
-                      look={location.pathname === tab.link ? "hype" : "soft"}
-                      to={tab.link}
-                      key={tab.link}
-                    >
-                      {tab.label}
-                    </Button>
-                  ))}
-                </Box>
-              )} */}
             </Group>
           </Group>
         </Container>
       </Group>
+      {!!tabs && (
+        <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
+          {tabs?.map((tab) => (
+            <Button
+              look={location.pathname === tab.link ? "hype" : "soft"}
+              to={tab.link}
+              key={tab.link}
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </Box>
+      )}
       <div>{children}</div>
     </>
   );
