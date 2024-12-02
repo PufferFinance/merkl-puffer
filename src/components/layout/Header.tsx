@@ -45,6 +45,7 @@ export default function Header() {
     () => !(!config.modes || config.modes?.length === 1),
     []
   );
+  const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
 
   return (
     <motion.header
@@ -84,34 +85,39 @@ export default function Header() {
 
           <motion.div variants={item}>
             <Group className="gap-xl items-center">
-              {!mdScreens &&
-                Object.entries(config.routes)
-                  .filter(
-                    ([key]) => !["homepage", "privacy", "terms"].includes(key)
-                  )
-                  .map(([key, { route }]) => {
-                    return (
-                      <Button
-                        look="soft"
-                        size="lg"
-                        key={`${key}-link`}
-                        to={route}
-                      >
-                        {key}
+              {!mdScreens && (
+                <>
+                  {Object.entries(config.routes)
+                    .filter(
+                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
+                    )
+                    .map(([key, { route }]) => {
+                      return (
+                        <Button
+                          look="soft"
+                          size="lg"
+                          key={`${key}-link`}
+                          to={route}
+                        >
+                          {key}
+                        </Button>
+                      );
+                    })}
+                  <Group className="items-center">
+                    {canSwitchModes && (
+                      <Button look="base" onClick={toggleMode}>
+                        <Icon
+                          remix={
+                            mode === "dark" ? "RiMoonClearLine" : "RiSunLine"
+                          }
+                        />
                       </Button>
-                    );
-                  })}
-              <Group className="items-center">
-                {canSwitchModes && (
-                  <Button look="base" onClick={toggleMode}>
-                    <Icon
-                      remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"}
-                    />
-                  </Button>
-                )}
-                {!mdScreens && <SearchBar icon={true} />}
-              </Group>
-              <WalletButton />
+                    )}
+                    <SearchBar icon={true} />
+                  </Group>
+                </>
+              )}
+              {!smScreens && <WalletButton />}
             </Group>
           </motion.div>
         </Group>
