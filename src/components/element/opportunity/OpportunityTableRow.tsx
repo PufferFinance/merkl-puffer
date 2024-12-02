@@ -11,7 +11,10 @@ import useOpportunity from "src/hooks/resources/useOpportunity";
 import Tag, { type TagTypes } from "../Tag";
 import { OpportunityRow } from "./OpportunityTable";
 
-export type OpportunityTableRowProps = { hideTags?: (keyof TagTypes)[]; opportunity: Opportunity } & BoxProps;
+export type OpportunityTableRowProps = {
+  hideTags?: (keyof TagTypes)[];
+  opportunity: Opportunity;
+} & BoxProps;
 
 export default function OpportunityTableRow({ hideTags, opportunity, className, ...props }: OpportunityTableRowProps) {
   const { tags, link, icons } = useOpportunity(opportunity);
@@ -65,7 +68,7 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
               {tags
                 ?.filter(({ type }) => !hideTags || !hideTags.includes(type))
                 .map(tag => (
-                  <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
+                  <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="xs" />
                 ))}
             </Group>
           </Group>

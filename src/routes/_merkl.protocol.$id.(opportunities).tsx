@@ -1,30 +1,26 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Space } from "dappkit/src";
-import { api } from "src/api/index.server";
-import { fetchOpportunities } from "src/api/opportunity/opportunity";
+import { Container, Space } from "dappkit/src";
+import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity.service";
+import { ProtocolService } from "src/api/services/protocol.service";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
 
 export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
-  const { data: protocol } = await api.v4.protocols({ id: id ?? "" }).get();
+  const protocol = await ProtocolService.get({ id: id ?? "" });
+  const { opportunities, count } = await OpportunityService.getMany({ mainProtocolId: id });
+  const chains = await ChainService.getAll();
 
-  if (!protocol) throw new Error("Unsupported Protocol");
-
-  const { opportunities, count } = await fetchOpportunities(request, { mainProtocolId: id });
-  const { data: chains } = await api.v4.chains.index.get({ query: {} });
-
-  if (!opportunities || !chains) throw new Error("");
-
-  return json({ opportunities, chains, count });
+  return json({ opportunities, chains, count, protocol });
 }
 
 export default function Index() {
   const { opportunities, chains, count } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <Container>
       <Space size="md" />
       <OpportunityLibrary opportunities={opportunities} count={count} chains={chains} />
-    </>
+    </Container>
   );
 }

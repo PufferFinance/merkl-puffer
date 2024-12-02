@@ -2,6 +2,7 @@ import type { Campaign } from "@angleprotocol/merkl-api";
 import {
   type Component,
   Group,
+  Hash,
   Icon,
   OverrideTheme,
   Text,
@@ -106,7 +107,9 @@ export default function CampaignTableRow({
               </div>
               <div className="flex justify-between">
                 <Text size="sm">Campaign creator</Text>
-                <Text size="sm">{campaign.creatorAddress}</Text>
+                <Hash size="sm" format="short">
+                  {campaign.creatorAddress}
+                </Hash>
               </div>
             </Group>
             <Group className="justify-between flex-col size-full">

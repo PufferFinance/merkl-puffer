@@ -1,7 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
-import { Container } from "dappkit";
-import Heading from "src/components/composite/Heading";
+import Hero from "src/components/composite/Hero";
 import { http, createConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
@@ -33,19 +32,12 @@ export const config = createConfig({
 
 export default function Index() {
   return (
-    <Container>
-      <Heading
-        icons={[{ remix: "RiSparklingLine" }]}
-        // navigation={{ label: "Back to opportunities", link: "/" }}
-        title={"All Opportunities"}
-        description={"Lorem ipsum something cool"}
-        tabs={[
-          { label: "Opportunities", link: "/" },
-          { label: "Leaderboard", link: "/leaderboard" },
-          { label: "Analytics", link: "/analytics" },
-        ]}>
-        <Outlet />
-      </Heading>
-    </Container>
+    <Hero
+      icons={[{ remix: "RiPlanetFill" }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={"Opportunities"}
+      description={"Lorem ipsum something cool"}>
+      <Outlet />
+    </Hero>
   );
 }

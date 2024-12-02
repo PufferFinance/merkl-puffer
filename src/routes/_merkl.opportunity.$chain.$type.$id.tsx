@@ -1,61 +1,60 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import {
-  Meta,
-  Outlet,
-  isRouteErrorResponse,
-  useLoaderData,
-  useRouteError,
-} from "@remix-run/react";
-import moment from "moment";
-import { useMemo } from "react";
-import { api } from "src/api/index.server";
-import Tag from "src/components/element/Tag";
-import useOpportunity from "src/hooks/resources/useOpportunity";
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  json,
+} from "@remix-run/node";
+import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "src/components/composite/Hero";
+import { useMemo } from "react";
+import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity.service";
+import Tag from "src/components/element/Tag";
+import { ErrorHeading } from "src/components/layout/ErrorHeading";
+import useOpportunity from "src/hooks/resources/useOpportunity";
+import { campaignService } from "src/api/services/campaign.service";
+import type { Campaign } from "@angleprotocol/merkl-api";
 
 export async function loader({
   params: { id, type, chain: chainId },
 }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const { data: chains } = await api.v4.chains.index.get({
-    query: { search: chainId },
-  });
+  const chain = await ChainService.get({ search: chainId });
+  const opportunityId = { chainId: chain.id, type, identifier: id };
 
-  if (!chains?.[0]) throw "";
-
-  // get Opportunities
-  const { data: opportunity } = await api.v4
-    .opportunities({ id: `${chains?.[0]?.id}-${type}-${id}` })
-    .get();
-
-  if (!opportunity) throw "Opportunity";
+  const opportunity = await OpportunityService.get(opportunityId);
+  const campaigns = await campaignService.get();
+  console.log({ opportunity });
 
   // get Campaigns
-  const { data: campaigns } = await api.v4.campaigns.index.get({
-    query: {
-      chainId: chains?.[0]?.id,
-      type: type as Parameters<
-        typeof api.v4.campaigns.index.get
-      >[0]["query"]["type"],
-      identifier: id,
-    },
-  });
+  // const { data: campaigns } = await api.v4.campaigns.index.get({
+  //   query: {
+  //     chainId: chains?.[0]?.id,
+  //     type: type as Parameters<
+  //       typeof api.v4.campaigns.index.get
+  //     >[0]["query"]["type"],
+  //     identifier: id,
+  //   },
+  // });
 
   if (!campaigns || !opportunity) throw "DAZZ";
 
   return json({ opportunity, campaigns });
 }
 
-// export const meta: MetaFunction<typeof loader> = ({ data }) => {
-//   if (data?.error) return [{ title: "404 on Merkl" }];
-//   return [{ title: `${data?.name} on Merkl` }];
-// };
+export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+  if (error) return [{ title: error }];
+  return [{ title: `${data?.name} on Merkl` }];
+};
+
+export type OutletContextOpportunity = {
+  campaigns: Campaign[];
+};
 
 export default function Index() {
   const { opportunity, campaigns } = useLoaderData<typeof loader>();
   const { tags, description, link } = useOpportunity(opportunity);
+
   const styleName = useMemo(() => {
     const spaced = opportunity?.name.split(" ");
 
@@ -87,11 +86,6 @@ export default function Index() {
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
   }, [opportunity]);
 
-  const filteredCampaigns = useMemo(() => {
-    const now = moment().unix();
-    return campaigns.filter((c: Campaign) => Number(c.endTimestamp) > now);
-  }, [campaigns]);
-
   return (
     <>
       <Meta />
@@ -112,36 +106,15 @@ export default function Index() {
             size="md"
           />
         ))}
-        campaigns={filteredCampaigns}
+        campaigns={campaigns}
+        opportunity={opportunity}
       >
-        <Outlet />
+        <Outlet context={{ campaigns }} />
       </Hero>
     </>
   );
 }
 
 export function ErrorBoundary() {
-  const error = useRouteError();
-
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div>
-        <h1>
-          {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </div>
-    );
-  }
-  if (error instanceof Error) {
-    return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </div>
-    );
-  }
-  return <h1>Unknown Error</h1>;
+  return <ErrorHeading />;
 }

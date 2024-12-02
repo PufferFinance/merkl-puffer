@@ -1,18 +1,16 @@
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { Container } from "dappkit";
 import { useMemo } from "react";
-import { api } from "src/api/index.server";
-import Heading from "src/components/composite/Heading";
+import { ChainService } from "src/api/services/chain.service";
+import { TokenService } from "src/api/services/token.service";
+import Hero from "src/components/composite/Hero";
 import Tag, { type TagType } from "src/components/element/Tag";
 import { chainIdOrder } from "src/constants/chain";
 import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
-  const { data: tokens } = await api.v4.tokens.index.get({ query: { symbol } });
-  const { data: chains } = await api.v4.chains.index.get({ query: {} });
-
-  if (!tokens?.length) throw new Error("Unknown token");
+  const tokens = await TokenService.getSymbol(symbol);
+  const chains = await ChainService.getAll();
 
   return json({ tokens, chains });
 }
@@ -41,27 +39,23 @@ export default function Index() {
   }, [tokens, chains]);
 
   return (
-    <Container>
-      <Heading
-        icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={
-          <>
-            {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
-          </>
-        }
-        description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
-        tabs={[
-          {
-            label: "Opportunities",
-            link: `/token/${token.symbol?.toLowerCase()}`,
-          },
-        ]}
-        tags={tags.map(tag => (
-          <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="sm" look="bold" />
-        ))}>
-        <Outlet />
-      </Heading>
-    </Container>
+    <Hero
+      icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={
+        <>
+          {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
+        </>
+      }
+      description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
+      tabs={[
+        {
+          label: "Opportunities",
+          link: `/token/${token.symbol?.toLowerCase()}`,
+        },
+      ]}
+      tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}>
+      <Outlet />
+    </Hero>
   );
 }

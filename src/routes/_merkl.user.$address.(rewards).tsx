@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
-import { Space } from "dappkit";
+import { Container, Space } from "dappkit";
 import { api } from "src/api/index.server";
 import ClaimRewardsLibrary from "src/components/element/rewards/ClaimRewardsLibrary";
 
@@ -18,9 +18,9 @@ export default function Index() {
   const { rewards, address } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <Container>
       <Space size="md" />
       <ClaimRewardsLibrary from={address} rewards={rewards} />
-    </>
+    </Container>
   );
 }

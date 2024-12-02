@@ -1,11 +1,11 @@
 import { Container, useTheme } from "dappkit";
 import { Button, Group, Text } from "dappkit/src";
-import Image from "../../../packages/dappkit/src/components/primitives/Image";
 import config from "merkl.config";
 import merklDarkLogo from "src/assets/images/by-merkl-dark.svg";
 import merklLogo from "src/assets/images/by-merkl.svg";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
+import Image from "../../../packages/dappkit/src/components/primitives/Image";
 import Socials from "../element/Socials";
 
 export default function Footer() {
@@ -26,35 +26,21 @@ export default function Footer() {
             <Socials />
           </Group>
           <Group className="items-center gap-xl*2">
-            <Group className="items-center">
+            <Group className="items-center" size="xl">
               <Text size="sm" className="text-main-11">
                 ©{new Date().getFullYear()} Merkl. All rights reserved.
               </Text>
 
-              <Button
-                look="soft"
-                className="capitalize"
-                size="sm"
-                to={config.routes.terms.route}
-              >
+              <Button look="soft" className="capitalize" size="sm" to={config.routes.terms.route}>
                 Terms
               </Button>
-              <Button
-                look="soft"
-                className="capitalize"
-                size="sm"
-                to={config.routes.privacy.route}
-              >
+              <Button look="soft" className="capitalize" size="sm" to={config.routes.privacy.route}>
                 Privacy
               </Button>
             </Group>
 
             <Button to={config.links.merkl} external look="soft">
-              <Image
-                className="w-[130px]"
-                alt="Merkl Footer logo"
-                src={mode !== "dark" ? merklDarkLogo : merklLogo}
-              />
+              <Image className="w-[130px]" alt="Merkl Footer logo" src={mode !== "dark" ? merklDarkLogo : merklLogo} />
             </Button>
           </Group>
         </Group>

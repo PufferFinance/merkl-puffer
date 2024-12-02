@@ -1,6 +1,6 @@
 import type { Chain } from "@angleprotocol/merkl-api";
 import { Form } from "@remix-run/react";
-import { Button, Group, Icon, Input, List, Select } from "dappkit/src";
+import { Group, Icon, Input, Select } from "dappkit/src";
 import { useMemo, useState } from "react";
 import { actions } from "src/config/actions";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
@@ -98,12 +98,14 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
     <Group>
       {fields.includes("search") && (
         <Form>
-          <List flex="row" size="sm" content="sm" look="bold">
-            <Input name="search" value={innerSearch} state={[innerSearch, setInnerSearch]} placeholder="Search" />
-            <Button onClick={onSearchSubmit}>
-              <Icon size="sm" remix="RiSearchLine" />
-            </Button>
-          </List>
+          <Input
+            name="search"
+            value={innerSearch}
+            state={[innerSearch, setInnerSearch]}
+            suffix={<Icon size="sm" remix="RiSearchLine" />}
+            onClick={onSearchSubmit}
+            placeholder="Search"
+          />
         </Form>
       )}
       {fields.includes("action") && (

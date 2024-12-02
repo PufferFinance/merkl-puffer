@@ -1,4 +1,4 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
+import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { useLocation } from "@remix-run/react";
 import {
   Container,
@@ -12,8 +12,9 @@ import {
   Value,
 } from "dappkit";
 import { Button } from "dappkit";
-import { useMemo, type PropsWithChildren, type ReactNode } from "react";
 import config from "merkl.config";
+import moment from "moment";
+import { type PropsWithChildren, type ReactNode, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
 
 export type HeroProps = PropsWithChildren<{
@@ -24,6 +25,7 @@ export type HeroProps = PropsWithChildren<{
   tags?: ReactNode[];
   tabs?: { label: ReactNode; link: string }[];
   campaigns?: Campaign[];
+  opportunity?: Opportunity;
 }>;
 
 export default function Hero({
@@ -34,11 +36,17 @@ export default function Hero({
   tags,
   children,
   campaigns,
+  opportunity,
 }: HeroProps) {
   const location = useLocation();
 
+  const filteredCampaigns = useMemo(() => {
+    const now = moment().unix();
+    return campaigns?.filter((c: Campaign) => Number(c.endTimestamp) > now);
+  }, [campaigns]);
+
   const totalRewards = useMemo(() => {
-    const amounts = campaigns?.map((campaign) => {
+    const amounts = filteredCampaigns?.map((campaign) => {
       const duration = campaign.endTimestamp - campaign.startTimestamp;
       const dayspan = BigInt(duration) / BigInt(3600 * 24);
 
@@ -51,7 +59,7 @@ export default function Hero({
     );
     if (!sum) return "0.0";
     return formatUnits(sum, 18);
-  }, [campaigns]);
+  }, [filteredCampaigns]);
 
   return (
     <>
@@ -142,26 +150,32 @@ export default function Hero({
                   size="xl"
                 >
                   <Group className="flex-col">
-                    <Value
-                      look={totalRewards === "0" ? "soft" : "base"}
-                      format="$0,0"
-                      size={3}
-                    >
-                      {totalRewards}
-                    </Value>
+                    <Text size={3}>
+                      <Value
+                        look={totalRewards === "0" ? "soft" : "base"}
+                        format="$0,0"
+                        size={"md"}
+                      >
+                        {totalRewards}
+                      </Value>
+                    </Text>
 
                     <Text size="xl" className="font-bold">
                       Daily rewards
                     </Text>
                   </Group>
                   <Group className="flex-col">
-                    <Text size={3}>todo</Text>
+                    <Text size={3}>
+                      <Value value format="0a%">
+                        {(opportunity?.apr ?? 0) / 100}
+                      </Value>
+                    </Text>
                     <Text size={"xl"} className="font-bold">
                       APR
                     </Text>
                   </Group>
                   <Group className="flex-col">
-                    <Text size={3}>{campaigns?.length}</Text>
+                    <Text size={3}>{filteredCampaigns?.length}</Text>
                     <Text size={"xl"} className="font-bold">
                       Active campaigns
                     </Text>

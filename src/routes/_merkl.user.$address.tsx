@@ -1,60 +1,84 @@
 import { Outlet, useParams } from "@remix-run/react";
-import { Button, Group, Hash, Icon } from "dappkit";
-import { Container } from "dappkit";
+import { Button, Group, Hash, Icon, Text } from "dappkit";
 import { useState } from "react";
-import Heading from "src/components/composite/Heading";
+import Hero from "src/components/composite/Hero";
 
 export default function Index() {
   const { address } = useParams();
   const [_isEditingAddress, setIsEditingAddress] = useState(false);
 
   return (
-    <Container>
-      <Heading
-        icons={[{ remix: "RiUser6Fill" }]}
-        navigation={{ label: "Back to opportunities", link: "/" }}
-        title={
-          <Group>
-            <Hash value format="short">
-              {address}
-            </Hash>
-            <Button onClick={() => setIsEditingAddress(e => !e)} look="soft">
-              <Icon remix="RiEdit2Line" />
+    <Hero
+      navigation={{ label: "Back to opportunities", link: "/" }}
+      title={
+        <Group className="w-full gap-xl md:gap-xl*4 items-center">
+          {/* TODO: Make it dynamic this */}
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $6k
+            </Text>
+            <Text size="xl" className="!font-bold">
+              Total earned
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $1.2k
+            </Text>
+            <Text size={"xl"} className="!font-bold">
+              Earned today
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Text size={2} className="text-main-12">
+              $3k
+            </Text>
+            <Text size={"xl"} className="!font-bold">
+              Claimable
+            </Text>
+          </Group>
+          <Group className="flex-col">
+            <Button look="hype" size="lg">
+              Claim
             </Button>
           </Group>
-        }
-        description={"Inspect rewards, balances and positions."}
-        tabs={[
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiGift2Fill" />
-                Rewards
-              </>
-            ),
-            link: `/user/${address}`,
-          },
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiDropFill" />
-                Liquidity
-              </>
-            ),
-            link: `/user/${address}/liquidity`,
-          },
-          {
-            label: (
-              <>
-                <Icon size="sm" remix="RiListCheck3" />
-                Claims
-              </>
-            ),
-            link: `/user/${address}/claims`,
-          },
-        ]}>
-        <Outlet />
-      </Heading>
-    </Container>
+        </Group>
+      }
+      description={
+        <Hash size={4} className="text-main-12" format="short" copy>
+          {address}
+        </Hash>
+      }
+      tabs={[
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiGift2Fill" />
+              Rewards
+            </>
+          ),
+          link: `/user/${address}`,
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiDropFill" />
+              Liquidity
+            </>
+          ),
+          link: `/user/${address}/liquidity`,
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiListCheck3" />
+              Claims
+            </>
+          ),
+          link: `/user/${address}/claims`,
+        },
+      ]}>
+      <Outlet />
+    </Hero>
   );
 }

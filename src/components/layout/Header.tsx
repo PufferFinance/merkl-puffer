@@ -1,23 +1,15 @@
-import {
-  Button,
-  Group,
-  Icon,
-  Container,
-  WalletButton,
-  useTheme,
-  Dropdown,
-} from "dappkit";
-import SearchBar from "../element/functions/SearchBar";
+import { Button, Container, Dropdown, Group, Icon, WalletButton, useTheme } from "dappkit";
+import { Image } from "dappkit";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
-import { Image } from "dappkit";
+import SearchBar from "../element/functions/SearchBar";
 
 import { motion } from "framer-motion";
 import config from "merkl.config";
-import { LayerMenu } from "./LayerMenu";
-import { useState } from "react";
-import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
+import { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
+import { LayerMenu } from "./LayerMenu";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -41,14 +33,14 @@ export default function Header() {
   const { mode, toggleMode } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
+  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
 
   return (
     <motion.header
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full fixed top-0 z-0 backdrop-blur"
-    >
+      className="w-full sticky left-0 top-0 z-0 backdrop-blur">
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item}>
@@ -56,21 +48,16 @@ export default function Header() {
               <Dropdown
                 open={open}
                 content={<LayerMenu nav={config.routes} setOpen={setOpen} />}
-                className="flex gap-sm md:gap-lg items-center"
-              >
+                className="flex gap-sm md:gap-lg items-center">
                 <Image
                   className="w-[140px] md:w-[200px]"
                   alt={`${config.appName} logo`}
                   src={mode !== "dark" ? customerDarkLogo : customerLogo}
                 />
-                <Icon
-                  size="lg"
-                  className="text-main-12"
-                  remix="RiArrowDownSLine"
-                />
+                <Icon size="lg" className="text-main-12" remix="RiArrowDownSLine" />
               </Dropdown>
             ) : (
-              <Button to={config.routes.homepage.route} look="soft">
+              <Button size="lg" to={config.routes.homepage.route} look="soft">
                 <Image
                   className="w-[200px]"
                   alt={`${config.appName} logo`}
@@ -82,34 +69,22 @@ export default function Header() {
 
           <motion.div variants={item}>
             <Group className="gap-xl items-center">
-              {!mdScreens && (
-                <>
-                  {Object.entries(config.routes)
-                    .filter(
-                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
-                    )
-                    .map(([key, { route }]) => {
-                      return (
-                        <Button
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          to={route}
-                        >
-                          {key}
-                        </Button>
-                      );
-                    })}
-
-                  <SearchBar />
-                </>
+              {!mdScreens &&
+                Object.entries(config.routes)
+                  .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
+                  .map(([key, { route }]) => {
+                    return (
+                      <Button look="soft" size="lg" key={`${key}-link`} to={route}>
+                        {key}
+                      </Button>
+                    );
+                  })}
+              {canSwitchModes && (
+                <Button size="lg" look="base" onClick={toggleMode}>
+                  <Icon size="sm" remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"} />
+                </Button>
               )}
-              <Button look="base" onClick={toggleMode}>
-                <Icon
-                  size="sm"
-                  remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"}
-                />
-              </Button>
+              {!mdScreens && <SearchBar />}
               <WalletButton />
             </Group>
           </motion.div>

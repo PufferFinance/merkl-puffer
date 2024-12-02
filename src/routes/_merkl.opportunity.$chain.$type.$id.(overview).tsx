@@ -1,11 +1,16 @@
 import { Group } from "@ariakit/react";
-import { useOutletContext } from "@remix-run/react";
+import { json, useOutletContext } from "@remix-run/react";
 import { Space } from "packages/dappkit/src";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
+import type { OutletContextOpportunity } from "./_merkl.opportunity.$chain.$type.$id";
+import { ErrorContent } from "src/components/layout/ErrorContent";
+
+export async function loader() {
+  return json({});
+}
 
 export default function Index() {
-  const { opportunity, campaigns } = useOutletContext();
-  console.log({ opportunity, campaigns });
+  const { campaigns } = useOutletContext<OutletContextOpportunity>();
 
   return (
     <Group>
@@ -18,4 +23,8 @@ export default function Index() {
       {/* </Group> */}
     </Group>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorContent />;
 }
