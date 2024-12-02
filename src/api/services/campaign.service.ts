@@ -1,17 +1,16 @@
 import type { Campaign } from "@angleprotocol/merkl-api";
 import { api } from "../index.server";
 
-class CampaignService {
+export abstract class CampaignService {
   // ------ Fetch all campaigns
-  async get(): Promise<Campaign[]> {
+  static async get(): Promise<Campaign[]> {
     const { data } = await api.v4.campaigns.index.get({ query: {} });
+
     return data;
   }
 
   // ------ Fetch a campaign by ID
-  async getByID(Id: string): Promise<Campaign> {
-    return "To implements";
+  static async getByID(Id: string): Promise<Campaign | null> {
+    return null;
   }
 }
-
-export const campaignService = new CampaignService();
