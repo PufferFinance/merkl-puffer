@@ -1,4 +1,4 @@
-import type { Reward } from "@angleprotocol/merkl-api";
+import type { Reward } from "@merkl/api";
 import { Group } from "dappkit";
 import { ClaimRewardsChainTable } from "./ClaimRewardsChainTable";
 import ClaimRewardsChainTableRow from "./ClaimRewardsChainTableRow";

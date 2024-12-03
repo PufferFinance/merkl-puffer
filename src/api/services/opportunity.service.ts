@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import config from "merkl.config";
 import { api } from "../index.server";
 
@@ -48,8 +48,11 @@ export abstract class OpportunityService {
     return query;
   }
 
-  static async getManyFromRequest(request: Request) {
-    return OpportunityService.getMany(OpportunityService.#getQueryFromRequest(request));
+  static async getManyFromRequest(
+    request: Request,
+    overrides?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+  ) {
+    return OpportunityService.getMany(Object.assign(OpportunityService.#getQueryFromRequest(request), overrides ?? {}));
   }
 
   static async getMany(

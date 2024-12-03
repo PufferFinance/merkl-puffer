@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
 import { Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
@@ -75,7 +75,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                         );
                       case "protocol":
                         return (
-                          <Button to={`/protocol/${results[i].name}`} size="lg" look="bold">
+                          <Button to={`/protocols/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );

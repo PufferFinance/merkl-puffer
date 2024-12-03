@@ -40,6 +40,10 @@ export default function Index() {
 
   return (
     <Hero
+      breadcrumbs={[
+        { link: "/token", name: "Tokens" },
+        { link: `/token/${tokens?.[0]?.symbol}`, name: tokens?.[0]?.symbol },
+      ]}
       icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={

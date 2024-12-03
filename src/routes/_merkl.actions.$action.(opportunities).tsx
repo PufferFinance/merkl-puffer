@@ -11,7 +11,7 @@ export async function loader({ params: { action: _action }, request }: LoaderFun
   const action = getAction(_action ?? "");
   if (!action) throw new Error("Unknown action");
 
-  const { opportunities, count } = await OpportunityService.getMany({ action });
+  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { action });
   const chains = await ChainService.getAll();
 
   return json({ opportunities, chains, count });

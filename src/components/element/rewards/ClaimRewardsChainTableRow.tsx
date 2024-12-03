@@ -1,4 +1,4 @@
-import type { Reward } from "@angleprotocol/merkl-api";
+import type { Reward } from "@merkl/api";
 import { Icon, Space, Text, Value } from "dappkit";
 import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";

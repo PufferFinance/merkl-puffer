@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, useLoaderData } from "@remix-run/react";
-import { Group, Text } from "packages/dappkit/src";
+import { Container, Group, Space, Text } from "packages/dappkit/src";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
 import LeaderboardLibrary from "src/components/element/leaderboard/LeaderboardLibrary";
 // import { ChainService } from "src/api/services/chain.service";
@@ -51,7 +51,8 @@ export default function Index() {
   const { leaderboard } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <Container>
+      <Space size="lg" />
       <Group size="lg">
         <Group className="flex-col border-2 flex-1">
           <Tooltip helper={null}>
@@ -67,8 +68,8 @@ export default function Index() {
           <Text size={"xl"}>400k</Text>
         </Group>
       </Group>
-
+      <Space size="lg" />
       <LeaderboardLibrary leaderboard={leaderboard} />
-    </>
+    </Container>
   );
 }

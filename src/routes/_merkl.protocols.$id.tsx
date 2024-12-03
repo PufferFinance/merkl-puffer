@@ -15,13 +15,16 @@ export default function Index() {
   return (
     <Hero
       icons={[{ src: protocol?.icon }]}
-      navigation={{ label: "Back to opportunities", link: "/" }}
       title={protocol?.name}
+      breadcrumbs={[
+        { link: "/protocols", name: "Protocols" },
+        { link: `/protocols/${protocol.name}`, name: protocol.name },
+      ]}
       description={"Protocol"}
       tabs={[
         {
           label: "Opportunities",
-          link: `/protocol/${protocol.name?.toLowerCase()}`,
+          link: `/protocols/${protocol.name?.toLowerCase()}`,
         },
       ]}>
       <Outlet />

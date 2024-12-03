@@ -1,4 +1,4 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
+import type { Campaign } from "@merkl/api";
 import { type Component, Group, Hash, Icon, OverrideTheme, Text, Value, mergeClass } from "dappkit";
 import moment from "moment";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";

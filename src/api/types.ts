@@ -1,3 +1,3 @@
-import type { MerklApi } from "@angleprotocol/merkl-api";
+import type { MerklApi } from "@merkl/api";
 
 export type Api = ReturnType<typeof MerklApi>;

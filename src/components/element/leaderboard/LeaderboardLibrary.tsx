@@ -1,6 +1,6 @@
 import { Text } from "dappkit";
 import { useMemo } from "react";
-import type { DummyLeaderboard } from "src/routes/_merkl.opportunity.$chain.$type.$id.leaderboard";
+import type { DummyLeaderboard } from "src/routes/_merkl.opportunities.$chain.$type.$id.leaderboard";
 import { LeaderboardTable } from "./LeaderboardTable";
 import LeaderboardTableRow from "./LeaderboardTableRow";
 

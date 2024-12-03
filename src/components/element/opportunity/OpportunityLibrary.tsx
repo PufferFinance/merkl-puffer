@@ -1,4 +1,4 @@
-import type { Chain, Opportunity } from "@angleprotocol/merkl-api";
+import type { Chain, Opportunity } from "@merkl/api";
 import { Group, type Order } from "dappkit";
 import { useMemo } from "react";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";

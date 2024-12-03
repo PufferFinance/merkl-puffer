@@ -2,14 +2,13 @@ import { Button, Container, Dropdown, Group, Icon, WalletButton, useTheme } from
 import { Image } from "dappkit";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
-import SearchBar from "../element/functions/SearchBar";
 
 import { motion } from "framer-motion";
 import config from "merkl.config";
-import { useState } from "react";
+import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
-import SwitchMode from "../element/SwitchMode";
 import { LayerMenu } from "./LayerMenu";
 
 const container = {
@@ -31,11 +30,29 @@ const item = {
 };
 
 export default function Header() {
-  const { mode } = useTheme();
+  const { mode, toggleMode } = useTheme();
+  const { address: user } = useWalletContext();
   const [open, setOpen] = useState<boolean>(false);
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
 
   const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
+  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
+
+  const routes = useMemo(() => {
+    const { homepage, ...rest } = config.routes;
+
+    return Object.assign(
+      { homepage },
+      {
+        dashboard: {
+          icon: "RiPlanetFill",
+          route: user ? `/users/${user}` : "/users",
+          key: crypto.randomUUID(),
+        },
+      },
+      rest,
+    );
+  }, [user]);
 
   return (
     <motion.header
@@ -51,7 +68,7 @@ export default function Header() {
                 size="lg"
                 padding="xs"
                 open={open}
-                content={<LayerMenu nav={config.routes} setOpen={setOpen} />}
+                content={<LayerMenu nav={routes} setOpen={setOpen} />}
                 className="flex gap-sm md:gap-lg items-center">
                 <Image
                   className="w-[140px] md:w-[200px]"
@@ -61,7 +78,7 @@ export default function Header() {
                 <Icon className="text-main-12" remix="RiArrowDownSLine" />
               </Dropdown>
             ) : (
-              <Button size="lg" to={config.routes.homepage.route} look="soft">
+              <Button size="lg" to={routes.homepage.route} look="soft">
                 <Image
                   className="w-[200px]"
                   alt={`${config.appName} logo`}
@@ -73,21 +90,20 @@ export default function Header() {
 
           <motion.div variants={item}>
             <Group className="gap-xl items-center">
-              {!mdScreens && (
-                <>
-                  {Object.entries(config.routes)
-                    .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
-                    .map(([key, { route }]) => {
-                      return (
-                        <Button look="soft" size="lg" key={`${key}-link`} to={route}>
-                          {key}
-                        </Button>
-                      );
-                    })}
-                  <Group className="items-center">
-                    <SwitchMode /> <SearchBar icon={true} />
-                  </Group>
-                </>
+              {!mdScreens &&
+                Object.entries(routes)
+                  .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
+                  .map(([key, { route }]) => {
+                    return (
+                      <Button className="capitalize" look="soft" size="lg" key={`${key}-link`} to={route}>
+                        {key}
+                      </Button>
+                    );
+                  })}
+              {canSwitchModes && (
+                <Button size="lg" look="base" onClick={toggleMode}>
+                  <Icon size="sm" remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"} />
+                </Button>
               )}
               {!smScreens && <WalletButton />}
             </Group>

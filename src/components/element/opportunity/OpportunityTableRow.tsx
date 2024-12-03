@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { Group } from "dappkit";
 import { Icons } from "dappkit";

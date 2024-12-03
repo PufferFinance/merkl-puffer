@@ -1,4 +1,4 @@
-import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
+import type { Campaign, Opportunity } from "@merkl/api";
 import { Bar } from "dappkit";
 import moment from "moment";
 import { Group, Text, Value } from "packages/dappkit/src";
