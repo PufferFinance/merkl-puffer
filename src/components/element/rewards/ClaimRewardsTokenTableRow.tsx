@@ -1,4 +1,4 @@
-import type { Reward } from "@angleprotocol/merkl-api";
+import type { Reward } from "@merkl/api";
 import { Checkbox, Divider, type GetSet, Group, Icon, Space } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { type PropsWithChildren, useMemo, useState } from "react";

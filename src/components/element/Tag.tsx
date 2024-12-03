@@ -1,4 +1,5 @@
 import type { Opportunity, Token } from "@angleprotocol/merkl-api";
+import type { Chain } from "@merkl/api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, Text } from "dappkit";
 import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
@@ -78,7 +79,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
 
               <Divider look="soft" horizontal />
               <Group className="flex-col">
-                <Button to={`/chain/${chain?.name}`} size="xs" look="soft">
+                <Button to={`/chains/${chain?.name}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" /> Open
                 </Button>
               </Group>
@@ -110,7 +111,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               </Group>
               <Divider look="soft" horizontal />
               <Text size="xs">{action?.description}</Text>
-              <Button to={`/action/${action?.label}`} size="xs" look="soft">
+              <Button to={`/actions/${action?.label}`} size="xs" look="soft">
                 <Icon remix="RiArrowRightLine" />
                 Open
               </Button>
@@ -148,7 +149,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
-                <Button to={`/token/${token?.symbol}`} size="xs" look="soft">
+                <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Merkl
                 </Button>
@@ -192,11 +193,11 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
               <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
-                <Button to={`/chain/${token.chain?.name}`} size="sm" look="bold">
+                <Button to={`/chains/${token.chain?.name}`} size="sm" look="bold">
                   <Icon size="sm" src={token.chain?.icon} />
                   {token.chain?.name}
                 </Button>
-                <Button to={`/token/${token?.symbol}`} size="xs" look="soft">
+                <Button to={`/tokens/${token?.symbol}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Merkl
                 </Button>

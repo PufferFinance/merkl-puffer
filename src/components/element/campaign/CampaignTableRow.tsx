@@ -1,7 +1,5 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
+import type { Campaign } from "@merkl/api";
 import { type Component, Group, Hash, Icon, OverrideTheme, Text, Value, mergeClass } from "dappkit";
-import moment from "moment";
-import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
 import { useCallback, useMemo, useState } from "react";
 import useCampaign from "src/hooks/resources/useCampaign";
 import { formatUnits, parseUnits } from "viem";
@@ -9,6 +7,8 @@ import Chain from "../chain/Chain";
 import Token from "../token/Token";
 import { CampaignRow } from "./CampaignTable";
 import RestrictionsCollumn from "./tableCollumns/RestrictionsCollumn";
+import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
+import moment from "moment";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;

@@ -1,4 +1,4 @@
-import type { Token as TokenType } from "@angleprotocol/merkl-api";
+import type { Token as TokenType } from "@merkl/api";
 import { Button, Dropdown, Icon, Value } from "packages/dappkit/src";
 import { useMemo } from "react";
 import TokenTooltip from "./TokenTooltip";

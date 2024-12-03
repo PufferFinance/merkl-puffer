@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Icon } from "dappkit";
 import { useMemo } from "react";
 import type { TagType } from "src/components/element/Tag";

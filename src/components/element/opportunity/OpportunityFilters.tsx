@@ -1,4 +1,4 @@
-import type { Chain } from "@angleprotocol/merkl-api";
+import type { Chain } from "@merkl/api";
 import { Form } from "@remix-run/react";
 import { Group, Icon, Input, Select } from "dappkit/src";
 import { useMemo, useState } from "react";

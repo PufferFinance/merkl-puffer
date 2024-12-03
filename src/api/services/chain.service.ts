@@ -1,4 +1,4 @@
-import type { Chain } from "@angleprotocol/merkl-api";
+import type { Chain } from "@merkl/api";
 import { api } from "../index.server";
 
 export abstract class ChainService {

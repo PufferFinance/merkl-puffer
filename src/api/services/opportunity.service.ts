@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Campaign, Opportunity } from "@merkl/api";
 import config from "merkl.config";
 import { api } from "../index.server";
 

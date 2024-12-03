@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
 import { Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";

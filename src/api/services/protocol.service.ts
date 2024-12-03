@@ -1,4 +1,4 @@
-import type { Protocol } from "@angleprotocol/merkl-api";
+import type { Protocol } from "@merkl/api";
 import { api } from "../index.server";
 
 export abstract class ProtocolService {

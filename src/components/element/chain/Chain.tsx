@@ -1,4 +1,4 @@
-import type { Chain as ChainType } from "@angleprotocol/merkl-api";
+import type { Chain as ChainType } from "@merkl/api";
 import { Button, Dropdown, Icon, type Size } from "packages/dappkit/src";
 
 export type ChainProps = {

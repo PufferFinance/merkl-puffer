@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import type { IconProps } from "dappkit";
 
 export const statuses = {

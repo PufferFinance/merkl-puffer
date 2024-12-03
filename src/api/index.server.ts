@@ -1,4 +1,4 @@
-import { MerklApi } from "@angleprotocol/merkl-api";
+import { MerklApi } from "@merkl/api";
 
 const api = MerklApi(process.env.API_URL ?? "https://api.merkl.xyz");
 

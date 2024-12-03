@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Button, Icons } from "dappkit";
 import { blockEvent } from "packages/dappkit/src/utils/event";
 import useOpportunity from "src/hooks/resources/useOpportunity";

@@ -1,4 +1,4 @@
-import type { Reward } from "@angleprotocol/merkl-api";
+import type { Reward } from "@merkl/api";
 import { api } from "../index.server";
 
 export abstract class RewardService {

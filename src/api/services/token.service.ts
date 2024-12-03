@@ -1,4 +1,4 @@
-import type { Token } from "@angleprotocol/merkl-api";
+import type { Token } from "@merkl/api";
 import { api } from "../index.server";
 
 export abstract class TokenService {

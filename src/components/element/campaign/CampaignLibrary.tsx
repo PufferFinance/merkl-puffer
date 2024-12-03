@@ -1,4 +1,4 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@merkl/api";
 import { Button, Group, Icon, Text } from "dappkit";
 import moment from "moment";
 import { useMemo, useState } from "react";
