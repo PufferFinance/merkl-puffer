@@ -1,4 +1,12 @@
-import { Button, Container, Dropdown, Group, Icon, WalletButton, useTheme } from "dappkit";
+import {
+  Button,
+  Container,
+  Dropdown,
+  Group,
+  Icon,
+  WalletButton,
+  useTheme,
+} from "dappkit";
 import { Image } from "dappkit";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
@@ -10,6 +18,8 @@ import { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
 import { LayerMenu } from "./LayerMenu";
+import SwitchMode from "../element/SwitchMode";
+import SearchBar from "../element/functions/SearchBar";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -36,7 +46,10 @@ export default function Header() {
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
 
   const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
-  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
+  const canSwitchModes = useMemo(
+    () => !(!config.modes || config.modes?.length === 1),
+    []
+  );
 
   const routes = useMemo(() => {
     const { homepage, ...rest } = config.routes;
@@ -50,7 +63,7 @@ export default function Header() {
           key: crypto.randomUUID(),
         },
       },
-      rest,
+      rest
     );
   }, [user]);
 
@@ -59,7 +72,8 @@ export default function Header() {
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full sticky left-0 top-0 z-10 backdrop-blur">
+      className="w-full sticky left-0 top-0 z-10 backdrop-blur"
+    >
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item}>
@@ -69,7 +83,8 @@ export default function Header() {
                 padding="xs"
                 open={open}
                 content={<LayerMenu nav={routes} setOpen={setOpen} />}
-                className="flex gap-sm md:gap-lg items-center">
+                className="flex gap-sm md:gap-lg items-center"
+              >
                 <Image
                   className="w-[140px] md:w-[200px]"
                   alt={`${config.appName} logo`}
@@ -90,20 +105,30 @@ export default function Header() {
 
           <motion.div variants={item}>
             <Group className="gap-xl items-center">
-              {!mdScreens &&
-                Object.entries(routes)
-                  .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
-                  .map(([key, { route }]) => {
-                    return (
-                      <Button className="capitalize" look="soft" size="lg" key={`${key}-link`} to={route}>
-                        {key}
-                      </Button>
-                    );
-                  })}
-              {canSwitchModes && (
-                <Button size="lg" look="base" onClick={toggleMode}>
-                  <Icon size="sm" remix={mode === "dark" ? "RiMoonClearLine" : "RiSunLine"} />
-                </Button>
+              {!mdScreens && (
+                <>
+                  {Object.entries(config.routes)
+                    .filter(
+                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
+                    )
+                    .map(([key, { route }]) => {
+                      return (
+                        <Button
+                          look="soft"
+                          size="lg"
+                          key={`${key}-link`}
+                          to={route}
+                        >
+                          {key}
+                        </Button>
+                      );
+                    })}
+                  <Group className="items-center">
+                    {canSwitchModes && <SwitchMode />}
+
+                    <SearchBar icon={true} />
+                  </Group>
+                </>
               )}
               {!smScreens && <WalletButton />}
             </Group>
