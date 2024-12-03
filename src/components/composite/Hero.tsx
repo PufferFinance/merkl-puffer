@@ -123,7 +123,10 @@ export default function Hero({ navigation, breadcrumbs, icons, title, descriptio
         {!!tabs && (
           <Box size="sm" look="base" className="flex-row mt-md w-min">
             {tabs?.map(tab => (
-              <Button look={location.pathname === tab.link ? "hype" : "base"} to={tab.link} key={tab.link}>
+              <Button
+                look={location.pathname === tab.link ? "hype" : "base"}
+                to={tab.link}
+                key={`${tab.label}-${tab.link}`}>
                 {tab.label}
               </Button>
             ))}
