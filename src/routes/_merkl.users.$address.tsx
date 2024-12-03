@@ -1,9 +1,21 @@
-import { Outlet, useParams } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json, Outlet, useParams } from "@remix-run/react";
 import { Button, Group, Hash, Icon, Text } from "dappkit";
 import { useState } from "react";
+import { RewardService } from "src/api/services/reward.service";
 import Hero from "src/components/composite/Hero";
 
+export async function loader({ params: { address } }: LoaderFunctionArgs) {
+  if (!address) throw "";
+
+  //TODO: use a ligther route
+  const rewards = await RewardService.getForUser(address);
+
+  return json({ rewards, address });
+}
+
 export default function Index() {
+  const { rewards, address } = useLoaderData<typeof loader>();
   const { address } = useParams();
   const [_isEditingAddress] = useState(false);
 
