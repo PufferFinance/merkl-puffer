@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
 import { Group, Title } from "dappkit";
 import { ChainService } from "src/api/services/chain.service";
@@ -9,6 +9,10 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 
   return json({ chain });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: `${data?.chain?.name} on Merkl` }];
+};
 
 export default function Index() {
   const { chain } = useLoaderData<typeof loader>();

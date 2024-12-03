@@ -1,12 +1,13 @@
 import type { Protocol } from "@merkl/api";
 import { api } from "../index.server";
+import { fetchWithLogs } from "../utils";
 
 export abstract class ProtocolService {
-  static async #fetch<R, T extends { data: R; status: number }>(
+  static async #fetch<R, T extends { data: R; status: number; response: Response }>(
     call: () => Promise<T>,
     resource = "Protocol",
   ): Promise<NonNullable<T["data"]>> {
-    const { data, status } = await call();
+    const { data, status } = await fetchWithLogs(call);
 
     if (status === 404) throw new Response(`${resource} not found`, { status });
     if (status === 500) throw new Response(`${resource} unavailable`, { status });

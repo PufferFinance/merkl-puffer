@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { ProtocolService } from "src/api/services/protocol.service";
 import Hero from "src/components/composite/Hero";
@@ -8,6 +8,12 @@ export async function loader({ params: { id } }: LoaderFunctionArgs) {
 
   return json({ protocol });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data?.protocol) return [{ title: "Merkl" }];
+
+  return [{ title: `${data?.protocol?.name} on Merkl` }];
+};
 
 export default function Index() {
   const { protocol } = useLoaderData<typeof loader>();

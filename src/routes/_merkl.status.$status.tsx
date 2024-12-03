@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "src/components/composite/Hero";
 import { type Status, getStatus, statuses } from "src/config/status";
@@ -10,6 +10,14 @@ export async function loader({ params: { status: _status } }: LoaderFunctionArgs
 
   return json({ status });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data?.status) return [{ title: "Merkl" }];
+
+  const status = data.status.charAt(0).toUpperCase() + data.status.slice(1).toLowerCase();
+
+  return [{ title: `${status} opportunities on Merkl` }];
+};
 
 export default function Index() {
   const { status: _status } = useLoaderData<typeof loader>();

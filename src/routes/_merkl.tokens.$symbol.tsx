@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { useMemo } from "react";
 import { ChainService } from "src/api/services/chain.service";
@@ -14,6 +14,14 @@ export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
 
   return json({ tokens, chains });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const symbol = data?.tokens?.[0]?.symbol;
+
+  if (!symbol) return [{ title: "Merkl" }];
+
+  return [{ title: `${symbol} on Merkl` }];
+};
 
 export default function Index() {
   const { tokens, chains } = useLoaderData<typeof loader>();
@@ -41,8 +49,8 @@ export default function Index() {
   return (
     <Hero
       breadcrumbs={[
-        { link: "/token", name: "Tokens" },
-        { link: `/token/${tokens?.[0]?.symbol}`, name: tokens?.[0]?.symbol },
+        { link: "/tokens", name: "Tokens" },
+        { link: `/tokens/${tokens?.[0]?.symbol}`, name: tokens?.[0]?.symbol },
       ]}
       icons={[{ src: tokens.find(t => t.icon && t.icon !== "")?.icon }]}
       navigation={{ label: "Back to opportunities", link: "/" }}
@@ -55,7 +63,7 @@ export default function Index() {
       tabs={[
         {
           label: "Opportunities",
-          link: `/token/${token.symbol?.toLowerCase()}`,
+          link: `/tokens/${token.symbol?.toLowerCase()}`,
         },
       ]}
       tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}>

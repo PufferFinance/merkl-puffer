@@ -25,7 +25,7 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
-  return [{ title: `${data?.name} on Merkl` }];
+  return [{ title: `${data?.opportunity.name} on Merkl` }];
 };
 
 export type OutletContextOpportunity = {
