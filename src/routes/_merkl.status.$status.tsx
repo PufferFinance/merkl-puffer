@@ -18,7 +18,10 @@ export default function Index() {
   return (
     <Hero
       icons={[status.icon]}
-      navigation={{ label: "Back to opportunities", link: "/" }}
+      breadcrumbs={[
+        { link: "/", name: "Opportunities" },
+        { link: "/", name: status.label },
+      ]}
       title={status.label}
       description={status.description}
       tabs={[

@@ -10,6 +10,7 @@ import { formatUnits, parseUnits } from "viem";
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
   title: ReactNode;
+  breadcrumbs?: { name: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
   tags?: ReactNode[];
@@ -17,7 +18,17 @@ export type HeroProps = PropsWithChildren<{
   opportunity?: Opportunity;
 }>;
 
-export default function Hero({ navigation, icons, title, description, tags, children, opportunity, tabs }: HeroProps) {
+export default function Hero({
+  navigation,
+  breadcrumbs,
+  icons,
+  title,
+  description,
+  tags,
+  tabs,
+  children,
+  campaigns,
+}: HeroProps) {
   const location = useLocation();
 
   const filteredCampaigns = useMemo(() => {
@@ -49,34 +60,18 @@ export default function Hero({ navigation, icons, title, description, tags, chil
             <Group className="items-center">
               {/* TODO: Build dynamic breadcrumbs */}
               {/** Disabled and set invisible when undefined to preserve layout height */}
-              <Button
-                className={!navigation ? "invisible" : ""}
-                disabled={!navigation?.link}
-                to={navigation?.link}
-                look="soft"
-                size="xs">
+              <Button to={navigation?.link} look="soft" size="xs">
                 Home
               </Button>
-
-              {location.pathname.includes("opportunity") && (
-                <Button to={"/"} look="soft" size="xs">
-                  <Icon remix="RiArrowRightSLine" />
-                  Opportunities
-                </Button>
-              )}
-              {location.pathname.includes("user") && (
-                <Button to={"/"} look="soft" size="xs">
-                  <Icon remix="RiArrowRightSLine" />
-                  User
-                </Button>
-              )}
-
-              {!location.pathname.includes("user") && (
-                <Button look="soft" size="xs" className="!text-main-11">
-                  <Icon remix="RiArrowRightSLine" />
-                  {title}
-                </Button>
-              )}
+              {breadcrumbs?.map(breadcrumb => {
+                if (breadcrumb.component) return breadcrumb.component;
+                return (
+                  <Button to={breadcrumb.link} look="soft" size="xs">
+                    <Icon remix="RiArrowRightSLine" />
+                    {breadcrumb.name}
+                  </Button>
+                );
+              })}
             </Group>
             <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
               <Group className="flex-col flex-1 gap-xl lg:!gap-lg*2">

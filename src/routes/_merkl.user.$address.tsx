@@ -9,6 +9,10 @@ export default function Index() {
 
   return (
     <Hero
+      breadcrumbs={[
+        { link: "/", name: "Users" },
+        { link: "/", name: address },
+      ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <Group className="w-full gap-xl md:gap-xl*4 items-center">

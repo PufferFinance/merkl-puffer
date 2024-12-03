@@ -42,7 +42,7 @@ export default function Index() {
     const spaced = opportunity?.name.split(" ");
 
     return spaced
-      .map((str, index) => {
+      .map((str) => {
         const key = str + crypto.randomUUID();
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
@@ -68,7 +68,10 @@ export default function Index() {
       <Meta />
       <Hero
         icons={opportunity.tokens.map(t => ({ src: t.icon }))}
-        navigation={{ label: "Back to opportunities", link: "/" }}
+        breadcrumbs={[
+          { link: "/", name: "Opportunities" },
+          { link: "/", name: opportunity.name },
+        ]}
         title={styleName}
         description={description}
         tabs={[
