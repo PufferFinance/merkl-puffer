@@ -94,24 +94,6 @@ export default function Index() {
           ),
           link: `/users/${address}`,
         },
-        {
-          label: (
-            <>
-              <Icon size="sm" remix="RiDropFill" />
-              Liquidity
-            </>
-          ),
-          link: `/users/${address}/liquidity`,
-        },
-        {
-          label: (
-            <>
-              <Icon size="sm" remix="RiListCheck3" />
-              Claims
-            </>
-          ),
-          link: `/users/${address}/claims`,
-        },
       ]}>
       <Outlet />
     </Hero>

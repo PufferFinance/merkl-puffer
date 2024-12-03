@@ -85,11 +85,11 @@ export default function Header() {
           <motion.div variants={item}>
             <Group className="items-center" size="xl">
               <Group className="hidden lg:flex items-center" size="xl">
-                {Object.entries(config.routes)
+                {Object.entries(routes)
                   .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
                   .map(([key, { route }]) => {
                     return (
-                      <Button look="soft" size="lg" key={`${key}-link`} to={route}>
+                      <Button className="capitalize" look="soft" size="lg" key={`${key}-link`} to={route}>
                         {key}
                       </Button>
                     );
