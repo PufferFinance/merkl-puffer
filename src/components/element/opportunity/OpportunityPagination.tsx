@@ -30,18 +30,18 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
     <Group className="justify-between">
       <List flex="row">
         <Button disabled={(pageFilter ?? 0) <= 1} onClick={() => setPageFilter(Math.max(1, (pageFilter ?? 0) - 1))}>
-          <Icon size="sm" remix="RiArrowLeftLine" />
+          <Icon remix="RiArrowLeftLine" />
         </Button>
         <Select state={[pageFilter, setPageFilter]} look="bold" options={pageOptions} />
         <Button
           disabled={(pageFilter ?? 0) >= pages}
           onClick={() => setPageFilter(Math.min(pages, (pageFilter ?? 0) + 1))}>
-          <Icon size="sm" remix="RiArrowRightLine" />
+          <Icon remix="RiArrowRightLine" />
         </Button>
       </List>
       <List flex="row">
         <Button onClick={() => setItemsFilter(Math.min(50, (itemsFilter ?? 0) + 10))}>
-          More <Icon size="sm" remix="RiArrowDownLine" />
+          More <Icon remix="RiArrowDownLine" />
         </Button>
         <Select
           state={[itemsFilter, setItemsFilter]}
@@ -49,7 +49,7 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
           options={{ 10: "10", 20: "20", 30: "30", 40: "40", 50: "50" }}
         />
         <Button onClick={() => setItemsFilter(Math.max(10, (itemsFilter ?? 0) - 10))}>
-          Less <Icon size="sm" remix="RiArrowUpLine" />
+          Less <Icon remix="RiArrowUpLine" />
         </Button>
       </List>
     </Group>
