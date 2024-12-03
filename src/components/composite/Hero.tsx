@@ -22,7 +22,7 @@ export default function Hero({ navigation, breadcrumbs, icons, title, descriptio
   return (
     <>
       <Group
-        className="flex-col justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
+        className="flex-row justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
         style={{ backgroundImage: `url('${config.images.hero}')` }}>
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
