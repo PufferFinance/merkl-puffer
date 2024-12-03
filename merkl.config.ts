@@ -150,12 +150,5 @@ export default createConfig({
         },
       }),
     ],
-<<<<<<< HEAD
-    transports: {
-      [zksync.id]: http(),
-      [optimism.id]: http(),
-    },
-=======
->>>>>>> 6e48802 (restore: tabs)
   },
 });

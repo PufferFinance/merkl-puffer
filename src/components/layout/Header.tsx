@@ -2,7 +2,6 @@ import { Button, Container, Dropdown, Group, Icon, WalletButton, useTheme } from
 import { Image } from "dappkit";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
-import SearchBar from "../element/functions/SearchBar";
 
 import { motion } from "framer-motion";
 import config from "merkl.config";
@@ -10,7 +9,6 @@ import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
-import SwitchMode from "../element/SwitchMode";
 import { LayerMenu } from "./LayerMenu";
 
 const container = {
@@ -38,6 +36,7 @@ export default function Header() {
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
 
   const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
+  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
 
   const routes = useMemo(() => {
     const { homepage, ...rest } = config.routes;
