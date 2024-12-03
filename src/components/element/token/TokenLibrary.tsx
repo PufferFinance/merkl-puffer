@@ -1,0 +1,32 @@
+import type { Token } from "@merkl/api";
+import { Group } from "dappkit";
+import { useMemo } from "react";
+import { TokenTable } from "./TokenTable";
+import OpportunityPagination from "../opportunity/OpportunityPagination";
+import ProtocolFilters from "./TokenFilters";
+import TokenTableRow from "./TokenTableRow";
+
+export type TokenLibraryProps = {
+  tokens: Token[];
+  count?: number;
+};
+
+export default function TokenLibrary({ tokens, count }: TokenLibraryProps) {
+  const rows = useMemo(
+    () =>
+      tokens?.map(t => <TokenTableRow key={`${t.name}-${t.chainId}-${t.address}`} token={t} />),
+    [tokens],
+  );
+
+  return (
+    <TokenTable
+      footer={count !== undefined && <OpportunityPagination count={count} />}
+      header={
+        <Group className="justify-between w-full">
+          <ProtocolFilters />
+        </Group>
+      }>
+      {rows}
+    </TokenTable>
+  );
+}
