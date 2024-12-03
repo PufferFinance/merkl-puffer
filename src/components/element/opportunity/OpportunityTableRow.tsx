@@ -30,15 +30,9 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
           <Group className="py-xl">
             {tags
               ?.filter(({ type }) => !hideTags || hideTags.includes(type))
-              .map((tag) => {
+              .map(tag => {
                 console.table(tag);
-                return (
-                  <Tag
-                    key={`${tag.type}_${tag.value?.address ?? tag.value}`}
-                    {...tag}
-                    size="lg"
-                  />
-                );
+                return <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />;
               })}
           </Group>
         }

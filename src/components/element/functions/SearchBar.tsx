@@ -5,11 +5,7 @@ import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import {
-  type Results,
-  type Searchable,
-  useMerklSearch,
-} from "src/hooks/useMerklSearch";
+import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -65,11 +61,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                     switch (category) {
                       case "chain":
                         return (
-                          <Button
-                            to={`/chain/${results[i].name}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/chain/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -77,21 +69,13 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                         return <OpportunityResult opportunity={results[i]} />;
                       case "token":
                         return (
-                          <Button
-                            to={`/token/${results[i].symbol}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/token/${results[i].symbol}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].symbol}
                           </Button>
                         );
                       case "protocol":
                         return (
-                          <Button
-                            to={`/protocol/${results[i].name}`}
-                            size="lg"
-                            look="bold"
-                          >
+                          <Button to={`/protocol/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );
@@ -113,16 +97,10 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
       state={[opened, setOpened]}
       modal={
         <>
-          <Input
-            look="bold"
-            size="md"
-            state={[searchInput, setSearchInput]}
-            placeholder="Search Merkl..."
-          />
+          <Input look="bold" size="md" state={[searchInput, setSearchInput]} placeholder="Search Merkl..." />
           {Results}
         </>
-      }
-    >
+      }>
       <Form>
         {icon ? (
           <Button look="base">

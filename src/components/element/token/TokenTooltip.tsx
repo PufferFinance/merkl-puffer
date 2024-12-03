@@ -1,13 +1,5 @@
 import type { Token } from "@angleprotocol/merkl-api";
-import {
-  Button,
-  Divider,
-  Group,
-  Hash,
-  Icon,
-  Text,
-  Title,
-} from "packages/dappkit/src";
+import { Button, Divider, Group, Hash, Icon, Text, Title } from "packages/dappkit/src";
 
 export type TokenTooltipProps = {
   token: Token;

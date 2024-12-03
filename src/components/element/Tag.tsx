@@ -1,14 +1,5 @@
 import type { Opportunity, Token } from "@angleprotocol/merkl-api";
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Group,
-  Hash,
-  Icon,
-  Text,
-  PrimitiveTag,
-} from "dappkit";
+import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, Text } from "dappkit";
 import type { ButtonProps } from "dappkit";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
@@ -32,11 +23,7 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & {
   value: TagTypes[T];
 };
 
-export default function Tag<T extends keyof TagTypes>({
-  type,
-  value,
-  ...props
-}: TagProps<T>) {
+export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
   switch (type) {
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
@@ -64,8 +51,7 @@ export default function Tag<T extends keyof TagTypes>({
                 </Button>
               </Group>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="soft" key={value} {...props}>
             <Icon size={props?.size} {...status.icon} />
             {status?.label}
@@ -99,8 +85,7 @@ export default function Tag<T extends keyof TagTypes>({
                 </Button>
               </Group>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={chain?.icon} />
             {chain?.name}
@@ -134,8 +119,7 @@ export default function Tag<T extends keyof TagTypes>({
                 Open
               </Button>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="bold" key={value} {...props}>
             <Icon size={props?.size} {...action.icon} />
             {action?.label}
@@ -181,8 +165,7 @@ export default function Tag<T extends keyof TagTypes>({
                 </Button>
               </Group>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.icon} />
             {token?.symbol}
@@ -219,11 +202,7 @@ export default function Tag<T extends keyof TagTypes>({
               <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
-                <Button
-                  to={`/chain/${token.chain?.name}`}
-                  size="sm"
-                  look="bold"
-                >
+                <Button to={`/chain/${token.chain?.name}`} size="sm" look="bold">
                   <Icon size="sm" src={token.chain?.icon} />
                   {token.chain?.name}
                 </Button>
@@ -237,8 +216,7 @@ export default function Tag<T extends keyof TagTypes>({
                 </Button>
               </Group>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="base" key={value} {...props}>
             <Icon size={props?.size} src={token.chain.icon} />
             {token.chain.name}
@@ -267,11 +245,7 @@ export default function Tag<T extends keyof TagTypes>({
               <Divider look="soft" horizontal />
               <Group className="flex-col" size="md">
                 {/* <Text size="xs">{token?.description}</Text> */}
-                <Button
-                  to={`/protocol/${protocol?.name}`}
-                  size="xs"
-                  look="soft"
-                >
+                <Button to={`/protocol/${protocol?.name}`} size="xs" look="soft">
                   <Icon remix="RiArrowRightLine" />
                   {protocol?.name} on Merkl
                 </Button>
@@ -281,8 +255,7 @@ export default function Tag<T extends keyof TagTypes>({
                 </Button>
               </Group>
             </Group>
-          }
-        >
+          }>
           <PrimitiveTag look="tint" key={value} {...props}>
             <Icon src={protocol?.icon} />
             {value?.name}

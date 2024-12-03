@@ -1,16 +1,6 @@
 import type { Campaign } from "@angleprotocol/merkl-api";
 import { useLocation } from "@remix-run/react";
-import {
-  Container,
-  Divider,
-  Group,
-  Icon,
-  type IconProps,
-  Icons,
-  Text,
-  Title,
-  Value,
-} from "dappkit";
+import { Container, Divider, Group, Icon, type IconProps, Icons, Text, Title, Value } from "dappkit";
 import { Button } from "dappkit";
 import config from "merkl.config";
 import { type PropsWithChildren, type ReactNode, useMemo } from "react";
@@ -26,30 +16,18 @@ export type HeroProps = PropsWithChildren<{
   campaigns?: Campaign[];
 }>;
 
-export default function Hero({
-  navigation,
-  icons,
-  title,
-  description,
-  tags,
-  tabs,
-  children,
-  campaigns,
-}: HeroProps) {
+export default function Hero({ navigation, icons, title, description, tags, tabs, children, campaigns }: HeroProps) {
   const location = useLocation();
 
   const totalRewards = useMemo(() => {
-    const amounts = campaigns?.map((campaign) => {
+    const amounts = campaigns?.map(campaign => {
       const duration = campaign.endTimestamp - campaign.startTimestamp;
       const dayspan = BigInt(duration) / BigInt(3600 * 24);
 
       return parseUnits(campaign.amount, 0) / BigInt(dayspan);
     });
 
-    const sum = amounts?.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0n
-    );
+    const sum = amounts?.reduce((accumulator, currentValue) => accumulator + currentValue, 0n);
     if (!sum) return "0.0";
     return formatUnits(sum, 18);
   }, [campaigns]);
@@ -58,8 +36,7 @@ export default function Hero({
     <>
       <Group
         className="flex-row justify-between aspect-[1440/400] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
-        style={{ backgroundImage: `url('${config.images.hero}')` }}
-      >
+        style={{ backgroundImage: `url('${config.images.hero}')` }}>
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
             <Group className="items-center">
@@ -70,8 +47,7 @@ export default function Hero({
                 disabled={!navigation?.link}
                 to={navigation?.link}
                 look="soft"
-                size="xs"
-              >
+                size="xs">
                 Home
               </Button>
 
@@ -102,14 +78,14 @@ export default function Hero({
                     {!!icons && (
                       <Icons size="lg">
                         {icons?.length > 1
-                          ? icons?.map((icon) => (
+                          ? icons?.map(icon => (
                               <Icon
                                 className="hidden md:block text-main-12 !w-lg*4 !h-lg*4"
                                 key={`${Object.values(icon)}`}
                                 {...icon}
                               />
                             ))
-                          : icons?.map((icon) => (
+                          : icons?.map(icon => (
                               <Icon
                                 className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
                                 key={`${Object.values(icon)}`}
@@ -138,16 +114,9 @@ export default function Hero({
               </Group>
               {/* TODO: Show "Opportunities" or "Campaigns" according to the page */}
               {!location?.pathname.includes("user") && (
-                <Group
-                  className="w-full lg:w-auto lg:flex-col mr-xl*2"
-                  size="xl"
-                >
+                <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
                   <Group className="flex-col">
-                    <Value
-                      look={totalRewards === "0" ? "soft" : "base"}
-                      format="$0,0"
-                      size={3}
-                    >
+                    <Value look={totalRewards === "0" ? "soft" : "base"} format="$0,0" size={3}>
                       {totalRewards}
                     </Value>
 

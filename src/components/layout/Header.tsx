@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Dropdown,
-  Group,
-  Icon,
-  WalletButton,
-  useTheme,
-} from "dappkit";
+import { Button, Container, Dropdown, Group, Icon, WalletButton, useTheme } from "dappkit";
 import { Image } from "dappkit";
 import customerDarkLogo from "src/customer/assets/images/customer-dark-logo.svg";
 import customerLogo from "src/customer/assets/images/customer-logo.svg";
@@ -14,11 +6,11 @@ import SearchBar from "../element/functions/SearchBar";
 
 import { motion } from "framer-motion";
 import config from "merkl.config";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
-import { LayerMenu } from "./LayerMenu";
 import SwitchMode from "../element/SwitchMode";
+import { LayerMenu } from "./LayerMenu";
 
 const container = {
   hidden: { opacity: 0, y: 0 },
@@ -42,7 +34,7 @@ export default function Header() {
   const { mode } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
- 
+
   const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
 
   return (
@@ -50,8 +42,7 @@ export default function Header() {
       variants={container}
       initial="hidden"
       whileInView="visible"
-      className="w-full sticky left-0 top-0 z-10 backdrop-blur"
-    >
+      className="w-full sticky left-0 top-0 z-10 backdrop-blur">
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item}>
@@ -61,8 +52,7 @@ export default function Header() {
                 padding="xs"
                 open={open}
                 content={<LayerMenu nav={config.routes} setOpen={setOpen} />}
-                className="flex gap-sm md:gap-lg items-center"
-              >
+                className="flex gap-sm md:gap-lg items-center">
                 <Image
                   className="w-[140px] md:w-[200px]"
                   alt={`${config.appName} logo`}
@@ -86,17 +76,10 @@ export default function Header() {
               {!mdScreens && (
                 <>
                   {Object.entries(config.routes)
-                    .filter(
-                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
-                    )
+                    .filter(([key]) => !["homepage", "privacy", "terms"].includes(key))
                     .map(([key, { route }]) => {
                       return (
-                        <Button
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          to={route}
-                        >
+                        <Button look="soft" size="lg" key={`${key}-link`} to={route}>
                           {key}
                         </Button>
                       );

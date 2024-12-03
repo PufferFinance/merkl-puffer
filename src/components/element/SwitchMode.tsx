@@ -1,13 +1,10 @@
+import config from "merkl.config";
 import { Button, Icon, useTheme } from "packages/dappkit/src";
 import { useMemo } from "react";
-import config from "merkl.config";
 
 export default function SwitchMode() {
   const { mode, toggleMode } = useTheme();
-  const canSwitchModes = useMemo(
-    () => !(!config.modes || config.modes?.length === 1),
-    []
-  );
+  const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
   return (
     canSwitchModes && (
       <Button look="base" onClick={toggleMode}>
