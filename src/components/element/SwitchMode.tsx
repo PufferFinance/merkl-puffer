@@ -5,6 +5,7 @@ import { useMemo } from "react";
 export default function SwitchMode() {
   const { mode, toggleMode } = useTheme();
   const canSwitchModes = useMemo(() => !(!config.modes || config.modes?.length === 1), []);
+
   return (
     canSwitchModes && (
       <Button look="base" onClick={toggleMode}>

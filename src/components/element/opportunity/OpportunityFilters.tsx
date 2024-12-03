@@ -95,14 +95,14 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
   }
 
   return (
-    <Group>
+    <Group className="items-center">
       {fields.includes("search") && (
         <Form>
           <Input
             name="search"
             value={innerSearch}
             state={[innerSearch, setInnerSearch]}
-            suffix={<Icon size="sm" remix="RiSearchLine" />}
+            suffix={<Icon remix="RiSearchLine" />}
             onClick={onSearchSubmit}
             placeholder="Search"
           />
@@ -114,7 +114,6 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
           allOption={"All actions"}
           multiple
           options={actionOptions}
-          size="sm"
           look="bold"
           placeholder="Actions"
         />
@@ -125,7 +124,6 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
           allOption={"All status"}
           multiple
           options={statusOptions}
-          size="sm"
           look="bold"
           placeholder="Status"
         />
@@ -137,7 +135,6 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
           multiple
           search
           options={chainOptions}
-          size="sm"
           look="bold"
           placeholder="Chains"
         />

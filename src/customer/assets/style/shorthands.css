@@ -12,13 +12,13 @@
     @apply opacity-100;
   }
   .dim:hover {
-    @apply opacity-70;
+    @apply opacity-60;
   }
 }
 
 :disabled,
 .disabled {
-  @apply opacity-40 pointer-events-none;
+  @apply opacity-60 pointer-events-none;
 }
 
 .faq-item__trigger[data-state="open"] > * {
