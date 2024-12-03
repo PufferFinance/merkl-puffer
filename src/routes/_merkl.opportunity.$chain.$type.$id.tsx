@@ -33,10 +33,11 @@ export default function Index() {
 
     return spaced
       .map((str, index) => {
+        const key = str + crypto.randomUUID();
         // biome-ignore lint/suspicious/noArrayIndexKey: required
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
-            <span key={str + index} className="text-main-11">
+            <span key={key} className="text-main-11">
               {str}
             </span>,
           ];
@@ -49,7 +50,7 @@ export default function Index() {
             .split("/")
             .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>]);
         // biome-ignore lint/suspicious/noArrayIndexKey: required
-        return [<span key={str + index}>{str}</span>];
+        return [<span key={key}>{str}</span>];
       })
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
   }, [opportunity]);

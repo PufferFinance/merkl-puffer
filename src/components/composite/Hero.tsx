@@ -35,7 +35,7 @@ export default function Hero({ navigation, icons, title, description, tags, tabs
   return (
     <>
       <Group
-        className="flex-row justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
+        className="flex-row justify-between aspect-[1440/400] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
         style={{ backgroundImage: `url('${config.images.hero}')` }}>
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
@@ -99,15 +99,15 @@ export default function Hero({ navigation, icons, title, description, tags, tabs
                     </Title>
                   </Group>
                   {tags && (
-                    <Text size="xl" className="!font-bold">
+                    <Text size="xl" bold>
                       {description}
                     </Text>
                   )}
                 </Group>
-                <Divider className="border-main-11" horizontal />
+                <Divider look="base" />
                 {tags && <Group className="mb-lg">{tags}</Group>}
                 {!tags && (
-                  <Text size="xl" className="!font-bold">
+                  <Text size="xl" bold>
                     {description}
                   </Text>
                 )}

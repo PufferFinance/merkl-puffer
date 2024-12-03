@@ -1,16 +1,20 @@
 import { NavLink } from "@remix-run/react";
-import { Text } from "dappkit";
+import { Divider, Group, Text, WalletButton } from "dappkit";
 import { Icon } from "packages/dappkit/src";
 import type { FC } from "react";
+import { useMediaQuery } from "react-responsive";
 import type { routesType } from "src/config/type";
+import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
+import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
 
 export const LayerMenu: FC<{
   nav: routesType;
   setOpen: (open: boolean) => void;
 }> = ({ nav, setOpen }) => {
+  const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
   return (
-    <div className="layermenu z-50 min-w-64 bg-main-2 py-lg px-md flex flex-col">
+    <div className="layermenu z-50 min-w-64 bg-main-2 flex flex-col">
       <main className="flex-1 overflow-y-scroll w-full">
         <ul className="min-w-max list-none">
           {Object.entries(nav)
@@ -20,9 +24,9 @@ export const LayerMenu: FC<{
                 <NavLink
                   onClick={() => setOpen(false)}
                   to={value.route}
-                  className="flex items-center gap-md text-main-12 capitalize">
-                  <Icon remix={value.icon} className="text-main-11" />
-                  <Text size="lg" className="font-bold">
+                  className="flex items-center gap-md capitalize">
+                  <Icon remix={value.icon} className="text-xl text-main-11" />
+                  <Text size="lg" bold className="text-main-12">
                     {key}
                   </Text>
                 </NavLink>
@@ -31,7 +35,18 @@ export const LayerMenu: FC<{
         </ul>
       </main>
       <footer className="mt-lg">
-        <SearchBar />
+        <Group className="flex-col items-stretch">
+          <Group className="items-center">
+            <SearchBar />
+            <SwitchMode />
+          </Group>
+          {!!smScreens && (
+            <>
+              <Divider look="soft" />
+              <WalletButton />
+            </>
+          )}
+        </Group>
       </footer>
     </div>
   );

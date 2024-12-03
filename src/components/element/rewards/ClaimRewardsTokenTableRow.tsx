@@ -61,7 +61,7 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
           .map(b => {
             return (
               <>
-                <Divider className="border-main-2" horizontal key={b.opportunity.identifier.concat("-divider")} />
+                <Divider look="soft" horizontal key={b.opportunity.identifier.concat("-divider")} />
                 <ClaimRewardsTokenRow
                   {...props}
                   key={b.opportunity.identifier}

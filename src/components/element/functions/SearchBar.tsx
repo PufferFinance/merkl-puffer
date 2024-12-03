@@ -24,7 +24,11 @@ function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
   );
 }
 
-export default function SearchBar() {
+interface SearchBarProps {
+  icon?: boolean;
+}
+
+export default function SearchBar({ icon = false }: SearchBarProps) {
   useShortcut("ctrlKey", "k", () => {
     setOpened(true);
   });
@@ -98,13 +102,19 @@ export default function SearchBar() {
         </>
       }>
       <Form>
-        <Input
-          name="search"
-          value={searchInput}
-          state={[searchInput, setSearchInput]}
-          placeholder="Search"
-          suffix={<Icon size="sm" className="text-main-12" remix="RiSearchLine" />}
-        />
+        {icon ? (
+          <Button look="base">
+            <Icon className="text-main-12" remix="RiSearchLine" />
+          </Button>
+        ) : (
+          <Input
+            name="search"
+            value={searchInput}
+            state={[searchInput, setSearchInput]}
+            placeholder="Search"
+            suffix={<Icon className="text-main-12" remix="RiSearchLine" />}
+          />
+        )}
       </Form>
     </Modal>
   );
