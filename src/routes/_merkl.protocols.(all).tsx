@@ -6,7 +6,7 @@ export default function Index() {
     <Hero
       icons={[{ remix: "Ri24HoursFill" }]}
       title={"Protocols"}
-      breadcrumbs={[{ link: "/protocol", name: "Protocols" }]}
+      breadcrumbs={[{ link: "/protocols", name: "Protocols" }]}
       description={"Protocols"}>
       <Outlet />
     </Hero>

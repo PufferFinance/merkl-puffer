@@ -1,11 +1,9 @@
-import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import { useLocation } from "@remix-run/react";
-import { Box, Container, Divider, Group, Icon, type IconProps, Icons, Text, Title, Value } from "dappkit";
+import { Box, Container, Divider, Group, Icon, type IconProps, Icons, Text, Title } from "dappkit";
 import { Button } from "dappkit";
 import config from "merkl.config";
-import moment from "moment";
-import { type PropsWithChildren, type ReactNode, useMemo } from "react";
-import { formatUnits, parseUnits } from "viem";
+import type { PropsWithChildren, ReactNode } from "react";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -18,42 +16,13 @@ export type HeroProps = PropsWithChildren<{
   opportunity?: Opportunity;
 }>;
 
-export default function Hero({
-  navigation,
-  breadcrumbs,
-  icons,
-  title,
-  description,
-  tags,
-  tabs,
-  children,
-  campaigns,
-}: HeroProps) {
+export default function Hero({ navigation, breadcrumbs, icons, title, description, tags, tabs, children }: HeroProps) {
   const location = useLocation();
-
-  const filteredCampaigns = useMemo(() => {
-    if (!opportunity?.campaigns) return null;
-    const now = moment().unix();
-    return opportunity.campaigns?.filter((c: Campaign) => Number(c.endTimestamp) > now);
-  }, [opportunity]);
-
-  const totalRewards = useMemo(() => {
-    const amounts = filteredCampaigns?.map(campaign => {
-      const duration = campaign.endTimestamp - campaign.startTimestamp;
-      const dayspan = BigInt(duration) / BigInt(3600 * 24);
-
-      return parseUnits(campaign.amount, 0) / BigInt(dayspan);
-    });
-
-    const sum = amounts?.reduce((accumulator, currentValue) => accumulator + currentValue, 0n);
-    if (!sum) return "0.0";
-    return formatUnits(sum, 18);
-  }, [filteredCampaigns]);
 
   return (
     <>
       <Group
-        className="flex-row justify-between aspect-[1440/400] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
+        className="flex-col justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
         style={{ backgroundImage: `url('${config.images.hero}')` }}>
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
@@ -66,7 +35,7 @@ export default function Hero({
               {breadcrumbs?.map(breadcrumb => {
                 if (breadcrumb.component) return breadcrumb.component;
                 return (
-                  <Button to={breadcrumb.link} look="soft" size="xs">
+                  <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
                     <Icon remix="RiArrowRightSLine" />
                     {breadcrumb.name}
                   </Button>
@@ -114,8 +83,8 @@ export default function Hero({
                   </Text>
                 )}
               </Group>
-              {/* TODO: Show "Opportunities" or "Campaigns" according to the page */}
-              {!location?.pathname.includes("user") && (
+              {/* TODO: Move this outside the Hero component */}
+              {/* {!location?.pathname.includes("user") && (
                 <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
                   <Group className="flex-col">
                     <Text size={3}>
@@ -145,20 +114,22 @@ export default function Hero({
                     </Text>
                   </Group>
                 </Group>
-              )}
+              )} */}
             </Group>
           </Group>
         </Container>
       </Group>
-      {!!tabs && (
-        <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
-          {tabs?.map(tab => (
-            <Button look={location.pathname === tab.link ? "hype" : "soft"} to={tab.link} key={tab.link}>
-              {tab.label}
-            </Button>
-          ))}
-        </Box>
-      )}
+      <Container>
+        {!!tabs && (
+          <Box size="sm" look="base" className="flex-row mt-md w-min">
+            {tabs?.map(tab => (
+              <Button look={location.pathname === tab.link ? "hype" : "base"} to={tab.link} key={tab.link}>
+                {tab.label}
+              </Button>
+            ))}
+          </Box>
+        )}
+      </Container>
       <div>{children}</div>
     </>
   );

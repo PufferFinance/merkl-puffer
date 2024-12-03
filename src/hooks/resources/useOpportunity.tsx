@@ -15,7 +15,7 @@ export default function useOpportunity(opportunity: Opportunity) {
   }, [opportunity]);
 
   const link = useMemo(
-    () => `/opportunity/${opportunity.chain?.name?.toLowerCase?.()}/${opportunity.type}/${opportunity.identifier}`,
+    () => `/opportunities/${opportunity.chain?.name?.toLowerCase?.()}/${opportunity.type}/${opportunity.identifier}`,
     [opportunity],
   );
 

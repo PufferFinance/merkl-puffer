@@ -75,7 +75,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                         );
                       case "protocol":
                         return (
-                          <Button to={`/protocol/${results[i].name}`} size="lg" look="bold">
+                          <Button to={`/protocols/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );

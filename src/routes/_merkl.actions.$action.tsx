@@ -24,7 +24,7 @@ export default function Index() {
       tabs={[
         {
           label: "Opportunities",
-          link: `/action/${action.label?.toLowerCase()}`,
+          link: `/actions/${action.label?.toLowerCase()}`,
         },
       ]}>
       <Outlet />

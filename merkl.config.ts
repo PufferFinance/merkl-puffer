@@ -1,6 +1,6 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
-import { http } from "viem";
+import { createClient, custom, http } from "viem";
 import {
   mainnet,
   optimism,
@@ -37,6 +37,7 @@ import {
 } from "viem/chains";
 import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import hero from "src/customer/assets/images/hero.jpg?url";
+import { eip712WalletActions } from "viem/zksync";
 
 export default createConfig({
   appName: "Merkl",
@@ -44,26 +45,11 @@ export default createConfig({
   defaultTheme: "merkl",
   themes: {
     merkl: {
-      base: createColoring(
-        ["#1F2333", "#B8AAFD", "#131620"],
-        ["#FCF8F5", "#B8AAFD", "white"]
-      ),
-      info: createColoring(
-        ["#2ABDFF", "#2ABDFF", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      good: createColoring(
-        ["#40B66B", "#40B66B", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      warn: createColoring(
-        ["#ff9600", "#ff9600", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      harm: createColoring(
-        ["#d22e14", "#d22e14", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
+      base: createColoring(["#1F2333", "#B8AAFD", "#131620"], ["#FCF8F5", "#B8AAFD", "white"]),
+      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
   },
   sizing: {
@@ -82,7 +68,7 @@ export default createConfig({
     },
     dashboard: {
       icon: "RiDashboard2Fill",
-      route: "/user",
+      route: "/users",
       key: crypto.randomUUID(),
     },
     opportunities: {
@@ -156,6 +142,12 @@ export default createConfig({
       taiko,
       scroll,
     ],
+    client({ chain }) {
+      if (chain.id === zksync.id)
+        return createClient({ chain, transport: custom(window.ethereum!) }).extend(eip712WalletActions());
+      return createClient({ chain, transport: http() });
+    },
+    ssr: true,
     connectors: [
       coinbaseWallet(),
       walletConnect({
@@ -169,9 +161,12 @@ export default createConfig({
         },
       }),
     ],
+<<<<<<< HEAD
     transports: {
       [zksync.id]: http(),
       [optimism.id]: http(),
     },
+=======
+>>>>>>> 6e48802 (restore: tabs)
   },
 });

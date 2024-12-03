@@ -229,11 +229,10 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   {value?.name}
                 </Text>
               </Group>
-              <Divider look="soft" horizontal />
+              <Divider className="border-main-6" horizontal />
+              {/* <Text size="xs">{token?.description}</Text> */}
               <Group className="flex-col" size="md">
-                {/* <Text size="xs">{token?.description}</Text> */}
-                <Button to={`/protocol/${protocol?.name}`} size="xs" look="soft">
-                  <Icon remix="RiArrowRightLine" />
+                <Button to={`/protocols/${protocol?.name}`} size="sm" look="bold">
                   {protocol?.name} on Merkl
                 </Button>
                 <Button size="xs" look="soft">

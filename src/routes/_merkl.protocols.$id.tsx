@@ -17,14 +17,14 @@ export default function Index() {
       icons={[{ src: protocol?.icon }]}
       title={protocol?.name}
       breadcrumbs={[
-        { link: "/protocol", name: "Protocols" },
-        { link: `/protocol/${protocol.name}`, name: protocol.name },
+        { link: "/protocols", name: "Protocols" },
+        { link: `/protocols/${protocol.name}`, name: protocol.name },
       ]}
       description={"Protocol"}
       tabs={[
         {
           label: "Opportunities",
-          link: `/protocol/${protocol.name?.toLowerCase()}`,
+          link: `/protocols/${protocol.name?.toLowerCase()}`,
         },
       ]}>
       <Outlet />
