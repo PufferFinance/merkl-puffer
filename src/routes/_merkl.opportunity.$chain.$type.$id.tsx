@@ -1,4 +1,8 @@
-import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
+import {
+  type LoaderFunctionArgs,
+  type MetaFunction,
+  json,
+} from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import Hero from "src/components/composite/Hero";
 
@@ -9,7 +13,9 @@ import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
-export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+export async function loader({
+  params: { id, type, chain: chainId },
+}: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
@@ -33,23 +39,30 @@ export default function Index() {
 
     return spaced
       .map((str, index) => {
+        const key = str + crypto.randomUUID();
         // biome-ignore lint/suspicious/noArrayIndexKey: required
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
-            <span key={str + index} className="text-main-11">
+            <span key={key} className="text-main-11">
               {str}
             </span>,
           ];
         if (str.includes("-"))
           return str
             .split("-")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">-</span>]);
+            .flatMap((s, i, arr) => [
+              s,
+              i !== arr.length - 1 && <span className="text-main-11">-</span>,
+            ]);
         if (str.includes("/"))
           return str
             .split("/")
-            .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>]);
+            .flatMap((s, i, arr) => [
+              s,
+              i !== arr.length - 1 && <span className="text-main-11">/</span>,
+            ]);
         // biome-ignore lint/suspicious/noArrayIndexKey: required
-        return [<span key={str + index}>{str}</span>];
+        return [<span key={key}>{str}</span>];
       })
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
   }, [opportunity]);
@@ -58,7 +71,7 @@ export default function Index() {
     <>
       <Meta />
       <Hero
-        icons={opportunity.tokens.map(t => ({ src: t.icon }))}
+        icons={opportunity.tokens.map((t) => ({ src: t.icon }))}
         navigation={{ label: "Back to opportunities", link: "/" }}
         title={styleName}
         description={description}
@@ -67,7 +80,14 @@ export default function Index() {
           { label: "Leaderboard", link: `${link}/leaderboard` },
           { label: "Analytics", link: `${link}/analytics` },
         ]}
-        tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="md" />)}>
+        tags={tags.map((tag) => (
+          <Tag
+            key={`${tag.type}_${tag.value?.address ?? tag.value}`}
+            {...tag}
+            size="md"
+          />
+        ))}
+      >
         <Outlet />
       </Hero>
     </>
