@@ -1,7 +1,8 @@
-import type { Opportunity, Token } from "@angleprotocol/merkl-api";
+import type { Opportunity, Token } from "@merkl/api";
 import type { Chain } from "@merkl/api";
 import { Button, Divider, Dropdown, Group, Hash, Icon, PrimitiveTag, Text } from "dappkit";
 import type { ButtonProps } from "dappkit";
+import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { type Action, actions } from "src/config/actions";
 import type { Protocol } from "src/config/protocols";
 import { statuses } from "src/config/status";
@@ -25,6 +26,8 @@ export type TagProps<T extends keyof TagTypes> = ButtonProps & {
 };
 
 export default function Tag<T extends keyof TagTypes>({ type, value, ...props }: TagProps<T>) {
+  const { chains } = useWalletContext();
+
   switch (type) {
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
@@ -153,10 +156,21 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
                   <Icon remix="RiArrowRightLine" />
                   {token?.symbol} on Merkl
                 </Button>
-                <Button size="xs" look="soft">
-                  <Icon remix="RiArrowRightLine" />
-                  {token?.symbol} on Etherscan
-                </Button>
+                {chains
+                  .find(c => c.id === token.chainId)
+                  ?.explorers?.map(explorer => {
+                    return (
+                      <Button
+                        key={`${explorer.url}`}
+                        to={`${explorer.url}/token/${token.address}`}
+                        external
+                        size="xs"
+                        look="soft">
+                        <Icon remix="RiArrowRightLine" />
+                        {token?.symbol} on Etherscan
+                      </Button>
+                    );
+                  })}
               </Group>
             </Group>
           }>

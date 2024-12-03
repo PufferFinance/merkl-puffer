@@ -8,6 +8,8 @@ import config from "merkl.config";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useMemo, useState } from "react";
 import SwitchMode from "../element/SwitchMode";
+import { useMediaQuery } from "react-responsive";
+import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
 import SearchBar from "../element/functions/SearchBar";
 import { LayerMenu } from "./LayerMenu";
 
