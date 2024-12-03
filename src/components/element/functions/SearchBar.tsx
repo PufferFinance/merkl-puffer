@@ -1,11 +1,24 @@
 import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
-import { Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
+import {
+  Divider,
+  Group,
+  Icon,
+  Icons,
+  Input,
+  Modal,
+  Title,
+  useShortcut,
+} from "dappkit";
 import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
+import {
+  type Results,
+  type Searchable,
+  useMerklSearch,
+} from "src/hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -18,9 +31,13 @@ function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
   const { link, icons } = useOpportunity(opportunity);
 
   return (
-    <Button to={link} size="lg" look="bold">
-      <Icons>{icons}</Icons> {opportunity.name}
-    </Button>
+    <>
+      <Button to={link} look="soft" className="gap-lg">
+        <Icons>{icons}</Icons> {opportunity.name}{" "}
+        <Icon remix="RiArrowRightLine" />
+      </Button>
+      <Divider look="bold" />
+    </>
   );
 }
 
@@ -50,34 +67,61 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
 
     return (
       <Group className="flex-col flex-nowrap overflow-hidden">
-        <Scroll className="min-h-[70vh] w-full gap-xl z-10" vertical>
+        <Scroll
+          className="min-h-[70vh] w-full [&>*]:flex [&>*]:flex-col [&>*]:gap-xl*2 z-10"
+          vertical
+        >
           {entries
             .filter(([_, res]) => res?.length)
             .map(([category, results]) => (
-              <Group key={category} className="flex-col">
+              <Group key={category} className="flex-col" size="xl">
                 <Title h={4}>{titles[category]}</Title>
-                <Group size="sm" className="flex-col">
+                <Group className="flex-col">
                   {results.map((_, i) => {
                     switch (category) {
                       case "chain":
                         return (
-                          <Button to={`/chains/${results[i].name}`} size="lg" look="bold">
-                            <Icon src={results[i].icon} /> {results[i].name}
-                          </Button>
+                          <>
+                            <Button
+                              to={`/chain/${results[i].name}`}
+                              look="soft"
+                              className="gap-lg"
+                            >
+                              <Icon src={results[i].icon} /> {results[i].name}
+                              <Icon remix="RiArrowRightLine" />
+                            </Button>
+                            <Divider look="bold" />
+                          </>
                         );
                       case "opportunity":
                         return <OpportunityResult opportunity={results[i]} />;
                       case "token":
                         return (
-                          <Button to={`/token/${results[i].symbol}`} size="lg" look="bold">
-                            <Icon src={results[i].icon} /> {results[i].symbol}
-                          </Button>
+                          <>
+                            <Button
+                              to={`/token/${results[i].symbol}`}
+                              look="soft"
+                              className="gap-lg"
+                            >
+                              <Icon src={results[i].icon} /> {results[i].symbol}{" "}
+                              <Icon remix="RiArrowRightLine" />
+                            </Button>
+                            <Divider look="bold" />
+                          </>
                         );
                       case "protocol":
                         return (
-                          <Button to={`/protocols/${results[i].name}`} size="lg" look="bold">
-                            <Icon src={results[i].icon} /> {results[i].name}
-                          </Button>
+                          <>
+                            <Button
+                              to={`/protocol/${results[i].name}`}
+                              look="soft"
+                              className="gap-lg"
+                            >
+                              <Icon src={results[i].icon} /> {results[i].name}
+                              <Icon remix="RiArrowRightLine" />
+                            </Button>
+                            <Divider look="bold" />
+                          </>
                         );
                       default:
                         break;
@@ -93,14 +137,21 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
 
   return (
     <Modal
-      className="h-full py-xl*2 w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[500px] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
+      size="xl"
+      className="h-full p-xl*2 w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[500px] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
       state={[opened, setOpened]}
       modal={
         <>
-          <Input look="bold" size="md" state={[searchInput, setSearchInput]} placeholder="Search Merkl..." />
+          <Input
+            look="base"
+            size="md"
+            state={[searchInput, setSearchInput]}
+            placeholder="Search Merkl..."
+          />
           {Results}
         </>
-      }>
+      }
+    >
       <Form>
         {icon ? (
           <Button look="base">
