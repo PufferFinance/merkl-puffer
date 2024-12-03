@@ -23,4 +23,20 @@ export abstract class RewardService {
     //TODO: add some cache here
     return rewards;
   }
+
+  static async getByParams(query: {
+    items?: number;
+    page?: number;
+    chainId: number;
+    campaignIdentifiers: string[];
+  }) {
+    return RewardService.#fetch(async () =>
+      api.v4.rewards.index.get({
+        query: {
+          ...query,
+          campaignIdentifiers: query.campaignIdentifiers.join(","),
+        },
+      })
+    );
+  }
 }

@@ -25,7 +25,6 @@ export type HeroProps = PropsWithChildren<{
   description: ReactNode;
   tags?: ReactNode[];
   tabs?: { label: ReactNode; link: string }[];
-  campaigns?: Campaign[];
   opportunity?: Opportunity;
 }>;
 
@@ -36,16 +35,18 @@ export default function Hero({
   description,
   tags,
   children,
-  campaigns,
   opportunity,
   tabs,
 }: HeroProps) {
   const location = useLocation();
 
   const filteredCampaigns = useMemo(() => {
+    if (!opportunity?.campaigns) return null;
     const now = moment().unix();
-    return campaigns?.filter((c: Campaign) => Number(c.endTimestamp) > now);
-  }, [campaigns]);
+    return opportunity.campaigns?.filter(
+      (c: Campaign) => Number(c.endTimestamp) > now
+    );
+  }, [opportunity]);
 
   const totalRewards = useMemo(() => {
     const amounts = filteredCampaigns?.map((campaign) => {

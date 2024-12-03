@@ -1,4 +1,4 @@
-import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import config from "merkl.config";
 import { api } from "../index.server";
 
@@ -91,5 +91,27 @@ export abstract class OpportunityService {
       throw new Response("Opportunity inacessible", { status: 403 });
 
     return opportunity;
+  }
+
+  static async getCampaignsByParams(query: {
+    chainId: number;
+    type: string;
+    identifier: string;
+  }) {
+    const { chainId, type, identifier } = query;
+    const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
+      api.v4
+        .opportunities({ id: `${chainId}-${type}-${identifier}` })
+        .campaigns.get()
+    );
+
+    //TODO: updates tags to take an array
+    if (
+      config.tags &&
+      !opportunityWithCampaigns.tags.includes(config.tags?.[0])
+    )
+      throw new Response("Opportunity inacessible", { status: 403 });
+
+    return opportunityWithCampaigns;
   }
 }

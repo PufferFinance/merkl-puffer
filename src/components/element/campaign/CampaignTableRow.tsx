@@ -17,6 +17,7 @@ import { formatUnits, parseUnits } from "viem";
 import moment from "moment";
 import RestrictionsCollumn from "./tableCollumns/RestrictionsCollumn";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
+import Chain from "../chain/Chain";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
@@ -48,8 +49,8 @@ export default function CampaignTableRow({
       {...props}
       className={mergeClass("cursor-pointer", className)}
       onClick={toggleIsOpen}
-      chainColumn={null}
-      profileColumn={profile}
+      chainColumn={<Chain chain={campaign.chain} />}
+      identifierColumn={<Hash format="short">{campaign.identifier}</Hash>}
       restrictionsColumn={<RestrictionsCollumn campaign={campaign} />}
       dailyRewardsColumn={
         <Group className="align-middle items-center">
@@ -114,6 +115,10 @@ export default function CampaignTableRow({
             </Group>
             <Group className="justify-between flex-col size-full">
               <Text size={"md"}>Conditions</Text>
+              <Group className="flex justify-between item-center">
+                <Text size="sm">Incentivized Liquidity</Text>
+                {profile}
+              </Group>
               <span className="flex justify-between">
                 <Text size="sm">Blacklisted for</Text>
                 <Tooltip

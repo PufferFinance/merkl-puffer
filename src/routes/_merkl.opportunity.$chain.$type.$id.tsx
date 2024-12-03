@@ -11,8 +11,7 @@ import { OpportunityService } from "src/api/services/opportunity.service";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import type { Campaign } from "@angleprotocol/merkl-api";
-import { CampaignService } from "src/api/services/campaign.service";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 
 export async function loader({
   params: { id, type, chain: chainId },
@@ -20,18 +19,16 @@ export async function loader({
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
-  const opportunityId = { chainId: chain.id, type, identifier: id };
 
-  const opportunity = await OpportunityService.get(opportunityId);
-
-  // get opportunity and populate campaigns
-  const campaigns = await CampaignService.getByParams({
-    opportunityId: opportunity.id,
+  const opportunity = await OpportunityService.getCampaignsByParams({
+    chainId: chain.id,
+    type: type,
+    identifier: id,
   });
 
-  if (!campaigns || !opportunity) throw "DAZZ";
+  if (!opportunity) throw "DAZZ";
 
-  return json({ opportunity, campaigns });
+  return json({ opportunity });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
@@ -40,11 +37,11 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
 };
 
 export type OutletContextOpportunity = {
-  campaigns: Campaign[];
+  opportunity: Opportunity;
 };
 
 export default function Index() {
-  const { opportunity, campaigns } = useLoaderData<typeof loader>();
+  const { opportunity } = useLoaderData<typeof loader>();
   const { tags, description, link } = useOpportunity(opportunity);
 
   const styleName = useMemo(() => {
@@ -97,10 +94,9 @@ export default function Index() {
             size="md"
           />
         ))}
-        campaigns={campaigns}
         opportunity={opportunity}
       >
-        <Outlet context={{ campaigns }} />
+        <Outlet context={{ opportunity }} />
       </Hero>
     </>
   );

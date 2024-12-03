@@ -26,9 +26,9 @@ export const [CampaignTable, CampaignRow, CampaignColumns] = createTable({
     compactSize: "minmax(20px,1fr)",
     className: "justify-center",
   },
-  profile: {
-    name: "Incentivized Liquidity",
-    size: "minmax(100px,200px)",
+  identifier: {
+    name: "ID",
+    size: "minmax(100px,150px)",
     compactSize: "minmax(100px,1fr)",
     className: "justify-start",
   },
