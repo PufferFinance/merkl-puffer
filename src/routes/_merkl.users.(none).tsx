@@ -1,20 +1,16 @@
-import { Outlet, useNavigate } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 import { Hash, Icon } from "dappkit";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Hero from "src/components/composite/Hero";
 
 export default function Index() {
-  const [_isEditingAddress, setIsEditingAddress] = useState(false);
+  const [_isEditingAddress] = useState(false);
   const { address } = useWalletContext();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (address) navigate(`/user/${address}`);
-  }, [address]);
 
   return (
     <Hero
+      breadcrumbs={[]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={"Dashboard"}
       description={
@@ -30,7 +26,7 @@ export default function Index() {
               Rewards
             </>
           ),
-          link: `/user/${address}`,
+          link: `/users/${address}`,
         },
         {
           label: (
@@ -39,7 +35,7 @@ export default function Index() {
               Liquidity
             </>
           ),
-          link: `/user/${address}/liquidity`,
+          link: `/users/${address}/liquidity`,
         },
         {
           label: (
@@ -48,7 +44,7 @@ export default function Index() {
               Claims
             </>
           ),
-          link: `/user/${address}/claims`,
+          link: `/users/${address}/claims`,
         },
       ]}>
       <Outlet />

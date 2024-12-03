@@ -10,7 +10,7 @@ export async function loader({ params: { status: _status }, request }: LoaderFun
   const status = getStatus(_status ?? "");
   if (!status) throw new Error("Unknown status");
 
-  const { opportunities, count } = await OpportunityService.getMany({ status });
+  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { status });
   const chains = await ChainService.getAll();
 
   return json({ opportunities, chains, count });

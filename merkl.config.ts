@@ -66,11 +66,6 @@ export default createConfig({
       route: "/",
       key: crypto.randomUUID(),
     },
-    dashboard: {
-      icon: "RiDashboard2Fill",
-      route: "/users",
-      key: crypto.randomUUID(),
-    },
     opportunities: {
       icon: "RiPlanetFill",
       route: "/opportunities",
@@ -81,12 +76,6 @@ export default createConfig({
       route: "/protocols",
       key: crypto.randomUUID(),
     },
-    bridge: {
-      icon: "RiVipCrown2Fill",
-      route: "/bridge",
-      key: crypto.randomUUID(),
-    },
-    faq: { icon: "RiQuestionFill", route: "/faq", key: crypto.randomUUID() },
     terms: {
       icon: "RiCompassesLine",
       route: "/terms",

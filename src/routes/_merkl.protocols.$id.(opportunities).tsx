@@ -8,7 +8,7 @@ import OpportunityLibrary from "src/components/element/opportunity/OpportunityLi
 
 export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
   const protocol = await ProtocolService.get({ id: id ?? "" });
-  const { opportunities, count } = await OpportunityService.getMany({ mainProtocolId: id });
+  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { mainProtocolId: id });
   const chains = await ChainService.getAll();
 
   return json({ opportunities, chains, count, protocol });

@@ -5,13 +5,13 @@ import Hero from "src/components/composite/Hero";
 
 export default function Index() {
   const { address } = useParams();
-  const [_isEditingAddress, setIsEditingAddress] = useState(false);
+  const [_isEditingAddress] = useState(false);
 
   return (
     <Hero
       breadcrumbs={[
         { link: "/", name: "Users" },
-        { link: "/", name: address },
+        { link: "/", name: address ?? "" },
       ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
@@ -61,7 +61,7 @@ export default function Index() {
               Rewards
             </>
           ),
-          link: `/user/${address}`,
+          link: `/users/${address}`,
         },
         {
           label: (
@@ -70,7 +70,7 @@ export default function Index() {
               Liquidity
             </>
           ),
-          link: `/user/${address}/liquidity`,
+          link: `/users/${address}/liquidity`,
         },
         {
           label: (
@@ -79,7 +79,7 @@ export default function Index() {
               Claims
             </>
           ),
-          link: `/user/${address}/claims`,
+          link: `/users/${address}/claims`,
         },
       ]}>
       <Outlet />

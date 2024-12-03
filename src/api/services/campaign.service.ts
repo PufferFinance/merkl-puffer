@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Campaign } from "@angleprotocol/merkl-api";
 import { api } from "../index.server";
 
@@ -51,4 +52,16 @@ export abstract class CampaignService {
   static async getByID(Id: string): Promise<Campaign | null> {
     return null;
   }
+=======
+class CampaignService {
+  // // ------ Fetch all campaigns
+  // async get(): Promise<Campaign[]> {
+  //   const { data } = await api.v4.campaigns.index.get({ query: {} });
+  //   return data;
+  // }
+  // // ------ Fetch a campaign by ID
+  // async getByID(Id: string): Promise<Campaign> {
+  //   return "To implements";
+  // }
+>>>>>>> 19f3164 (fix: loaders)
 }

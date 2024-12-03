@@ -48,8 +48,11 @@ export abstract class OpportunityService {
     return query;
   }
 
-  static async getManyFromRequest(request: Request) {
-    return OpportunityService.getMany(OpportunityService.#getQueryFromRequest(request));
+  static async getManyFromRequest(
+    request: Request,
+    overrides?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
+  ) {
+    return OpportunityService.getMany(Object.assign(OpportunityService.#getQueryFromRequest(request), overrides ?? {}));
   }
 
   static async getMany(
