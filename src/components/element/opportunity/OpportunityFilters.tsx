@@ -14,7 +14,11 @@ export type OpportunityFilterProps = {
   exclude?: OpportunityFilter[];
 };
 
-export default function OpportunityFilters({ only, exclude, chains }: OpportunityFilterProps) {
+export default function OpportunityFilters({
+  only,
+  exclude,
+  chains,
+}: OpportunityFilterProps) {
   //TODO: componentify theses
   const actionOptions = Object.entries(actions).reduce(
     (obj, [action, { icon, label }]) =>
@@ -26,7 +30,7 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
           </>
         ),
       }),
-    {},
+    {}
   );
   const statusOptions = {
     LIVE: (
@@ -56,35 +60,35 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
             </>
           ),
         }),
-      {},
+      {}
     ) ?? [];
 
   const [actionsFilter, setActions] = useSearchParamState<string[]>(
     "action",
-    v => v?.join(","),
-    v => v?.split(","),
+    (v) => v?.join(","),
+    (v) => v?.split(",")
   );
   const [statusFilter, setStatus] = useSearchParamState<string[]>(
     "status",
-    v => v?.join(","),
-    v => v?.split(","),
+    (v) => v?.join(","),
+    (v) => v?.split(",")
   );
   const [chainIdsFilter, setChainIds] = useSearchParamState<string[]>(
     "chain",
-    v => v?.join(","),
-    v => v?.split(","),
+    (v) => v?.join(","),
+    (v) => v?.split(",")
   );
 
   const [search, setSearch] = useSearchParamState<string>(
     "search",
-    v => v,
-    v => v,
+    (v) => v,
+    (v) => v
   );
   const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
 
   const fields = useMemo(() => {
-    if (only) return filters.filter(f => only.includes(f));
-    if (exclude) return filters.filter(f => !exclude.includes(f));
+    if (only) return filters.filter((f) => only.includes(f));
+    if (exclude) return filters.filter((f) => !exclude.includes(f));
     return filters;
   }, [only, exclude]);
 
@@ -95,14 +99,14 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
   }
 
   return (
-    <Group>
+    <Group className="items-center">
       {fields.includes("search") && (
         <Form>
           <Input
             name="search"
             value={innerSearch}
             state={[innerSearch, setInnerSearch]}
-            suffix={<Icon size="sm" remix="RiSearchLine" />}
+            suffix={<Icon remix="RiSearchLine" />}
             onClick={onSearchSubmit}
             placeholder="Search"
           />
@@ -110,34 +114,31 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
       )}
       {fields.includes("action") && (
         <Select
-          state={[actionsFilter, a => setActions(a as string[])]}
+          state={[actionsFilter, (a) => setActions(a as string[])]}
           allOption={"All actions"}
           multiple
           options={actionOptions}
-          size="sm"
           look="bold"
           placeholder="Actions"
         />
       )}
       {fields.includes("status") && (
         <Select
-          state={[statusFilter, s => setStatus(s as string[])]}
+          state={[statusFilter, (s) => setStatus(s as string[])]}
           allOption={"All status"}
           multiple
           options={statusOptions}
-          size="sm"
           look="bold"
           placeholder="Status"
         />
       )}
       {fields.includes("chain") && (
         <Select
-          state={[chainIdsFilter, c => setChainIds(c as string[])]}
+          state={[chainIdsFilter, (c) => setChainIds(c as string[])]}
           allOption={"All chains"}
           multiple
           search
           options={chainOptions}
-          size="sm"
           look="bold"
           placeholder="Chains"
         />

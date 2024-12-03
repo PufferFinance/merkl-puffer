@@ -15,8 +15,6 @@ import { motion } from "framer-motion";
 import config from "merkl.config";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useMemo, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import SCREENS from "../../../packages/dappkit/src/constants/SCREENS.json";
 import { LayerMenu } from "./LayerMenu";
 import SwitchMode from "../element/SwitchMode";
 import SearchBar from "../element/functions/SearchBar";
@@ -40,16 +38,9 @@ const item = {
 };
 
 export default function Header() {
-  const { mode, toggleMode } = useTheme();
+  const { mode } = useTheme();
   const { address: user } = useWalletContext();
   const [open, setOpen] = useState<boolean>(false);
-  const mdScreens = useMediaQuery({ maxWidth: SCREENS.lg });
-
-  const smScreens = useMediaQuery({ maxWidth: SCREENS.md });
-  const canSwitchModes = useMemo(
-    () => !(!config.modes || config.modes?.length === 1),
-    []
-  );
 
   const routes = useMemo(() => {
     const { homepage, ...rest } = config.routes;
@@ -77,60 +68,64 @@ export default function Header() {
       <Container className="py-xl">
         <Group className="justify-between items-center">
           <motion.div variants={item}>
-            {mdScreens ? (
-              <Dropdown
-                size="lg"
-                padding="xs"
-                open={open}
-                content={<LayerMenu nav={routes} setOpen={setOpen} />}
-                className="flex gap-sm md:gap-lg items-center"
-              >
-                <Image
-                  className="w-[140px] md:w-[200px]"
-                  alt={`${config.appName} logo`}
-                  src={mode !== "dark" ? customerDarkLogo : customerLogo}
-                />
-                <Icon className="text-main-12" remix="RiArrowDownSLine" />
-              </Dropdown>
-            ) : (
-              <Button size="lg" to={routes.homepage.route} look="soft">
-                <Image
-                  className="w-[200px]"
-                  alt={`${config.appName} logo`}
-                  src={mode !== "dark" ? customerDarkLogo : customerLogo}
-                />
-              </Button>
-            )}
+            <Dropdown
+              size="lg"
+              padding="xs"
+              open={open}
+              content={<LayerMenu nav={routes} setOpen={setOpen} />}
+              className="lg:hidden flex gap-sm md:gap-lg items-center"
+            >
+              <Image
+                className="w-[140px] md:w-[200px]"
+                alt={`${config.appName} logo`}
+                src={mode !== "dark" ? customerDarkLogo : customerLogo}
+              />
+              <Icon className="text-main-12" remix="RiArrowDownSLine" />
+            </Dropdown>
+
+            <Button
+              className="hidden lg:flex"
+              size="lg"
+              to={routes.homepage.route}
+              look="soft"
+            >
+              <Image
+                className="w-[200px]"
+                alt={`${config.appName} logo`}
+                src={mode !== "dark" ? customerDarkLogo : customerLogo}
+              />
+            </Button>
           </motion.div>
 
           <motion.div variants={item}>
-            <Group className="gap-xl items-center">
-              {!mdScreens && (
-                <>
-                  {Object.entries(config.routes)
-                    .filter(
-                      ([key]) => !["homepage", "privacy", "terms"].includes(key)
-                    )
-                    .map(([key, { route }]) => {
-                      return (
-                        <Button
-                          look="soft"
-                          size="lg"
-                          key={`${key}-link`}
-                          to={route}
-                        >
-                          {key}
-                        </Button>
-                      );
-                    })}
-                  <Group className="items-center">
-                    {canSwitchModes && <SwitchMode />}
+            <Group className="items-center" size="xl">
+              <Group className="hidden lg:flex items-center" size="xl">
+                {Object.entries(config.routes)
+                  .filter(
+                    ([key]) => !["homepage", "privacy", "terms"].includes(key)
+                  )
+                  .map(([key, { route }]) => {
+                    return (
+                      <Button
+                        look="soft"
+                        size="lg"
+                        key={`${key}-link`}
+                        to={route}
+                      >
+                        {key}
+                      </Button>
+                    );
+                  })}
+                <Group className="items-center">
+                  <SwitchMode />
 
-                    <SearchBar icon={true} />
-                  </Group>
-                </>
-              )}
-              {!smScreens && <WalletButton />}
+                  <SearchBar icon={true} />
+                </Group>
+              </Group>
+
+              <Group className="hidden md:flex">
+                <WalletButton />
+              </Group>
             </Group>
           </motion.div>
         </Group>

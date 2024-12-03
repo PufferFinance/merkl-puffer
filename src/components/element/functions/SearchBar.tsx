@@ -32,7 +32,7 @@ function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
 
   return (
     <>
-      <Button to={link} look="soft" className="gap-lg">
+      <Button to={link} look="soft">
         <Icons>{icons}</Icons> {opportunity.name}{" "}
         <Icon remix="RiArrowRightLine" />
       </Button>
@@ -101,7 +101,6 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                             <Button
                               to={`/token/${results[i].symbol}`}
                               look="soft"
-                              className="gap-lg"
                             >
                               <Icon src={results[i].icon} /> {results[i].symbol}{" "}
                               <Icon remix="RiArrowRightLine" />
@@ -115,7 +114,6 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                             <Button
                               to={`/protocol/${results[i].name}`}
                               look="soft"
-                              className="gap-lg"
                             >
                               <Icon src={results[i].icon} /> {results[i].name}
                               <Icon remix="RiArrowRightLine" />
@@ -144,9 +142,9 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
         <>
           <Input
             look="base"
-            size="md"
             state={[searchInput, setSearchInput]}
-            placeholder="Search Merkl..."
+            placeholder="Search"
+            suffix={<Icon className="text-main-12" remix="RiSearchLine" />}
           />
           {Results}
         </>
