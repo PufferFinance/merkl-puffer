@@ -1,11 +1,11 @@
-import type { Protocol, Token } from "@merkl/api";
+import type { Token } from "@merkl/api";
 import { Link } from "@remix-run/react";
 import { Button, Group, Icon, Value } from "dappkit";
 import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
 import type { TagTypes } from "../Tag";
-import { ProtocolRow, TokenRow } from "./TokenTable";
+import { TokenRow } from "./TokenTable";
 
 export type TokenTableRowProps = {
   hideTags?: (keyof TagTypes)[];
@@ -13,7 +13,6 @@ export type TokenTableRowProps = {
 } & BoxProps;
 
 export default function TokenTableRow({ hideTags, token, className, ...props }: TokenTableRowProps) {
-
   return (
     <Link to={`/tokens/${token.symbol}`}>
       <TokenRow
@@ -28,7 +27,7 @@ export default function TokenTableRow({ hideTags, token, className, ...props }: 
                 h={3}
                 size={4}
                 className="text-nowrap flex gap-lg whitespace-nowrap text-ellipsis min-w-0 overflow-hidden">
-              <Icon src={token.icon}/>
+                <Icon src={token.icon} />
                 {token.name}
               </Title>
             </Group>

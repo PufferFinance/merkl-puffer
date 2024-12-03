@@ -14,13 +14,13 @@ export abstract class TokenService {
     return data;
   }
 
-   /**
+  /**
    * Retrieves tokens query params from page request
    * @param request request containing query params such as pagination
    * @param override params for which to override value
    * @returns query
    */
-   static #getQueryFromRequest(
+  static #getQueryFromRequest(
     request: Request,
     override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ) {
@@ -44,12 +44,12 @@ export abstract class TokenService {
     return query;
   }
 
-  static async getManyFromRequest(request: Request): Promise<{ tokens: Token[], count: number }> {
+  static async getManyFromRequest(request: Request): Promise<{ tokens: Token[]; count: number }> {
     const query = TokenService.#getQueryFromRequest(request);
     const tokens = await TokenService.#fetch(async () => api.v4.tokens.index.get({ query }));
     const count = await TokenService.#fetch(async () => api.v4.tokens.count.get({ query }));
 
-    return { tokens, count};
+    return { tokens, count };
   }
 
   static async getMany(query: Parameters<typeof api.v4.tokens.index.get>[0]["query"]): Promise<Token[]> {

@@ -1,12 +1,10 @@
 import type { Protocol } from "@merkl/api";
-import { Group, type Order } from "dappkit";
+import { Group } from "dappkit";
 import { useMemo } from "react";
-import useSearchParamState from "src/hooks/filtering/useSearchParamState";
-import ProtocolTableRow from "./ProtocolTableRow";
-import { ProtocolTable } from "./ProtocolTable";
 import OpportunityPagination from "../opportunity/OpportunityPagination";
-import OpportunityFilters from "../opportunity/OpportunityFilters";
 import ProtocolFilters from "./ProtocolFilters";
+import { ProtocolTable } from "./ProtocolTable";
+import ProtocolTableRow from "./ProtocolTableRow";
 
 export type ProtocolLibraryProps = {
   protocols: Protocol[];
@@ -14,11 +12,7 @@ export type ProtocolLibraryProps = {
 };
 
 export default function ProtocolLibrary({ protocols, count }: ProtocolLibraryProps) {
-  const rows = useMemo(
-    () =>
-      protocols?.map(p => <ProtocolTableRow key={`${p.name}`} protocol={p} />),
-    [protocols],
-  );
+  const rows = useMemo(() => protocols?.map(p => <ProtocolTableRow key={`${p.name}`} protocol={p} />), [protocols]);
 
   return (
     <ProtocolTable

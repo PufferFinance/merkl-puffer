@@ -15,7 +15,7 @@ export default function Index() {
 
   return (
     <Container>
-      <Space size="xl"/>
+      <Space size="xl" />
       <TokenLibrary tokens={tokens} count={count} />
     </Container>
   );

@@ -13,7 +13,6 @@ export type ProtocolTableRowProps = {
 } & BoxProps;
 
 export default function ProtocolTableRow({ hideTags, protocol, className, ...props }: OpportunityTableRowProps) {
-
   return (
     <Link to={`/protocols/${protocol.name}`}>
       <ProtocolRow
@@ -28,7 +27,7 @@ export default function ProtocolTableRow({ hideTags, protocol, className, ...pro
                 h={3}
                 size={4}
                 className="text-nowrap flex gap-lg whitespace-nowrap text-ellipsis min-w-0 overflow-hidden">
-              <Icon src={protocol.icon}/>
+                <Icon src={protocol.icon} />
                 {protocol.name}
               </Title>
             </Group>

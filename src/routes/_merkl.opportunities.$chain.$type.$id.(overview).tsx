@@ -1,6 +1,4 @@
-import type { Campaign, Opportunity } from "@merkl/api";
 import { Group } from "@ariakit/react";
-import { useOutletContext } from "@remix-run/react";
 import { Space } from "packages/dappkit/src";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import { ErrorContent } from "src/components/layout/ErrorContent";
