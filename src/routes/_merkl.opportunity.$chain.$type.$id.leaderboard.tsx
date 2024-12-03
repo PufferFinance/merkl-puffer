@@ -14,9 +14,7 @@ export type DummyLeaderboard = {
   protocol: string;
 };
 
-export async function loader({
-  params: { id, type, chain: chainId },
-}: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
   const leaderboard: DummyLeaderboard[] = [
     { rank: 1, address: "0x1234", rewards: 100, protocol: "Aave" },
     { rank: 2, address: "0x5678", rewards: 50, protocol: "Compound" },

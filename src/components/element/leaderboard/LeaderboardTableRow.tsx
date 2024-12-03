@@ -1,6 +1,6 @@
-import { type Component, mergeClass, Text } from "dappkit";
-import { LeaderboardRow } from "./LeaderboardTable";
+import { type Component, Text, mergeClass } from "dappkit";
 import type { DummyLeaderboard } from "src/routes/_merkl.opportunity.$chain.$type.$id.leaderboard";
+import { LeaderboardRow } from "./LeaderboardTable";
 
 export type CampaignTableRowProps = Component<{
   row?: DummyLeaderboard;

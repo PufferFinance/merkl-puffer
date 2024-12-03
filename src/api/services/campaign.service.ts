@@ -10,7 +10,7 @@ export abstract class CampaignService {
    */
   static #getQueryFromRequest(
     request: Request,
-    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"]
+    override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ) {
     const status = new URL(request.url).searchParams.get("status");
     const action = new URL(request.url).searchParams.get("action");
@@ -19,19 +19,17 @@ export abstract class CampaignService {
 
     const items = new URL(request.url).searchParams.get("items");
     const search = new URL(request.url).searchParams.get("search");
-    const [sort, order] =
-      new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
+    const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
     const filters = Object.assign(
       { status, action, chainId, items, sort, order, name: search, page },
       override ?? {},
-      page !== null && { page: Number(page) - 1 }
+      page !== null && { page: Number(page) - 1 },
     );
 
     const query = Object.entries(filters).reduce(
-      (_query, [key, filter]) =>
-        Object.assign(_query, filter == null ? {} : { [key]: filter }),
-      {}
+      (_query, [key, filter]) => Object.assign(_query, filter == null ? {} : { [key]: filter }),
+      {},
     );
 
     return query;
@@ -44,9 +42,7 @@ export abstract class CampaignService {
     return data;
   }
 
-  static async getByParams(
-    query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]
-  ): Promise<Campaign[]> {
+  static async getByParams(query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]): Promise<Campaign[]> {
     const { data } = await api.v4.campaigns.index.get({ query });
     return data;
   }
