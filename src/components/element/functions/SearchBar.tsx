@@ -61,7 +61,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                     switch (category) {
                       case "chain":
                         return (
-                          <Button to={`/chain/${results[i].name}`} size="lg" look="bold">
+                          <Button to={`/chains/${results[i].name}`} size="lg" look="bold">
                             <Icon src={results[i].icon} /> {results[i].name}
                           </Button>
                         );

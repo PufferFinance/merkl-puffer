@@ -17,18 +17,22 @@ export default function Index() {
   return (
     <Hero
       icons={[{ src: chain.icon }]}
+      breadcrumbs={[
+        { link: "/chains", name: "Chains" },
+        { link: "/", name: chain.name },
+      ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={chain.name}
       description={"Lorem ipsum something cool about the chain"}
       tabs={[
-        { label: "Opportunities", link: `/chain/${label?.toLowerCase()}` },
+        { label: "Opportunities", link: `/chains/${label?.toLowerCase()}` },
         {
           label: "Leaderboard",
-          link: `/chain/${label?.toLowerCase()}/leaderboard`,
+          link: `/chains/${label?.toLowerCase()}/leaderboard`,
         },
         {
           label: "Analytics",
-          link: `/chain/${label?.toLowerCase()}/analytics`,
+          link: `/chains/${label?.toLowerCase()}/analytics`,
         },
       ]}>
       <Outlet />
