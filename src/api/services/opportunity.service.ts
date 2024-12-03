@@ -1,4 +1,4 @@
-import type { Campaign, Opportunity } from "@merkl/api";
+import type { Opportunity } from "@merkl/api";
 import config from "merkl.config";
 import { api } from "../index.server";
 

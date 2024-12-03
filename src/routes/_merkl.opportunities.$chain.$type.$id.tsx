@@ -42,7 +42,7 @@ export default function Index() {
     const spaced = opportunity?.name.split(" ");
 
     return spaced
-      .map((str) => {
+      .map(str => {
         const key = str + crypto.randomUUID();
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [

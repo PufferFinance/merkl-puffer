@@ -1,9 +1,8 @@
-import { Group } from "@ariakit/react";
+import { useOutletContext } from "@remix-run/react";
 import { Container, Space } from "packages/dappkit/src";
 import CampaignLibrary from "src/components/element/campaign/CampaignLibrary";
 import { ErrorContent } from "src/components/layout/ErrorContent";
 import type { OutletContextOpportunity } from "./_merkl.opportunity.$chain.$type.$id";
-import { useOutletContext } from "@remix-run/react";
 
 export default function Index() {
   const { opportunity } = useOutletContext<OutletContextOpportunity>();

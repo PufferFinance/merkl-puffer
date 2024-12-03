@@ -52,7 +52,7 @@ export default function Index() {
 
   return (
     <Container>
-      <Space size="lg"/>
+      <Space size="lg" />
       <Group size="lg">
         <Group className="flex-col border-2 flex-1">
           <Tooltip helper={null}>
@@ -68,7 +68,7 @@ export default function Index() {
           <Text size={"xl"}>400k</Text>
         </Group>
       </Group>
-      <Space size="lg"/>
+      <Space size="lg" />
       <LeaderboardLibrary leaderboard={leaderboard} />
     </Container>
   );
