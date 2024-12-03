@@ -1,6 +1,6 @@
-import type { Protocol, Chain } from "@merkl/api";
+import type { Chain } from "@merkl/api";
 import { Link } from "@remix-run/react";
-import { Button, Group, Icon, Value } from "dappkit";
+import { Group, Icon } from "dappkit";
 import type { BoxProps } from "dappkit";
 import { Title } from "dappkit";
 import { mergeClass } from "dappkit";
@@ -14,7 +14,7 @@ export type ChainTableRowProps = {
 
 export default function ChainTableRow({ hideTags, chain, className, ...props }: ChainTableRowProps) {
   console.log(chain);
-  
+
   return (
     <Link to={`/chains/${chain.name}`}>
       <ChainRow
