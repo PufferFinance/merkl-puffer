@@ -1,24 +1,11 @@
 import type { Opportunity } from "@merkl/api";
 import { Form, useLocation } from "@remix-run/react";
-import {
-  Divider,
-  Group,
-  Icon,
-  Icons,
-  Input,
-  Modal,
-  Title,
-  useShortcut,
-} from "dappkit";
+import { Divider, Group, Icon, Icons, Input, Modal, Title, useShortcut } from "dappkit";
 import { Button } from "dappkit";
 import Scroll from "packages/dappkit/src/components/primitives/Scroll";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import useOpportunity from "src/hooks/resources/useOpportunity";
-import {
-  type Results,
-  type Searchable,
-  useMerklSearch,
-} from "src/hooks/useMerklSearch";
+import { type Results, type Searchable, useMerklSearch } from "src/hooks/useMerklSearch";
 
 const titles: { [S in Searchable]: ReactNode } = {
   chain: "Chains",
@@ -33,8 +20,7 @@ function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
   return (
     <>
       <Button to={link} look="soft">
-        <Icons>{icons}</Icons> {opportunity.name}{" "}
-        <Icon remix="RiArrowRightLine" />
+        <Icons>{icons}</Icons> {opportunity.name} <Icon remix="RiArrowRightLine" />
       </Button>
       <Divider look="bold" />
     </>
@@ -67,10 +53,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
 
     return (
       <Group className="flex-col flex-nowrap overflow-hidden">
-        <Scroll
-          className="min-h-[70vh] w-full [&>*]:flex [&>*]:flex-col [&>*]:gap-xl*2 z-10"
-          vertical
-        >
+        <Scroll className="min-h-[70vh] w-full [&>*]:flex [&>*]:flex-col [&>*]:gap-xl*2 z-10" vertical>
           {entries
             .filter(([_, res]) => res?.length)
             .map(([category, results]) => (
@@ -82,11 +65,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                       case "chain":
                         return (
                           <>
-                            <Button
-                              to={`/chain/${results[i].name}`}
-                              look="soft"
-                              className="gap-lg"
-                            >
+                            <Button to={`/chain/${results[i].name}`} look="soft" className="gap-lg">
                               <Icon src={results[i].icon} /> {results[i].name}
                               <Icon remix="RiArrowRightLine" />
                             </Button>
@@ -98,12 +77,8 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                       case "token":
                         return (
                           <>
-                            <Button
-                              to={`/token/${results[i].symbol}`}
-                              look="soft"
-                            >
-                              <Icon src={results[i].icon} /> {results[i].symbol}{" "}
-                              <Icon remix="RiArrowRightLine" />
+                            <Button to={`/token/${results[i].symbol}`} look="soft">
+                              <Icon src={results[i].icon} /> {results[i].symbol} <Icon remix="RiArrowRightLine" />
                             </Button>
                             <Divider look="bold" />
                           </>
@@ -111,10 +86,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                       case "protocol":
                         return (
                           <>
-                            <Button
-                              to={`/protocol/${results[i].name}`}
-                              look="soft"
-                            >
+                            <Button to={`/protocol/${results[i].name}`} look="soft">
                               <Icon src={results[i].icon} /> {results[i].name}
                               <Icon remix="RiArrowRightLine" />
                             </Button>
@@ -148,8 +120,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
           />
           {Results}
         </>
-      }
-    >
+      }>
       <Form>
         {icon ? (
           <Button look="base">

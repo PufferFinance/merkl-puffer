@@ -17,15 +17,11 @@ export const LayerMenu: FC<{
           {Object.entries(nav)
             .filter(([key]) => !["privacy", "terms"].includes(key))
             .map(([key, value]) => (
-              <li
-                key={value.key}
-                className="border-b-1 first:pt-0 py-lg border-main-11"
-              >
+              <li key={value.key} className="border-b-1 first:pt-0 py-lg border-main-11">
                 <NavLink
                   onClick={() => setOpen(false)}
                   to={value.route}
-                  className="flex items-center gap-md capitalize"
-                >
+                  className="flex items-center gap-md capitalize">
                   <Icon remix={value.icon} className="text-xl text-main-11" />
                   <Text size="lg" bold className="text-main-12">
                     {key}
