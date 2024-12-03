@@ -1,8 +1,9 @@
-import type { Campaign } from "@angleprotocol/merkl-api";
+import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
 import { useLocation } from "@remix-run/react";
-import { Container, Divider, Group, Icon, type IconProps, Icons, Text, Title, Value } from "dappkit";
+import { Box, Container, Divider, Group, Icon, type IconProps, Icons, Text, Title, Value } from "dappkit";
 import { Button } from "dappkit";
 import config from "merkl.config";
+import moment from "moment";
 import { type PropsWithChildren, type ReactNode, useMemo } from "react";
 import { formatUnits, parseUnits } from "viem";
 
@@ -13,14 +14,20 @@ export type HeroProps = PropsWithChildren<{
   description: ReactNode;
   tags?: ReactNode[];
   tabs?: { label: ReactNode; link: string }[];
-  campaigns?: Campaign[];
+  opportunity?: Opportunity;
 }>;
 
-export default function Hero({ navigation, icons, title, description, tags, tabs, children, campaigns }: HeroProps) {
+export default function Hero({ navigation, icons, title, description, tags, children, opportunity, tabs }: HeroProps) {
   const location = useLocation();
 
+  const filteredCampaigns = useMemo(() => {
+    if (!opportunity?.campaigns) return null;
+    const now = moment().unix();
+    return opportunity.campaigns?.filter((c: Campaign) => Number(c.endTimestamp) > now);
+  }, [opportunity]);
+
   const totalRewards = useMemo(() => {
-    const amounts = campaigns?.map(campaign => {
+    const amounts = filteredCampaigns?.map(campaign => {
       const duration = campaign.endTimestamp - campaign.startTimestamp;
       const dayspan = BigInt(duration) / BigInt(3600 * 24);
 
@@ -30,7 +37,7 @@ export default function Hero({ navigation, icons, title, description, tags, tabs
     const sum = amounts?.reduce((accumulator, currentValue) => accumulator + currentValue, 0n);
     if (!sum) return "0.0";
     return formatUnits(sum, 18);
-  }, [campaigns]);
+  }, [filteredCampaigns]);
 
   return (
     <>
@@ -116,45 +123,47 @@ export default function Hero({ navigation, icons, title, description, tags, tabs
               {!location?.pathname.includes("user") && (
                 <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
                   <Group className="flex-col">
-                    <Value look={totalRewards === "0" ? "soft" : "base"} format="$0,0" size={3}>
-                      {totalRewards}
-                    </Value>
+                    <Text size={3}>
+                      <Value look={totalRewards === "0" ? "soft" : "base"} format="$0,0" size={"md"}>
+                        {totalRewards}
+                      </Value>
+                    </Text>
 
                     <Text size="xl" className="font-bold">
                       Daily rewards
                     </Text>
                   </Group>
                   <Group className="flex-col">
-                    <Text size={3}>todo</Text>
+                    <Text size={3}>
+                      <Value value format="0a%">
+                        {(opportunity?.apr ?? 0) / 100}
+                      </Value>
+                    </Text>
                     <Text size={"xl"} className="font-bold">
                       APR
                     </Text>
                   </Group>
                   <Group className="flex-col">
-                    <Text size={3}>{campaigns?.length}</Text>
+                    <Text size={3}>{filteredCampaigns?.length}</Text>
                     <Text size={"xl"} className="font-bold">
                       Active campaigns
                     </Text>
                   </Group>
                 </Group>
               )}
-              {/* {!!tabs && (
-                <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
-                  {tabs?.map((tab) => (
-                    <Button
-                      look={location.pathname === tab.link ? "hype" : "soft"}
-                      to={tab.link}
-                      key={tab.link}
-                    >
-                      {tab.label}
-                    </Button>
-                  ))}
-                </Box>
-              )} */}
             </Group>
           </Group>
         </Container>
       </Group>
+      {!!tabs && (
+        <Box size="sm" look="base" className="flex-row mt-xl*2 w-min">
+          {tabs?.map(tab => (
+            <Button look={location.pathname === tab.link ? "hype" : "soft"} to={tab.link} key={tab.link}>
+              {tab.label}
+            </Button>
+          ))}
+        </Box>
+      )}
       <div>{children}</div>
     </>
   );

@@ -1,7 +1,6 @@
 import type { Protocol } from "@angleprotocol/merkl-api";
 import { api } from "../index.server";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class ProtocolService {
   static async #fetch<R, T extends { data: R; status: number }>(
     call: () => Promise<T>,

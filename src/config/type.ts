@@ -32,6 +32,9 @@ export type MerklConfig<T extends Themes> = {
   links: {
     [key: string]: string;
   };
+  images: {
+    hero: string;
+  };
 };
 
 export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {

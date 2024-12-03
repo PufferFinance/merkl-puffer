@@ -1,8 +1,7 @@
-import type { Campaign, Opportunity } from "@angleprotocol/merkl-api";
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import config from "merkl.config";
 import { api } from "../index.server";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class OpportunityService {
   static async #fetch<R, T extends { data: R; status: number }>(
     call: () => Promise<T>,
@@ -67,18 +66,11 @@ export abstract class OpportunityService {
     return { opportunities: opportunities.filter(o => o !== null), count };
   }
 
-  static async getCampaigns(query: { chainId: number; type: string; identifier: string }): Promise<Campaign[]> {
-    const { chainId, type, identifier } = query;
-
-    type T = Parameters<typeof api.v4.campaigns.index.get>[0]["query"]["type"];
-    const campaigns = await OpportunityService.#fetch(async () =>
-      api.v4.campaigns.index.get({ query: { chainId, type: type as T, identifier } }),
-    );
-
-    return campaigns.filter(c => c !== null);
-  }
-
-  static async get(query: { chainId: number; type: string; identifier: string }): Promise<Opportunity> {
+  static async get(query: {
+    chainId: number;
+    type: string;
+    identifier: string;
+  }): Promise<Opportunity> {
     const { chainId, type, identifier } = query;
     const opportunity = await OpportunityService.#fetch(async () =>
       api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).get(),
@@ -89,5 +81,22 @@ export abstract class OpportunityService {
       throw new Response("Opportunity inacessible", { status: 403 });
 
     return opportunity;
+  }
+
+  static async getCampaignsByParams(query: {
+    chainId: number;
+    type: string;
+    identifier: string;
+  }) {
+    const { chainId, type, identifier } = query;
+    const opportunityWithCampaigns = await OpportunityService.#fetch(async () =>
+      api.v4.opportunities({ id: `${chainId}-${type}-${identifier}` }).campaigns.get(),
+    );
+
+    //TODO: updates tags to take an array
+    if (config.tags && !opportunityWithCampaigns.tags.includes(config.tags?.[0]))
+      throw new Response("Opportunity inacessible", { status: 403 });
+
+    return opportunityWithCampaigns;
   }
 }

@@ -19,7 +19,7 @@ export default function Index() {
   return (
     <Container>
       <Space size="md" />
-      <OpportunityLibrary {...{ chains, count, opportunities }} />
+      <OpportunityLibrary opportunities={opportunities} chains={chains} count={count} />
     </Container>
   );
 }

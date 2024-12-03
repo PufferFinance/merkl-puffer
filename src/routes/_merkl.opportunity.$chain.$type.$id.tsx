@@ -1,10 +1,10 @@
+import type { Opportunity } from "@angleprotocol/merkl-api";
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
-import Hero from "src/components/composite/Hero";
-
 import { useMemo } from "react";
 import { ChainService } from "src/api/services/chain.service";
 import { OpportunityService } from "src/api/services/opportunity.service";
+import Hero from "src/components/composite/Hero";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
@@ -13,11 +13,16 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
-  const opportunityId = { chainId: chain.id, type, identifier: id };
 
-  const opportunity = await OpportunityService.get(opportunityId);
+  const opportunity = await OpportunityService.getCampaignsByParams({
+    chainId: chain.id,
+    type: type,
+    identifier: id,
+  });
 
-  return json(opportunity);
+  if (!opportunity) throw "DAZZ";
+
+  return json({ opportunity });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
@@ -25,16 +30,20 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   return [{ title: `${data?.name} on Merkl` }];
 };
 
+export type OutletContextOpportunity = {
+  opportunity: Opportunity;
+};
+
 export default function Index() {
-  const opportunity = useLoaderData<typeof loader>();
+  const { opportunity } = useLoaderData<typeof loader>();
   const { tags, description, link } = useOpportunity(opportunity);
+
   const styleName = useMemo(() => {
     const spaced = opportunity?.name.split(" ");
 
     return spaced
       .map((str, index) => {
         const key = str + crypto.randomUUID();
-        // biome-ignore lint/suspicious/noArrayIndexKey: required
         if (!str.match(/[\p{Letter}\p{Mark}]+/gu))
           return [
             <span key={key} className="text-main-11">
@@ -49,7 +58,6 @@ export default function Index() {
           return str
             .split("/")
             .flatMap((s, i, arr) => [s, i !== arr.length - 1 && <span className="text-main-11">/</span>]);
-        // biome-ignore lint/suspicious/noArrayIndexKey: required
         return [<span key={key}>{str}</span>];
       })
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
@@ -66,10 +74,10 @@ export default function Index() {
         tabs={[
           { label: "Overview", link },
           { label: "Leaderboard", link: `${link}/leaderboard` },
-          { label: "Analytics", link: `${link}/analytics` },
         ]}
-        tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="md" />)}>
-        <Outlet />
+        tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="md" />)}
+        opportunity={opportunity}>
+        <Outlet context={{ opportunity }} />
       </Hero>
     </>
   );

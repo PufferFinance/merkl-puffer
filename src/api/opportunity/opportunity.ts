@@ -8,7 +8,6 @@ function getQueryParams(
   const action = new URL(request.url).searchParams.get("action");
   const chainId = new URL(request.url).searchParams.get("chain");
   const page = new URL(request.url).searchParams.get("page");
-  console.log("PAGE", page);
 
   const items = new URL(request.url).searchParams.get("items");
   const search = new URL(request.url).searchParams.get("search");
@@ -35,7 +34,9 @@ export async function fetchOpportunities(
   const query = getQueryParams(request, overrideQuery);
 
   const { data: count } = await api.v4.opportunities.count.get({ query });
-  const { data: opportunities } = await api.v4.opportunities.index.get({ query });
+  const { data: opportunities } = await api.v4.opportunities.index.get({
+    query,
+  });
 
   if (count === null || !opportunities) throw "Cannot fetch opportunities";
   return { opportunities, count };

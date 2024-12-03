@@ -1,7 +1,6 @@
 import type { Chain } from "@angleprotocol/merkl-api";
 import { api } from "../index.server";
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export abstract class ChainService {
   static async #fetch<R, T extends { data: R; status: number }>(
     call: () => Promise<T>,

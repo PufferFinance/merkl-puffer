@@ -27,7 +27,6 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
   switch (type) {
     case "status": {
       const status = statuses[value as TagTypes["status"]] ?? statuses.LIVE;
-
       return (
         <Dropdown
           size="lg"
@@ -61,7 +60,6 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
     case "chain": {
       const chain = value as TagTypes["chain"];
-
       return (
         <Dropdown
           size="lg"
@@ -95,9 +93,7 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
     }
     case "action": {
       const action = actions[value as TagTypes["action"]];
-
       if (!action) return <Button {...props}>{value}</Button>;
-
       return (
         <Dropdown
           size="lg"
@@ -127,12 +123,9 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
         </Dropdown>
       );
     }
-
     case "token": {
       const token = value as TagTypes["token"];
-
       if (!token) return <Button {...props}>{value}</Button>;
-
       return (
         <Dropdown
           size="lg"
@@ -173,12 +166,9 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
         </Dropdown>
       );
     }
-
     case "tokenChain": {
       const token = value as TagTypes["tokenChain"];
-
       if (!token) return <Button {...props}>{value}</Button>;
-
       return (
         <Dropdown
           size="lg"
@@ -224,12 +214,9 @@ export default function Tag<T extends keyof TagTypes>({ type, value, ...props }:
         </Dropdown>
       );
     }
-
     case "protocol": {
       const protocol = value;
-
       if (!protocol) return <Button {...props}>{value}</Button>;
-
       return (
         <Dropdown
           size="lg"

@@ -173,5 +173,5 @@ export default createConfig({
       [zksync.id]: http(),
       [optimism.id]: http(),
     },
-  }
+  },
 });
