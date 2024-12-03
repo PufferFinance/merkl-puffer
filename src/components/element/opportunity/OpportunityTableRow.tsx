@@ -31,7 +31,6 @@ export default function OpportunityTableRow({ hideTags, opportunity, className, 
             {tags
               ?.filter(({ type }) => !hideTags || hideTags.includes(type))
               .map(tag => {
-                console.table(tag);
                 return <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />;
               })}
           </Group>
