@@ -4,8 +4,6 @@ services:
     image: merkl-lite
     build:
       context: .
-      args:
-        SDK_READ_ACCESS_TOKEN: $GITHUB_REGISTRY_TOKEN
       dockerfile: Dockerfile
     ports:
       - '5173:5173'

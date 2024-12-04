@@ -1,5 +1,4 @@
 FROM oven/bun:1.1.24-debian
-ARG SDK_READ_ACCESS_TOKEN
 
 RUN apt-get -y update
 RUN apt-get -y install python3 make g++ ca-certificates curl
