@@ -29,11 +29,15 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
   return (
     <Group className="justify-between">
       <List flex="row">
-        <Button disabled={(pageFilter ?? 0) <= 1} onClick={() => setPageFilter(Math.max(1, (pageFilter ?? 0) - 1))}>
+        <Button
+          look="soft"
+          disabled={(pageFilter ?? 0) <= 1}
+          onClick={() => setPageFilter(Math.max(1, (pageFilter ?? 0) - 1))}>
           <Icon remix="RiArrowLeftLine" />
         </Button>
-        <Select state={[pageFilter, setPageFilter]} look="bold" options={pageOptions} />
+        <Select state={[pageFilter, setPageFilter]} look="soft" options={pageOptions} />
         <Button
+          look="soft"
           disabled={(pageFilter ?? 0) >= pages}
           onClick={() => setPageFilter(Math.min(pages, (pageFilter ?? 0) + 1))}>
           <Icon remix="RiArrowRightLine" />
@@ -43,12 +47,8 @@ export default function OpportunityPagination({ count }: OpportunityPaginationPr
         <Button onClick={() => setItemsFilter(Math.min(50, (itemsFilter ?? 0) + 10))}>
           More <Icon remix="RiArrowDownLine" />
         </Button>
-        <Select
-          state={[itemsFilter, setItemsFilter]}
-          look="bold"
-          options={{ 10: "10", 20: "20", 30: "30", 40: "40", 50: "50" }}
-        />
-        <Button onClick={() => setItemsFilter(Math.max(10, (itemsFilter ?? 0) - 10))}>
+        <Select state={[itemsFilter, setItemsFilter]} look="soft" options={{ 50: "50", 100: "100" }} />
+        <Button look="soft" onClick={() => setItemsFilter(Math.max(10, (itemsFilter ?? 0) - 10))}>
           Less <Icon remix="RiArrowUpLine" />
         </Button>
       </List>

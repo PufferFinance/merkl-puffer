@@ -36,7 +36,16 @@ export abstract class OpportunityService {
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
     const filters = Object.assign(
-      { status, action, chainId, items, sort, order, name: search, page },
+      {
+        status,
+        action,
+        chainId: chainId !== "" ? chainId : undefined,
+        items: items ?? 50,
+        sort,
+        order,
+        name: search,
+        page,
+      },
       override ?? {},
       page !== null && { page: Number(page) - 1 },
     );

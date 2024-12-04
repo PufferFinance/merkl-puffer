@@ -12,24 +12,23 @@ export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }:
   const value = formatUnits(amount, decimals);
 
   return (
-    <Group size="sm" className="flex-col">
+    <Group size="sm">
+      <Value
+        fallback={v => (v as string).includes("0.000") && "<0.001"}
+        className="text-right"
+        look={"bold"}
+        format="0,0.###">
+        {value}
+      </Value>
       <Value
         fallback={v => {
           if (price === 0) return "-";
-          return (v.toString() as string).includes("0.0") && "<0.1";
+          return (v.toString() as string).includes("0.0") && "$<0.1";
         }}
         className="text-right"
-        look={amount.toString() === "0" ? "soft" : "base"}
+        look={"soft"}
         format="$0,0.#">
         {Number.parseFloat(value) * price}
-      </Value>{" "}
-      <Value
-        fallback={v => (v as string).includes("0.000") && "<0.001"}
-        size="xs"
-        className="text-right"
-        look={"soft"}
-        format="0,0.###">
-        {value}
       </Value>
     </Group>
   );

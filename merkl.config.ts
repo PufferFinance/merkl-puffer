@@ -41,7 +41,7 @@ import { eip712WalletActions } from "viem/zksync";
 
 export default createConfig({
   appName: "Merkl",
-  modes: ["dark", "light"],
+  modes: ["dark"],
   defaultTheme: "merkl",
   themes: {
     merkl: {
@@ -71,11 +71,11 @@ export default createConfig({
       route: "/opportunities",
       key: crypto.randomUUID(),
     },
-    protocols: {
-      icon: "RiVipCrown2Fill",
-      route: "/protocols",
-      key: crypto.randomUUID(),
-    },
+    // protocols: {
+    //   icon: "RiVipCrown2Fill",
+    //   route: "/protocols",
+    //   key: crypto.randomUUID(),
+    // },
     terms: {
       icon: "RiCompassesLine",
       route: "/terms",

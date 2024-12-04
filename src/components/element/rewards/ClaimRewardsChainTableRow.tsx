@@ -1,31 +1,37 @@
 import type { Reward } from "@merkl/api";
-import { Icon, Space, Text, Value } from "dappkit";
+import { Button, type Component, Icon, Space, Text, Value, mergeClass } from "dappkit";
 import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
-import { type PropsWithChildren, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { encodeFunctionData, formatUnits, parseAbi } from "viem";
-import Chain from "../chain/Chain";
+import Tag from "../Tag";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
 
-export type ClaimRewardsChainTableRowProps = PropsWithChildren & {
+export type ClaimRewardsChainTableRowProps = Component<{
   from: string;
   reward: Reward;
-};
+}>;
 
-export default function ClaimRewardsChainTableRow({ from, reward, ...props }: ClaimRewardsChainTableRowProps) {
+export default function ClaimRewardsChainTableRow({
+  from,
+  reward,
+  className,
+  ...props
+}: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set<string>());
 
-  const { address: user } = useWalletContext();
+  const { address: user, chainId, switchChain } = useWalletContext();
   const isUserRewards = useMemo(() => user === from, [user, from]);
   const isAbleToClaim = useMemo(
     () => isUserRewards && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
     [isUserRewards, reward],
   );
+  const isOnCorrectChain = useMemo(() => reward.chain.id === chainId, [reward, chainId]);
 
   const claimTransaction = useMemo(() => {
     const abi = parseAbi(["function claim(address[],address[],uint256[],bytes32[][]) view returns (uint256)"]);
@@ -66,6 +72,7 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
         .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
         .map(_reward => (
           <ClaimRewardsTokenTableRow
+            className="cursor-pointer [&>*>*]:cursor-auto"
             checkedState={[
               selectedTokens.has(_reward.token.address),
               checked => {
@@ -87,21 +94,25 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
   return (
     <ClaimRewardsChainRow
       {...props}
+      className={mergeClass("cursor-pointer [&>*>*]:cursor-auto", className)}
       onClick={() => setOpen(o => !o)}
       chainColumn={
         <>
-          <Chain chain={reward.chain} />
+          <Tag type="chain" value={reward.chain} />
           <Icon
             data-state={!open ? "closed" : "opened"}
             className="transition duration-150 ease-out data-[state=opened]:rotate-180"
             remix={"RiArrowDropDownLine"}
           />
           <EventBlocker>
-            {isAbleToClaim && (
-              <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction}>
-                Claim
-              </TransactionButton>
-            )}
+            {isAbleToClaim &&
+              (isOnCorrectChain ? (
+                <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction}>
+                  Claim
+                </TransactionButton>
+              ) : (
+                <Button onClick={() => switchChain(reward.chain.id)}>Switch</Button>
+              ))}
           </EventBlocker>
         </>
       }
