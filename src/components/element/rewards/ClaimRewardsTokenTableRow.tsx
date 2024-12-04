@@ -6,6 +6,7 @@ import OpportuntiyButton from "../opportunity/OpportunityButton";
 import Token from "../token/Token";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
+import Tag from "../Tag";
 
 export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
   reward: Reward["rewards"][number];
@@ -24,7 +25,7 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
       onClick={() => setOpen(o => !o)}
       tokenColumn={
         <Group>
-          <Token token={reward.token} />
+          <Tag type="token" value={reward.token} />
           <Icon
             data-state={!open ? "closed" : "opened"}
             className="text-main-10 transition duration-150 ease-out data-[state=opened]:rotate-180"

@@ -23,7 +23,7 @@ export default function ClaimRewardsTokenTablePrice({ amount, price, decimals }:
       <Value
         fallback={v => {
           if (price === 0) return "-";
-          return (v.toString() as string).includes("0.0") && "<0.1";
+          return (v.toString() as string).includes("0.0") && "$<0.1";
         }}
         className="text-right"
         look={"soft"}

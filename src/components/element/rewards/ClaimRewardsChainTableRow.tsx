@@ -10,6 +10,7 @@ import Chain from "../chain/Chain";
 import { ClaimRewardsChainRow } from "./ClaimRewardsChainTable";
 import { ClaimRewardsTokenTable } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
+import Tag from "../Tag";
 
 export type ClaimRewardsChainTableRowProps = PropsWithChildren & {
   from: string;
@@ -66,6 +67,7 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
         .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
         .map(_reward => (
           <ClaimRewardsTokenTableRow
+            className="cursor-pointer [&>*>*]:cursor-auto"
             checkedState={[
               selectedTokens.has(_reward.token.address),
               checked => {
@@ -87,10 +89,11 @@ export default function ClaimRewardsChainTableRow({ from, reward, ...props }: Cl
   return (
     <ClaimRewardsChainRow
       {...props}
+      className="cursor-pointer [&>*>*]:cursor-auto"
       onClick={() => setOpen(o => !o)}
       chainColumn={
         <>
-          <Chain chain={reward.chain} />
+          <Tag type="chain" value={reward.chain} />
           <Icon
             data-state={!open ? "closed" : "opened"}
             className="transition duration-150 ease-out data-[state=opened]:rotate-180"
