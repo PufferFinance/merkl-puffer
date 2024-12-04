@@ -15,7 +15,7 @@ export const [OpportunityTable, OpportunityRow, opportunityColumns] = createTabl
     className: "justify-center",
   },
   apy: {
-    name: "APY",
+    name: "APR",
     size: "minmax(min-content,150px)",
     compactSize: "minmax(min-content,1fr)",
     className: "justify-center",

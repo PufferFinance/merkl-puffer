@@ -1,4 +1,4 @@
-import { Group, Text, Value } from "dappkit";
+import { Group, Value } from "dappkit";
 import type { PropsWithChildren } from "react";
 import { formatUnits } from "viem";
 

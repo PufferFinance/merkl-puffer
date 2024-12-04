@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "@remix-run/react";
-import { Button, Group, Hash, Icon, Input } from "dappkit";
+import { Button, Group, Icon, Input } from "dappkit";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import { useState } from "react";
 import Hero from "src/components/composite/Hero";
@@ -17,11 +17,8 @@ export default function Index() {
       title={"Dashboard"}
       description={
         <Group>
-          <Input
-            state={[inputAddress, setInputAddress]}
-            look="soft"
-          />
-          <Button onClick={() => navigate(`/users/${inputAddress}`)} size="xl" look="soft">
+          <Input state={[inputAddress, setInputAddress]} look="soft" />
+          <Button onClick={() => inputAddress && navigate(`/users/${inputAddress}`)} size="xl" look="soft">
             <Icon remix="RiSendPlane2Fill" />
           </Button>
         </Group>

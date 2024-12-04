@@ -2,11 +2,10 @@ import type { Reward } from "@merkl/api";
 import { Checkbox, Divider, type GetSet, Group, Icon, Space } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import { type PropsWithChildren, useMemo, useState } from "react";
+import Tag from "../Tag";
 import OpportuntiyButton from "../opportunity/OpportunityButton";
-import Token from "../token/Token";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
-import Tag from "../Tag";
 
 export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
   reward: Reward["rewards"][number];

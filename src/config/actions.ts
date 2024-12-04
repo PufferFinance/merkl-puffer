@@ -3,7 +3,7 @@ import type { IconProps } from "dappkit";
 
 export const actions = {
   POOL: {
-    label: "Liquidity",
+    label: "Provide Liquidity",
     description: "Earn rewards by depositiong liquidity in this pool.",
     icon: { remix: "RiWaterFlashLine" },
   },
