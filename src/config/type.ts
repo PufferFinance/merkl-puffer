@@ -23,9 +23,6 @@ export type MerklConfig<T extends Themes> = {
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
   routes: routesType;
-  images: {
-    [name: string]: string;
-  };
   socials: {
     [key: string]: string;
   };
@@ -37,7 +34,10 @@ export type MerklConfig<T extends Themes> = {
   };
 };
 
-export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
+export function createConfig<T extends Themes>({
+  wagmi,
+  ...config
+}: MerklConfig<T>) {
   const wagmiConfig = createWagmiConfig(wagmi);
 
   return { wagmi: wagmiConfig, ...config };
