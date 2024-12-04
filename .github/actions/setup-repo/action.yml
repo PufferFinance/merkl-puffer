@@ -1,0 +1,16 @@
+name: Setup repo
+description: Runs all steps to setup the repo (install node_modules, build, etc...)
+inputs:
+  registry-token:
+    description: 'PAT to access registries'
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set up Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+    - name: Install dependencies
+      run: bun install
+      shell: bash
