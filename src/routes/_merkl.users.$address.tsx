@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, json, useLoaderData } from "@remix-run/react";
-import { Button, Group, Hash, Icon, Text, Value } from "dappkit";
+import { Outlet, json, useLoaderData, useNavigate } from "@remix-run/react";
+import { Button, Group, Hash, Icon, Input, Text, Value } from "dappkit";
 import { useMemo, useState } from "react";
 import { RewardService } from "src/api/services/reward.service";
 import Hero from "src/components/composite/Hero";
@@ -22,7 +22,9 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
 
 export default function Index() {
   const { rewards, address } = useLoaderData<typeof loader>();
-  const [_isEditingAddress] = useState(false);
+  const [inputAddress, setInputAddress] = useState<string>();
+  const [_isEditingAddress, setIsEditingAddress] = useState(false);
+  const navigate = useNavigate();
 
   const { earned, unclaimed } = useMemo(() => {
     return rewards.reduce(
@@ -80,9 +82,26 @@ export default function Index() {
         </Group>
       }
       description={
-        <Hash size={4} className="text-main-12" format="short" copy>
-          {address}
-        </Hash>
+        (!_isEditingAddress && address !== "") ? (
+          <Group>
+            <Hash size={4} className="text-main-12" format="short" copy>
+              {address}
+            </Hash>
+            <Button look="soft" onClick={() => setIsEditingAddress(true)}>
+              <Icon remix="RiEdit2Line" />
+            </Button>
+          </Group>
+        ) : (
+          <Group>
+          <Input
+            state={[inputAddress, setInputAddress]}
+            look="soft"
+          />
+          <Button onClick={() => navigate(`/users/${inputAddress}`)} size="xl" look="soft">
+            <Icon remix="RiSendPlane2Fill" />
+          </Button>
+          </Group>
+        )
       }
       tabs={[
         {
