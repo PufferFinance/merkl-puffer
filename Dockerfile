@@ -5,7 +5,6 @@ RUN apt-get -y install python3 make g++ ca-certificates curl
 
 WORKDIR /app
 
-COPY bunfig.toml .
 COPY package.json .
 COPY packages packages
 COPY bun.lockb .
