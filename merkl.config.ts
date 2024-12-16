@@ -69,7 +69,7 @@ export default createConfig({
       harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
     puffer: {
-      base: createColoring(["#2A35BD", "#3D3D3D", "#0E1035"], ["#2A35BD", "#F5F9FF", "#FFFFFF"]),
+      base: createColoring(["#2A35BD", "#BFFF38", "#FFFFFF"], ["#2A35BD", "#BFFF38", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
@@ -85,7 +85,7 @@ export default createConfig({
     hero: hero,
   },
   routes: {
-    homepage: {
+    home: {
       icon: "RiHomeFill",
       route: "/",
       key: crypto.randomUUID(),
@@ -100,6 +100,22 @@ export default createConfig({
     //   route: "/protocols",
     //   key: crypto.randomUUID(),
     // },
+    // bridge: {
+    //   icon: "RiCompassesLine",
+    //   route: "/bridge",
+    //   key: crypto.randomUUID(),
+    // },
+    docs: {
+      icon: "RiFile4Fill",
+      external: true,
+      route: "https://docs.merkl.xyz/",
+      key: crypto.randomUUID(),
+    },
+    faq: {
+      icon: "RiQuestionFill",
+      route: "/faq",
+      key: crypto.randomUUID(),
+    },
     // terms: {
     //   icon: "RiCompassesLine",
     //   route: "/terms",
@@ -118,6 +134,7 @@ export default createConfig({
     github: "",
   },
   links: {
+    docs: "https://docs.merkl.xyz/",
     merkl: "https://merkl.xyz/",
     merklTermsConditions: "https://app.merkl.xyz/merklTerms.pdf",
     merklPrivacy: "https://privacy.angle.money",
