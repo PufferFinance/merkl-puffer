@@ -45,7 +45,6 @@ export const clientLoader = Cache.wrap("root", 300);
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
-
   return (
     <DAppProvider
       chains={data.chains}
