@@ -47,7 +47,7 @@ export default function Hero({
   const location = useLocation();
   return (
     <>
-      <OverrideTheme mode="dark">
+      <OverrideTheme mode="light">
         <Group
           className={`${
             location?.pathname === "/" || location?.pathname === "/opportunities" ? "bg-cover" : "bg-main-6"
