@@ -19,25 +19,24 @@ export type MerklConfig<T extends Themes> = {
   };
   tags?: string[];
   defaultTheme: keyof T;
+  deposit?: boolean;
   modes: Mode[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
   routes: routesType;
+  images: {
+    [name: string]: string;
+  };
   socials: {
     [key: string]: string;
   };
   links: {
     [key: string]: string;
   };
-  images: {
-    hero: string;
-  };
+  footerLinks: { image: string; link: string; key: string }[];
 };
 
-export function createConfig<T extends Themes>({
-  wagmi,
-  ...config
-}: MerklConfig<T>) {
+export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {
   const wagmiConfig = createWagmiConfig(wagmi);
 
   return { wagmi: wagmiConfig, ...config };

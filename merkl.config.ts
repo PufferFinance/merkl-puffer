@@ -1,70 +1,58 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
-import { createClient, custom, http } from "viem";
-import {
-  mainnet,
-  optimism,
-  rootstock,
-  bsc,
-  gnosis,
-  thunderCore,
-  fuse,
-  polygon,
-  manta,
-  xLayer,
-  fantom,
-  fraxtal,
-  filecoin,
-  zksync,
-  worldchain,
-  astar,
-  polygonZkEvm,
-  coreDao,
-  moonbeam,
-  sei,
-  astarZkEVM,
-  mantle,
-  base,
-  immutableZkEvm,
-  mode,
-  arbitrum,
-  avalanche,
-  linea,
-  bob,
-  blast,
-  taiko,
-  scroll,
-} from "viem/chains";
-import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import hero from "src/customer/assets/images/hero.jpg?url";
+import { http, createClient, custom } from "viem";
+import {
+  arbitrum,
+  astar,
+  astarZkEVM,
+  avalanche,
+  base,
+  blast,
+  bob,
+  bsc,
+  coreDao,
+  etherlink,
+  fantom,
+  filecoin,
+  fraxtal,
+  fuse,
+  gnosis,
+  immutableZkEvm,
+  linea,
+  lisk,
+  mainnet,
+  manta,
+  mantle,
+  mode,
+  moonbeam,
+  optimism,
+  polygon,
+  polygonZkEvm,
+  rootstock,
+  scroll,
+  sei,
+  taiko,
+  thunderCore,
+  worldchain,
+  xLayer,
+  zksync,
+} from "viem/chains";
 import { eip712WalletActions } from "viem/zksync";
+import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Puffer",
-  defaultTheme: "puffer",
   modes: ["light"],
+  defaultTheme: "puffer",
+  deposit: false,
   themes: {
-    merkl: {
-      base: createColoring(
-        ["#2A35BD", "#F5F9FF", "#FFFFFF"],
-        ["#2A35BD", "#F5F9FF", "#FFFFFF"]
-      ),
-      info: createColoring(
-        ["#2ABDFF", "#2ABDFF", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      good: createColoring(
-        ["#40B66B", "#40B66B", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      warn: createColoring(
-        ["#ff9600", "#ff9600", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
-      harm: createColoring(
-        ["#d22e14", "#d22e14", "#131620"],
-        ["#FFFFFF", "#40B66B", "white"]
-      ),
+    puffer: {
+      base: createColoring(["#2A35BD", "#F5F9FF", "#FFFFFF"], ["#2A35BD", "#F5F9FF", "#FFFFFF"]),
+      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
     },
   },
   sizing: {
@@ -91,16 +79,16 @@ export default createConfig({
     //   route: "/protocols",
     //   key: crypto.randomUUID(),
     // },
-    terms: {
-      icon: "RiCompassesLine",
-      route: "/terms",
-      key: crypto.randomUUID(),
-    },
-    privacy: {
-      icon: "RiInformationFill",
-      route: "/privacy",
-      key: crypto.randomUUID(),
-    },
+    // terms: {
+    //   icon: "RiCompassesLine",
+    //   route: "/terms",
+    //   key: crypto.randomUUID(),
+    // },
+    // privacy: {
+    //   icon: "RiInformationFill",
+    //   route: "/privacy",
+    //   key: crypto.randomUUID(),
+    // },
   },
   socials: {
     discord: "https://discord.com/invite/pufferfi",
@@ -110,13 +98,17 @@ export default createConfig({
   },
   links: {
     merkl: "https://merkl.xyz/",
+    merklTermsConditions: "https://app.merkl.xyz/merklTerms.pdf",
+    merklPrivacy: "https://privacy.angle.money",
   },
+  footerLinks: [],
   wagmi: {
     chains: [
       mainnet,
       optimism,
       rootstock,
       bsc,
+      lisk,
       gnosis,
       thunderCore,
       fuse,
@@ -126,6 +118,7 @@ export default createConfig({
       fantom,
       fraxtal,
       filecoin,
+      etherlink,
       zksync,
       worldchain,
       astar,

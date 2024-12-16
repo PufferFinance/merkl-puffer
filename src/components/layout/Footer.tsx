@@ -31,16 +31,23 @@ export default function Footer() {
                 ©{new Date().getFullYear()} Merkl. All rights reserved.
               </Text>
 
-              <Button look="soft" className="capitalize" size="sm" to={config.routes.terms.route}>
+              <Button look="soft" className="capitalize" size="sm" to={config.links.merklTermsConditions} external>
                 Terms
               </Button>
-              <Button look="soft" className="capitalize" size="sm" to={config.routes.privacy.route}>
+              <Button look="soft" className="capitalize" size="sm" to={config.links.merklPrivacy} external>
                 Privacy
               </Button>
             </Group>
 
+            {config.footerLinks.length > 0 &&
+              config.footerLinks.map(link => (
+                <Button key={link.key} look="soft" size="sm" to={link.link} external>
+                  <Image className="w-[8rem] max-h-[2.5rem]" alt="Footer link" src={link.image} />
+                </Button>
+              ))}
+
             <Button to={config.links.merkl} external look="soft">
-              <Image className="w-[130px]" alt="Merkl Footer logo" src={mode !== "dark" ? merklDarkLogo : merklLogo} />
+              <Image className="w-[80px]" alt="Merkl Footer logo" src={mode !== "dark" ? merklDarkLogo : merklLogo} />
             </Button>
           </Group>
         </Group>

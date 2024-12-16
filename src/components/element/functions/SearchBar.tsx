@@ -22,7 +22,7 @@ function OpportunityResult({ opportunity }: { opportunity: Opportunity }) {
       <Button to={link} look="soft">
         <Icons>{icons}</Icons> {opportunity.name} <Icon remix="RiArrowRightLine" />
       </Button>
-      <Divider look="bold" />
+      <Divider look="soft" />
     </>
   );
 }
@@ -65,11 +65,11 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                       case "chain":
                         return (
                           <>
-                            <Button to={`/chain/${results[i].name}`} look="soft" className="gap-lg">
+                            <Button to={`/chains/${results[i].name}`} look="soft" className="gap-lg">
                               <Icon src={results[i].icon} /> {results[i].name}
                               <Icon remix="RiArrowRightLine" />
                             </Button>
-                            <Divider look="bold" />
+                            <Divider look="soft" />
                           </>
                         );
                       case "opportunity":
@@ -77,20 +77,20 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
                       case "token":
                         return (
                           <>
-                            <Button to={`/token/${results[i].symbol}`} look="soft">
+                            <Button to={`/tokens/${results[i].symbol}`} look="soft">
                               <Icon src={results[i].icon} /> {results[i].symbol} <Icon remix="RiArrowRightLine" />
                             </Button>
-                            <Divider look="bold" />
+                            <Divider look="soft" />
                           </>
                         );
                       case "protocol":
                         return (
                           <>
-                            <Button to={`/protocol/${results[i].name}`} look="soft">
+                            <Button to={`/protocols/${results[i].id}`} look="soft">
                               <Icon src={results[i].icon} /> {results[i].name}
                               <Icon remix="RiArrowRightLine" />
                             </Button>
-                            <Divider look="bold" />
+                            <Divider look="soft" />
                           </>
                         );
                       default:
@@ -108,7 +108,7 @@ export default function SearchBar({ icon = false }: SearchBarProps) {
   return (
     <Modal
       size="xl"
-      className="h-full p-xl*2 w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[500px] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
+      className="h-full p-xl*2 w-[95vw] md:w-[70vw] lg:w-[50vw] xl:w-[40vw] z-20 [&>*]:max-h-full [&>*]:animate-drop [&>*]:origin-top"
       state={[opened, setOpened]}
       modal={
         <>

@@ -21,6 +21,7 @@ For detailed terms and conditions, refer to the [`LICENSE`](./LICENSE) file in t
 # Welcome to Merkl Lite !
 
 ## Prerequisites
+
 - [Bun](https://bun.sh/)
 - [Remix](https://remix.run/docs)
 

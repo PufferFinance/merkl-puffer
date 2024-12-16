@@ -1,21 +1,12 @@
-import { type LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useOutletContext } from "@remix-run/react";
 import { Container, Space } from "dappkit/src";
-import { ChainService } from "src/api/services/chain.service";
-import { OpportunityService } from "src/api/services/opportunity.service";
-import { ProtocolService } from "src/api/services/protocol.service";
+import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
 import OpportunityLibrary from "src/components/element/opportunity/OpportunityLibrary";
-
-export async function loader({ params: { id }, request }: LoaderFunctionArgs) {
-  const protocol = await ProtocolService.get({ id: id ?? "" });
-  const { opportunities, count } = await OpportunityService.getManyFromRequest(request, { mainProtocolId: id });
-  const chains = await ChainService.getAll();
-
-  return json({ opportunities, chains, count, protocol });
-}
+import type { OutletContextProtocol } from "./_merkl.protocols.$id";
 
 export default function Index() {
-  const { opportunities, chains, count } = useLoaderData<typeof loader>();
+  const { chains } = useWalletContext();
+  const { opportunities, count } = useOutletContext<OutletContextProtocol>();
 
   return (
     <Container>
