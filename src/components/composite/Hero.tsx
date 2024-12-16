@@ -1,5 +1,6 @@
 import { useLocation } from "@remix-run/react";
 import {
+  Button,
   Container,
   Divider,
   Group,
@@ -11,7 +12,6 @@ import {
   Text,
   Title,
   Value,
-  Button,
 } from "dappkit";
 import config from "merkl.config";
 import type { PropsWithChildren, ReactNode } from "react";
