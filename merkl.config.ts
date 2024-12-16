@@ -1,51 +1,75 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
-import { createClient, custom, http } from "viem";
-import {
-  mainnet,
-  optimism,
-  rootstock,
-  bsc,
-  gnosis,
-  thunderCore,
-  fuse,
-  polygon,
-  manta,
-  xLayer,
-  fantom,
-  fraxtal,
-  filecoin,
-  zksync,
-  worldchain,
-  astar,
-  polygonZkEvm,
-  coreDao,
-  moonbeam,
-  sei,
-  astarZkEVM,
-  mantle,
-  base,
-  immutableZkEvm,
-  mode,
-  arbitrum,
-  avalanche,
-  linea,
-  bob,
-  blast,
-  taiko,
-  scroll,
-} from "viem/chains";
-import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 import hero from "src/customer/assets/images/hero.jpg?url";
+import { http, createClient, custom } from "viem";
+import {
+  arbitrum,
+  astar,
+  astarZkEVM,
+  avalanche,
+  base,
+  blast,
+  bob,
+  bsc,
+  coreDao,
+  etherlink,
+  fantom,
+  filecoin,
+  fraxtal,
+  fuse,
+  gnosis,
+  immutableZkEvm,
+  linea,
+  lisk,
+  mainnet,
+  manta,
+  mantle,
+  mode,
+  moonbeam,
+  optimism,
+  polygon,
+  polygonZkEvm,
+  rootstock,
+  scroll,
+  sei,
+  taiko,
+  thunderCore,
+  worldchain,
+  xLayer,
+  zksync,
+} from "viem/chains";
 import { eip712WalletActions } from "viem/zksync";
+import { coinbaseWallet, walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Merkl",
-  modes: ["dark"],
-  defaultTheme: "merkl",
+  modes: ["dark", "light"],
+  defaultTheme: "ignite",
+  deposit: false,
   themes: {
+    ignite: {
+      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
+      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+    },
     merkl: {
-      base: createColoring(["#1F2333", "#B8AAFD", "#131620"], ["#FCF8F5", "#B8AAFD", "white"]),
+      base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
+      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+    },
+    backoffice: {
+      base: createColoring(["#8B8D98", "#9984D2", "#000000"], ["#8B8D98", "#9984D2", "#FFFFFF"]),
+      info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+      harm: createColoring(["#d22e14", "#d22e14", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
+    },
+    puffer: {
+      base: createColoring(["#2A35BD", "#3D3D3D", "#0E1035"], ["#2A35BD", "#F5F9FF", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
@@ -76,16 +100,16 @@ export default createConfig({
     //   route: "/protocols",
     //   key: crypto.randomUUID(),
     // },
-    terms: {
-      icon: "RiCompassesLine",
-      route: "/terms",
-      key: crypto.randomUUID(),
-    },
-    privacy: {
-      icon: "RiInformationFill",
-      route: "/privacy",
-      key: crypto.randomUUID(),
-    },
+    // terms: {
+    //   icon: "RiCompassesLine",
+    //   route: "/terms",
+    //   key: crypto.randomUUID(),
+    // },
+    // privacy: {
+    //   icon: "RiInformationFill",
+    //   route: "/privacy",
+    //   key: crypto.randomUUID(),
+    // },
   },
   socials: {
     discord: "",
@@ -95,13 +119,17 @@ export default createConfig({
   },
   links: {
     merkl: "https://merkl.xyz/",
+    merklTermsConditions: "https://app.merkl.xyz/merklTerms.pdf",
+    merklPrivacy: "https://privacy.angle.money",
   },
+  footerLinks: [],
   wagmi: {
     chains: [
       mainnet,
       optimism,
       rootstock,
       bsc,
+      lisk,
       gnosis,
       thunderCore,
       fuse,
@@ -111,6 +139,7 @@ export default createConfig({
       fantom,
       fraxtal,
       filecoin,
+      etherlink,
       zksync,
       worldchain,
       astar,
@@ -133,7 +162,10 @@ export default createConfig({
     ],
     client({ chain }) {
       if (chain.id === zksync.id)
-        return createClient({ chain, transport: custom(window.ethereum!) }).extend(eip712WalletActions());
+        return createClient({
+          chain,
+          transport: custom(window.ethereum!),
+        }).extend(eip712WalletActions());
       return createClient({ chain, transport: http() });
     },
     ssr: true,

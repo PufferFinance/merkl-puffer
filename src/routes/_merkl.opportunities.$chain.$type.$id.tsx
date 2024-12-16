@@ -1,15 +1,17 @@
-import type { Opportunity } from "@angleprotocol/merkl-api";
+import type { Chain } from "@merkl/api";
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Meta, Outlet, useLoaderData } from "@remix-run/react";
 import { useMemo } from "react";
+import { Cache } from "src/api/services/cache.service";
 import { ChainService } from "src/api/services/chain.service";
-import { OpportunityService } from "src/api/services/opportunity.service";
+import type { OpportunityWithCampaigns } from "src/api/services/opportunity/opportunity.model";
+import { OpportunityService } from "src/api/services/opportunity/opportunity.service";
 import Hero from "src/components/composite/Hero";
 import Tag from "src/components/element/Tag";
 import { ErrorHeading } from "src/components/layout/ErrorHeading";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
-export async function loader({ params: { id, type, chain: chainId } }: LoaderFunctionArgs) {
+export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
   const chain = await ChainService.get({ search: chainId });
@@ -20,8 +22,10 @@ export async function loader({ params: { id, type, chain: chainId } }: LoaderFun
     identifier: id,
   });
 
-  return json({ opportunity });
+  return json({ opportunity, chain });
 }
+
+export const clientLoader = Cache.wrap("opportunity", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
@@ -29,12 +33,13 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
 };
 
 export type OutletContextOpportunity = {
-  opportunity: Opportunity;
+  opportunity: OpportunityWithCampaigns;
+  chain: Chain;
 };
 
 export default function Index() {
-  const { opportunity } = useLoaderData<typeof loader>();
-  const { tags, description, link } = useOpportunity(opportunity);
+  const { opportunity, chain } = useLoaderData<typeof loader>();
+  const { tags, description, link, herosData } = useOpportunity(opportunity);
 
   const styleName = useMemo(() => {
     const spaced = opportunity?.name.split(" ");
@@ -61,6 +66,8 @@ export default function Index() {
       .flatMap((str, index, arr) => [str, index !== arr.length - 1 && " "]);
   }, [opportunity]);
 
+  const currentLiveCampaign = opportunity.campaigns?.[0];
+
   return (
     <>
       <Meta />
@@ -73,12 +80,25 @@ export default function Index() {
         title={styleName}
         description={description}
         tabs={[
-          { label: "Overview", link },
-          { label: "Leaderboard", link: `${link}/leaderboard` },
+          { label: "Overview", link, key: crypto.randomUUID() },
+          {
+            label: "Leaderboard",
+            link: `${link}/leaderboard?campaignId=${currentLiveCampaign?.campaignId}`,
+            key: crypto.randomUUID(),
+          },
         ]}
-        tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="md" />)}
-        opportunity={opportunity}>
-        <Outlet context={{ opportunity }} />
+        tags={tags.map(tag => (
+          <Tag
+            key={`${tag?.type}_${
+              // biome-ignore lint/suspicious/noExplicitAny: templated type
+              (tag?.value as any)?.address ?? tag?.value
+            }`}
+            {...tag}
+            size="sm"
+          />
+        ))}
+        sideDatas={herosData}>
+        <Outlet context={{ opportunity, chain }} />
       </Hero>
     </>
   );

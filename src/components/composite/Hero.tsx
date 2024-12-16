@@ -1,6 +1,5 @@
-import type { Opportunity } from "@merkl/api";
 import { useLocation } from "@remix-run/react";
-import { Box, Container, Divider, Group, Icon, type IconProps, Icons, Text, Title } from "dappkit";
+import { Container, Divider, Group, Icon, type IconProps, Icons, Tabs, Text, Title, Value } from "dappkit";
 import { Button } from "dappkit";
 import config from "merkl.config";
 import type { PropsWithChildren, ReactNode } from "react";
@@ -8,32 +7,54 @@ import type { PropsWithChildren, ReactNode } from "react";
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
   title: ReactNode;
-  breadcrumbs?: { name: string; link: string; component?: ReactNode }[];
+  breadcrumbs?: { name?: string; link: string; component?: ReactNode }[];
   navigation?: { label: ReactNode; link: string };
   description: ReactNode;
   tags?: ReactNode[];
-  tabs?: { label: ReactNode; link: string }[];
-  opportunity?: Opportunity;
+  sideDatas?: HeroInformations[];
+  tabs?: { label: ReactNode; link: string; key: string }[];
 }>;
 
-export default function Hero({ navigation, breadcrumbs, icons, title, description, tags, tabs, children }: HeroProps) {
-  const location = useLocation();
+export type HeroInformations = {
+  data: React.ReactNode;
+  label: string;
+  key: string;
+};
 
+export default function Hero({
+  navigation,
+  breadcrumbs,
+  icons,
+  title,
+  description,
+  tags,
+  sideDatas,
+  tabs,
+  children,
+}: HeroProps) {
+  const location = useLocation();
   return (
     <>
+      {/* TODO: Align lines & descriptions on all pages  */}
+      {/* TODO: On sub-pages (all pages except Opportunities): Replace the banner by a color  */}
       <Group
-        className="flex-row justify-between aspect-[1440/440] bg-cover bg-no-repeat xl:aspect-auto xl:min-h-[400px]"
-        style={{ backgroundImage: `url('${config.images.hero}')` }}>
+        className={`${
+          location?.pathname === "/" || location?.pathname === "/opportunities" ? "bg-cover" : "bg-main-6"
+        } flex-row justify-between bg-no-repeat xl:aspect-auto xl:min-h-[350px] aspect-[1440/300]`}
+        style={{
+          backgroundImage:
+            location?.pathname === "/" || location?.pathname === "/opportunities"
+              ? `url('${config.images.hero}')`
+              : "none",
+        }}>
         <Container>
           <Group className="flex-col h-full py-xl gap-xl lg:gap-xs">
-            <Group className="items-center">
-              {/* TODO: Build dynamic breadcrumbs */}
-              {/** Disabled and set invisible when undefined to preserve layout height */}
-              <Button to={navigation?.link} look="soft" size="xs">
+            <Group className="items-center" size="sm">
+              <Button to={navigation?.link ?? "/"} look="soft" bold size="xs">
                 Home
               </Button>
               {breadcrumbs?.map(breadcrumb => {
-                if (breadcrumb.component) return breadcrumb.component;
+                if (breadcrumb.component) return <>{breadcrumb.component}</>;
                 return (
                   <Button key={breadcrumb.link} to={breadcrumb.link} look="soft" size="xs">
                     <Icon remix="RiArrowRightSLine" />
@@ -43,9 +64,9 @@ export default function Hero({ navigation, breadcrumbs, icons, title, descriptio
               })}
             </Group>
             <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
-              <Group className="flex-col flex-1 gap-xl lg:!gap-lg*2">
+              <Group className="flex-col flex-1 gap-xl lg:gap-lg">
                 <Group>
-                  <Group className="items-center !gap-0 md:!gap-xl">
+                  <Group className="items-center gap-0 md:gap-lg">
                     {!!icons && (
                       <Icons size="lg">
                         {icons?.length > 1
@@ -69,71 +90,70 @@ export default function Hero({ navigation, breadcrumbs, icons, title, descriptio
                       {title}
                     </Title>
                   </Group>
-                  {tags && (
-                    <Text size="xl" bold>
-                      {description}
-                    </Text>
-                  )}
                 </Group>
                 <Divider look="base" />
-                {tags && <Group className="mb-lg">{tags}</Group>}
-                {!tags && (
-                  <Text size="xl" bold>
+                {!!description && (
+                  <Text size="lg" bold>
                     {description}
                   </Text>
                 )}
+                {!!tags && <Group className="mb-lg">{tags}</Group>}
               </Group>
-              {/* TODO: Move this outside the Hero component */}
-              {/* {!location?.pathname.includes("user") && (
-                <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="xl">
-                  <Group className="flex-col">
-                    <Text size={3}>
-                      <Value look={totalRewards === "0" ? "soft" : "base"} format="$0,0" size={"md"}>
-                        {totalRewards}
-                      </Value>
-                    </Text>
+              {!!sideDatas && (
+                <Group className="w-full lg:w-auto lg:flex-col mr-xl*2" size="lg">
+                  {sideDatas.map(data => (
+                    <Group key={data.key} className="flex-col" size="xs">
+                      <Text size={4} className="!text-main-12">
+                        {data.data}
+                      </Text>
 
-                    <Text size="xl" className="font-bold">
-                      Daily rewards
-                    </Text>
-                  </Group>
-                  <Group className="flex-col">
-                    <Text size={3}>
-                      <Value value format="0a%">
-                        {(opportunity?.apr ?? 0) / 100}
-                      </Value>
-                    </Text>
-                    <Text size={"xl"} className="font-bold">
-                      APR
-                    </Text>
-                  </Group>
-                  <Group className="flex-col">
-                    <Text size={3}>{filteredCampaigns?.length}</Text>
-                    <Text size={"xl"} className="font-bold">
-                      Active campaigns
-                    </Text>
-                  </Group>
+                      <Text size="md" bold>
+                        {data.label}
+                      </Text>
+                    </Group>
+                  ))}
                 </Group>
-              )} */}
+              )}
             </Group>
           </Group>
         </Container>
       </Group>
-      <Container>
-        {!!tabs && (
-          <Box size="sm" look="base" className="flex-row mt-md w-min">
-            {tabs?.map(tab => (
-              <Button
-                look={location.pathname === tab.link ? "hype" : "base"}
-                to={tab.link}
-                key={`${tab.label}-${tab.link}`}>
-                {tab.label}
-              </Button>
-            ))}
-          </Box>
-        )}
-      </Container>
+
+      {!!tabs && <Tabs tabs={tabs} look="base" size="lg" />}
+
       <div>{children}</div>
     </>
   );
+}
+
+export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards: number) {
+  return [
+    !!count && {
+      data: (
+        <Value format="0" size={4} className="!text-main-12">
+          {count}
+        </Value>
+      ),
+      label: "Live opportunities",
+      key: crypto.randomUUID(),
+    },
+    !!dailyRewards && {
+      data: (
+        <Value format="$0.00a" size={4} className="!text-main-12">
+          {dailyRewards}
+        </Value>
+      ),
+      label: "Daily rewards",
+      key: crypto.randomUUID(),
+    },
+    !!maxApr && {
+      data: (
+        <Value format="0a%" size={4} className="!text-main-12">
+          {maxApr / 100}
+        </Value>
+      ),
+      label: "Max APR",
+      key: crypto.randomUUID(),
+    },
+  ].filter(data => !!data);
 }

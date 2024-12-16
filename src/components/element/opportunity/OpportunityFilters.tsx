@@ -1,33 +1,45 @@
-import type { Chain } from "@merkl/api";
-import { Form } from "@remix-run/react";
-import { Group, Icon, Input, Select } from "dappkit/src";
-import { useMemo, useState } from "react";
+import type { Chain, Protocol } from "@merkl/api";
+import { Form, useLocation, useNavigate, useNavigation, useSearchParams } from "@remix-run/react";
+import { Button, Group, Icon, Input, Select } from "dappkit/src";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { actions } from "src/config/actions";
 import useSearchParamState from "src/hooks/filtering/useSearchParamState";
 
-const filters = ["search", "action", "status", "chain"] as const;
+const filters = ["search", "action", "status", "chain", "protocol", "tvl"] as const;
 type OpportunityFilter = (typeof filters)[number];
 
 export type OpportunityFilterProps = {
   only?: OpportunityFilter[];
   chains?: Chain[];
+  // TODO: Type this
+  protocols?: Protocol[];
   exclude?: OpportunityFilter[];
 };
 
-export default function OpportunityFilters({ only, exclude, chains }: OpportunityFilterProps) {
+//TODO: burn this to the ground and rebuild it with a deeper comprehension of search param states
+export default function OpportunityFilters({ only, protocols, exclude, chains }: OpportunityFilterProps) {
+  const [_, setSearchParams] = useSearchParams();
+  const navigation = useNavigation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [applying, setApplying] = useState(false);
+  const [clearing, setClearing] = useState(false);
+
   //TODO: componentify theses
-  const actionOptions = Object.entries(actions).reduce(
-    (obj, [action, { icon, label }]) =>
-      Object.assign(obj, {
-        [action]: (
-          <>
-            <Icon size="sm" {...icon} />
-            {label}
-          </>
-        ),
-      }),
-    {},
-  );
+  const actionOptions = Object.entries(actions)
+    .filter(([key]) => key !== "INVALID")
+    .reduce(
+      (obj, [action, { icon, label }]) =>
+        Object.assign(obj, {
+          [action]: (
+            <>
+              <Icon size="sm" {...icon} />
+              {label}
+            </>
+          ),
+        }),
+      {},
+    );
   const statusOptions = {
     LIVE: (
       <>
@@ -59,28 +71,63 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
       {},
     ) ?? [];
 
-  const [actionsFilter, setActions] = useSearchParamState<string[]>(
+  const protocolOptions =
+    protocols?.reduce(
+      (obj, protocol) =>
+        Object.assign(obj, {
+          [protocol.id]: (
+            <>
+              <Icon size="sm" src={protocol?.icon} />
+              {protocol.name}
+            </>
+          ),
+        }),
+      {},
+    ) ?? [];
+
+  const [actionsFilter] = useSearchParamState<string[]>(
     "action",
     v => v?.join(","),
     v => v?.split(","),
   );
-  const [statusFilter, setStatus] = useSearchParamState<string[]>(
+  const [actionsInput, setActionsInput] = useState<string[]>(actionsFilter ?? []);
+
+  const [statusFilter] = useSearchParamState<string[]>(
     "status",
     v => v?.join(","),
     v => v?.split(","),
   );
-  const [chainIdsFilter, setChainIds] = useSearchParamState<string[]>(
+  const [statusInput, setStatusInput] = useState(statusFilter ?? []);
+
+  const [chainIdsFilter] = useSearchParamState<string[]>(
     "chain",
     v => v?.join(","),
     v => v?.split(","),
   );
+  const [chainIdsInput, setChainIdsInput] = useState<string[]>(chainIdsFilter ?? []);
 
   const [search, setSearch] = useSearchParamState<string>(
     "search",
     v => v,
     v => v,
   );
+
   const [innerSearch, setInnerSearch] = useState<string>(search ?? "");
+
+  const [tvlFilter] = useSearchParamState<string>(
+    "tvl",
+    v => v,
+    v => v,
+  );
+
+  const [tvlInput, setTvlInput] = useState<string>(tvlFilter ?? "");
+
+  const [protocolFilter] = useSearchParamState<string[]>(
+    "protocol",
+    v => v?.join(","),
+    v => v?.split(","),
+  );
+  const [protocolInput, setProtocolInput] = useState<string[]>(protocolFilter ?? []);
 
   const fields = useMemo(() => {
     if (only) return filters.filter(f => only.includes(f));
@@ -94,51 +141,171 @@ export default function OpportunityFilters({ only, exclude, chains }: Opportunit
     setSearch(innerSearch);
   }
 
+  const updateParams = useCallback(
+    (key: string, value: string[], searchParams: URLSearchParams) => {
+      if (!fields.includes(key as (typeof fields)[number])) return;
+
+      if (value?.length === 0 || !value) searchParams.delete(key);
+      else searchParams.set(key, value?.join(","));
+    },
+    [fields],
+  );
+
+  const canApply = useMemo(() => {
+    const isSameArray = (a: string[] | undefined, b: string[] | undefined) =>
+      a?.every(c => b?.includes(c)) && b?.every(c => a?.includes(c));
+
+    const sameChains = isSameArray(chainIdsInput, chainIdsFilter);
+    const sameActions = isSameArray(actionsInput, actionsFilter);
+    const sameStatus = isSameArray(statusInput, statusFilter);
+    const sameProtocols = isSameArray(protocolInput, protocolFilter);
+    const sameTvl = tvlFilter === tvlInput || tvlInput === "";
+    const sameSearch = (search ?? "") === innerSearch;
+
+    return [sameChains, sameActions, sameTvl, sameStatus, sameSearch, sameProtocols].some(v => v === false);
+  }, [
+    chainIdsInput,
+    chainIdsFilter,
+    actionsInput,
+    actionsFilter,
+    statusFilter,
+    tvlFilter,
+    tvlInput,
+    protocolInput,
+    protocolFilter,
+    statusInput,
+    search,
+    innerSearch,
+  ]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: needed fo sync
+  useEffect(() => {
+    setActionsInput(actionsFilter ?? []);
+    setStatusInput(statusFilter ?? []);
+  }, [location.search]);
+
+  function onApplyFilters() {
+    setApplying(true);
+    setClearing(false);
+
+    setSearchParams(params => {
+      updateParams("chain", chainIdsInput, params);
+      updateParams("action", actionsInput, params);
+      updateParams("status", statusInput, params);
+      updateParams("protocol", protocolInput, params);
+      tvlInput && updateParams("tvl", [tvlInput], params);
+
+      return params;
+    });
+  }
+
+  function onClearFilters() {
+    setApplying(false);
+    setClearing(true);
+
+    navigate(location.pathname, { replace: true });
+    setChainIdsInput([]);
+    setProtocolInput([]);
+    setStatusInput([]);
+    setActionsInput([]);
+    setTvlInput("");
+    setInnerSearch("");
+  }
+
+  useEffect(() => {
+    if (navigation.state === "idle") {
+      setApplying(false);
+      setClearing(false);
+    }
+  }, [navigation]);
+
   return (
-    <Group className="items-center">
+    <Group className="items-center flex-nowrap">
       {fields.includes("search") && (
         <Form>
           <Input
+            look="soft"
             name="search"
             value={innerSearch}
-            state={[innerSearch, setInnerSearch]}
+            className="min-w-[12ch]"
+            state={[innerSearch, v => setInnerSearch(v)]}
             suffix={<Icon remix="RiSearchLine" />}
             onClick={onSearchSubmit}
+            size="sm"
             placeholder="Search"
           />
         </Form>
       )}
       {fields.includes("action") && (
         <Select
-          state={[actionsFilter, a => setActions(a as string[])]}
+          state={[actionsInput, setActionsInput]}
           allOption={"All actions"}
           multiple
           options={actionOptions}
-          look="bold"
+          look="tint"
           placeholder="Actions"
         />
       )}
       {fields.includes("status") && (
         <Select
-          state={[statusFilter, s => setStatus(s as string[])]}
+          state={[statusInput, setStatusInput]}
           allOption={"All status"}
           multiple
           options={statusOptions}
-          look="bold"
+          look="tint"
           placeholder="Status"
         />
       )}
       {fields.includes("chain") && (
         <Select
-          state={[chainIdsFilter, c => setChainIds(c as string[])]}
+          state={[chainIdsInput, n => setChainIdsInput(n)]}
           allOption={"All chains"}
           multiple
           search
           options={chainOptions}
-          look="bold"
+          look="tint"
           placeholder="Chains"
         />
       )}
+      {fields.includes("protocol") && (
+        <Select
+          state={[protocolInput, n => setProtocolInput(n)]}
+          allOption={"All protocols"}
+          multiple
+          search
+          options={protocolOptions}
+          look="tint"
+          placeholder="Protocols"
+        />
+      )}
+      {fields.includes("tvl") && (
+        <Form>
+          <Input
+            state={[tvlInput, n => (/^\d+$/.test(n) || !n) && setTvlInput(n)]}
+            look="soft"
+            name="tvl"
+            value={tvlInput}
+            className="min-w-[4ch]"
+            suffix={<Icon remix="RiFilter2Line" />}
+            placeholder="Minimum TVL"
+          />
+        </Form>
+      )}
+      {((canApply && !clearing && navigation.state === "idle") ||
+        (applying && !clearing && navigation.state === "loading")) && (
+        <Button onClick={onApplyFilters} look="hype">
+          {navigation.state === "loading" ? (
+            <Icon className="animate-spin" remix="RiLoader2Line" />
+          ) : (
+            <Icon remix="RiArrowRightUpLine" />
+          )}
+          Apply
+        </Button>
+      )}
+      <Button onClick={onClearFilters} look="soft">
+        <Icon remix="RiCloseLine" />
+        Clear filters
+      </Button>
     </Group>
   );
 }

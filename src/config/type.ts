@@ -19,6 +19,7 @@ export type MerklConfig<T extends Themes> = {
   };
   tags?: string[];
   defaultTheme: keyof T;
+  deposit?: boolean;
   modes: Mode[];
   wagmi: Parameters<typeof createWagmiConfig>["0"];
   appName: string;
@@ -32,9 +33,7 @@ export type MerklConfig<T extends Themes> = {
   links: {
     [key: string]: string;
   };
-  images: {
-    hero: string;
-  };
+  footerLinks: { image: string; link: string; key: string }[];
 };
 
 export function createConfig<T extends Themes>({ wagmi, ...config }: MerklConfig<T>) {

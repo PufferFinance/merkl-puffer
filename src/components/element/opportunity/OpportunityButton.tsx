@@ -1,6 +1,6 @@
-import type { Opportunity } from "@merkl/api";
-import { Button, Icons } from "dappkit";
+import { Button, Icon, Icons } from "dappkit";
 import { blockEvent } from "packages/dappkit/src/utils/event";
+import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
 import useOpportunity from "src/hooks/resources/useOpportunity";
 
 export type OpportuntiyButtonProps = {
@@ -14,6 +14,7 @@ export default function OpportuntiyButton({ opportunity }: OpportuntiyButtonProp
     <Button to={link} onClick={blockEvent(() => {})} look="soft">
       <Icons size="sm">{icons}</Icons>
       {opportunity.name}
+      <Icon remix="RiArrowRightLine" />
     </Button>
   );
 }

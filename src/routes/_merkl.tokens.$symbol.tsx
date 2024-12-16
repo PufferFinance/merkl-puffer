@@ -1,19 +1,31 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { useMemo } from "react";
+import { Cache } from "src/api/services/cache.service";
 import { ChainService } from "src/api/services/chain.service";
+import { OpportunityService } from "src/api/services/opportunity/opportunity.service";
 import { TokenService } from "src/api/services/token.service";
-import Hero from "src/components/composite/Hero";
+import Hero, { defaultHeroSideDatas } from "src/components/composite/Hero";
 import Tag, { type TagType } from "src/components/element/Tag";
 import { chainIdOrder } from "src/constants/chain";
-import config from "../../merkl.config";
 
 export async function loader({ params: { symbol } }: LoaderFunctionArgs) {
   const tokens = await TokenService.getSymbol(symbol);
   const chains = await ChainService.getAll();
 
-  return json({ tokens, chains });
+  const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
+    tokens: symbol,
+    status: "LIVE",
+    sort: "apr",
+    order: "desc",
+  });
+
+  const { sum: dailyRewards } = await OpportunityService.getAggregate({ tokens: symbol }, "dailyRewards");
+
+  return json({ tokens, chains, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr, count });
 }
+
+export const clientLoader = Cache.wrap("token", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const symbol = data?.tokens?.[0]?.symbol;
@@ -24,7 +36,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Index() {
-  const { tokens, chains } = useLoaderData<typeof loader>();
+  const { tokens, chains, dailyRewards, count, maxApr } = useLoaderData<typeof loader>();
   const token = tokens?.[0];
 
   const tags = useMemo(() => {
@@ -59,13 +71,8 @@ export default function Index() {
           {token.name} <span className="font-mono text-main-8">({token.symbol})</span>
         </>
       }
-      description={`Deposit or earn ${token.symbol} on ${config.appName}.`}
-      tabs={[
-        {
-          label: "Opportunities",
-          link: `/tokens/${token.symbol?.toLowerCase()}`,
-        },
-      ]}
+      description={`Earn rewards by using ${token.symbol} as liquidity, or directly earn ${token.symbol} as rewards`}
+      sideDatas={defaultHeroSideDatas(count, maxApr, dailyRewards)}
       tags={tags.map(tag => <Tag key={`${tag.type}_${tag.value?.address ?? tag.value}`} {...tag} size="lg" />)}>
       <Outlet />
     </Hero>
