@@ -15,29 +15,17 @@ export type ParticipateProps = {
   displayLinks?: boolean;
 };
 
-export default function Participate({
-  opportunity,
-  displayOpportunity,
-  displayMode,
-  displayLinks,
-}: ParticipateProps) {
+export default function Participate({ opportunity, displayOpportunity, displayMode, displayLinks }: ParticipateProps) {
   const [tokenAddress, setTokenAddress] = useState();
   const [amount, setAmount] = useState<bigint>(0n);
-  const [mode] = useState<"deposit" | "withdraw">(
-    typeof displayMode === "string" ? displayMode : "deposit"
-  );
+  const [mode] = useState<"deposit" | "withdraw">(typeof displayMode === "string" ? displayMode : "deposit");
 
   const {
     target,
     balance,
     token: inputToken,
     loading,
-  } = useParticipate(
-    opportunity.chainId,
-    opportunity.protocol?.id,
-    opportunity.identifier,
-    tokenAddress
-  );
+  } = useParticipate(opportunity.chainId, opportunity.protocol?.id, opportunity.identifier, tokenAddress);
   const { link } = useOpportunity(opportunity);
 
   // const switchModeButton = useMemo(() => {
@@ -70,8 +58,7 @@ export default function Participate({
                 to={opportunity.protocol?.url}
                 disabled={!opportunity.protocol?.url}
                 size="md"
-                look="base"
-              >
+                look="base">
                 Visit {opportunity.protocol.name}
                 <Icon remix="RiArrowRightUpLine" />
               </Button>
@@ -87,36 +74,25 @@ export default function Participate({
       <Group>
         <Input.BigInt
           className="w-full"
-          state={[amount, (a) => setAmount(a)]}
+          state={[amount, a => setAmount(a)]}
           base={inputToken?.decimals ?? 18}
           header={
             <Group className="justify-between w-full">
               <Text>{mode === "deposit" ? "Supply" : "Withdraw"}</Text>
               <Group>
                 <Text>Balance</Text>
-                {inputToken && (
-                  <Value format="$0,0.#">
-                    {Fmt.toPrice(inputToken.balance, inputToken)}
-                  </Value>
-                )}
+                {inputToken && <Value format="$0,0.#">{Fmt.toPrice(inputToken.balance, inputToken)}</Value>}
                 <PrimitiveTag
                   onClick={() => {
                     setAmount(BigInt(inputToken?.balance ?? "0"));
                   }}
-                  size="xs"
-                >
+                  size="xs">
                   Max
                 </PrimitiveTag>
               </Group>
             </Group>
           }
-          suffix={
-            <TokenSelect
-              balances
-              state={[tokenAddress, setTokenAddress]}
-              tokens={balance}
-            />
-          }
+          suffix={<TokenSelect balances state={[tokenAddress, setTokenAddress]} tokens={balance} />}
           placeholder="0.0"
         />
         {/* biome-ignore lint/complexity/noUselessFragments: <explanation> */}
