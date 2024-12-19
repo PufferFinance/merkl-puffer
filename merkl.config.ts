@@ -1,7 +1,9 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
 import hero from "src/customer/assets/images/hero.jpg?url";
+import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
+
 import {
   arbitrum,
   astar,
@@ -45,7 +47,10 @@ export default createConfig({
   appName: "Merkl",
   modes: ["dark", "light"],
   defaultTheme: "ignite",
-  deposit: false,
+  tags: [],
+  opportunityNavigationMode: "direct",
+  rewardsNavigationMode: "chain",
+  deposit: true,
   themes: {
     ignite: {
       base: createColoring(["#1755F4", "#FF7900", "#0D1530"], ["#1755F4", "#FF7900", "#FFFFFF"]),
@@ -88,43 +93,43 @@ export default createConfig({
     home: {
       icon: "RiHomeFill",
       route: "/",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     opportunities: {
       icon: "RiPlanetFill",
       route: "/opportunities",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     // protocols: {
     //   icon: "RiVipCrown2Fill",
     //   route: "/protocols",
-    //   key: crypto.randomUUID(),
+    //   key: uuidv4(),
     // },
     // bridge: {
     //   icon: "RiCompassesLine",
     //   route: "/bridge",
-    //   key: crypto.randomUUID(),
+    //   key: uuidv4(),
     // },
     docs: {
       icon: "RiFile4Fill",
       external: true,
       route: "https://docs.merkl.xyz/",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     faq: {
       icon: "RiQuestionFill",
       route: "/faq",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     // terms: {
     //   icon: "RiCompassesLine",
     //   route: "/terms",
-    //   key: crypto.randomUUID(),
+    //   key: uuidv4(),
     // },
     // privacy: {
     //   icon: "RiInformationFill",
     //   route: "/privacy",
-    //   key: crypto.randomUUID(),
+    //   key: uuidv4(),
     // },
   },
   socials: {

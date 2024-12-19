@@ -40,7 +40,7 @@ export abstract class OpportunityService {
 
     //TODO: updates tags to take an array
     if (config.tags && !opportunityWithCampaigns.tags.includes(config.tags?.[0]))
-      throw new Response("Opportunity inacessible", { status: 403 });
+      throw new Response("Opportunity inaccessible", { status: 403 });
 
     return opportunityWithCampaigns;
   }
@@ -96,6 +96,7 @@ export abstract class OpportunityService {
       sort: url.searchParams.get("sort")?.split("-")[0],
       order: url.searchParams.get("sort")?.split("-")[1],
       name: url.searchParams.get("search") ?? undefined,
+      test: url.searchParams.get("test") ?? undefined,
       page: url.searchParams.get("page") ? Math.max(Number(url.searchParams.get("page")) - 1, 0) : undefined,
       ...override,
     };

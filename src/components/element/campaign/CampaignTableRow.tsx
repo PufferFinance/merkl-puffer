@@ -20,6 +20,7 @@ import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
 import useCampaign from "src/hooks/resources/useCampaign";
+import { v4 as uuidv4 } from "uuid";
 import Chain from "../chain/Chain";
 import Token from "../token/Token";
 import { CampaignRow } from "./CampaignTable";
@@ -97,6 +98,7 @@ export default function CampaignTableRow({
           </Text>
         </Tooltip>,
       ],
+      ["Compute Chain", <Chain chain={campaign.chain} key="computeChain" />],
     ] as const satisfies [string, ReactNode][];
 
     return columns.map(([label, content]) => {
@@ -118,7 +120,7 @@ export default function CampaignTableRow({
       {...props}
       className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
-      chainColumn={<Chain chain={campaign.chain} />}
+      chainColumn={<Chain chain={campaign.distributionChain} />}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
@@ -157,7 +159,7 @@ export default function CampaignTableRow({
               </Group>
               <Group>
                 {rules?.map(rule => (
-                  <Rule size="md" key={crypto.randomUUID()} type={rule.type} value={rule.value} />
+                  <Rule size="md" key={uuidv4()} type={rule.type} value={rule.value} />
                 ))}
               </Group>
             </Group>

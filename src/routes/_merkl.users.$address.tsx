@@ -9,12 +9,13 @@ import Hero from "src/components/composite/Hero";
 import AddressEdit from "src/components/element/AddressEdit";
 import useReward from "src/hooks/resources/useReward";
 import useRewards from "src/hooks/resources/useRewards";
+import { v4 as uuidv4 } from "uuid";
+import { isAddress } from "viem";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
-  if (!address) throw "";
+  if (!address || !isAddress(address)) throw "";
 
-  //TODO: use a ligther route
-  const rewards = await RewardService.getForUser(address);
+  const rewards = await RewardService.getForUser(address, 1);
 
   return json({ rewards, address });
 }
@@ -91,7 +92,7 @@ export default function Index() {
           </Group>
         </Group>
       }
-      description={"Check your liquidity positions and claim your rewards"}
+      description={""}
       tabs={[
         {
           label: (
@@ -101,6 +102,26 @@ export default function Index() {
             </>
           ),
           link: `/users/${address}`,
+          key: uuidv4(),
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiDropFill" />
+              Liquidity
+            </>
+          ),
+          link: `/users/${address}/${chainId}/liquidity`,
+          key: crypto.randomUUID(),
+        },
+        {
+          label: (
+            <>
+              <Icon size="sm" remix="RiListCheck3" />
+              Claims
+            </>
+          ),
+          link: `/users/${address}/claims`,
           key: crypto.randomUUID(),
         },
       ]}>

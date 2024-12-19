@@ -3,6 +3,7 @@ import { Container, Divider, Group, Icon, type IconProps, Icons, Tabs, Text, Tit
 import { Button } from "dappkit";
 import config from "merkl.config";
 import type { PropsWithChildren, ReactNode } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -91,11 +92,13 @@ export default function Hero({
                     </Title>
                   </Group>
                 </Group>
-                <Divider look="base" />
                 {!!description && (
-                  <Text size="lg" bold>
-                    {description}
-                  </Text>
+                  <>
+                    <Divider look="base" />
+                    <Text size="lg" bold>
+                      {description}
+                    </Text>
+                  </>
                 )}
                 {!!tags && <Group className="mb-lg">{tags}</Group>}
               </Group>
@@ -135,7 +138,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Live opportunities",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     !!dailyRewards && {
       data: (
@@ -144,7 +147,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Daily rewards",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     !!maxApr && {
       data: (
@@ -153,7 +156,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Max APR",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
   ].filter(data => !!data);
 }
