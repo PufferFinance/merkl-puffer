@@ -1,8 +1,23 @@
-import type { Protocol } from "@merkl/api";
 import { api } from "../index.server";
 import { fetchWithLogs } from "../utils";
 
 export abstract class ProtocolService {
+  // ─── Get Many Protocols ──────────────────────────────────────────────
+
+  static async get(query: Parameters<typeof api.v4.protocols.index.get>[0]["query"]) {
+    return await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query }));
+  }
+
+  // ─── Get Many Protocols from request ──────────────────────────────────
+
+  static async getManyFromRequest(request: Request) {
+    const query = ProtocolService.#getQueryFromRequest(request);
+    const protocols = await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query }));
+    const count = await ProtocolService.#fetch(async () => api.v4.protocols.count.get({ query }));
+
+    return { protocols, count };
+  }
+
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
     call: () => Promise<T>,
     resource = "Protocol",
@@ -45,17 +60,10 @@ export abstract class ProtocolService {
     return query;
   }
 
-  static async get(query: { id: string }): Promise<Protocol> {
-    const protocol = await ProtocolService.#fetch(async () => api.v4.protocols(query).get({ query }));
+  static async getAll() {
+    const protocols = await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query: { items: 10000 } }));
 
-    return protocol;
-  }
-
-  static async getManyFromRequest(request: Request): Promise<{ protocols: Protocol[]; count: number }> {
-    const query = ProtocolService.#getQueryFromRequest(request);
-    const protocols = await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query }));
-    const count = await ProtocolService.#fetch(async () => api.v4.protocols.count.get({ query }));
-
-    return { protocols, count };
+    //TODO: add some cache here
+    return protocols;
   }
 }

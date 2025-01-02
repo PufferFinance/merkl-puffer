@@ -2,15 +2,20 @@ import type { Opportunity } from "@merkl/api";
 import type { IconProps } from "dappkit";
 
 export const actions = {
+  INVALID: {
+    label: "Invalid",
+    description: "Invalid",
+    icon: { remix: "RiFileWarningLine" },
+  },
   POOL: {
     label: "Provide Liquidity",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    icon: { remix: "RiWaterFlashLine" },
+    icon: { remix: "RiWaterFlashFill" },
   },
   DROP: {
     label: "Airdrop",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    icon: { remix: "RiGiftLine" },
+    icon: { remix: "RiWindyFill" },
   },
   BORROW: {
     label: "Borrow",
@@ -20,12 +25,12 @@ export const actions = {
   LEND: {
     label: "Lend",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    icon: { remix: "RiHandCoinLine" },
+    icon: { remix: "RiShoppingBagFill" },
   },
   HOLD: {
     label: "Hold",
     description: "Earn rewards by depositiong liquidity in this pool.",
-    icon: { remix: "RiCoinsLine" },
+    icon: { remix: "RiCoinFill" },
   },
 } satisfies { [S in Opportunity["action"]]: { label: string; icon: IconProps; description: string } };
 
