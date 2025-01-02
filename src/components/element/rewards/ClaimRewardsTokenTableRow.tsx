@@ -1,29 +1,36 @@
 import type { Reward } from "@merkl/api";
-import { Checkbox, Divider, type GetSet, Group, Icon, Space } from "dappkit";
+import { Checkbox, type Component, Divider, type GetSet, Group, Icon, Space } from "dappkit";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
-import { type PropsWithChildren, useMemo, useState } from "react";
+import { Fmt } from "packages/dappkit/src/utils/formatter.service";
+import { useMemo, useState } from "react";
 import Tag from "../Tag";
 import OpportuntiyButton from "../opportunity/OpportunityButton";
 import { ClaimRewardsTokenRow } from "./ClaimRewardsTokenTable";
 import ClaimRewardsTokenTablePrice from "./ClaimRewardsTokenTablePrice";
 
-export type ClaimRewardsTokenTableRowProps = PropsWithChildren & {
+export type ClaimRewardsTokenTableRowProps = Component<{
   reward: Reward["rewards"][number];
   checkedState?: GetSet<boolean>;
-};
+  showCheckbox?: boolean;
+}>;
 
-export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...props }: ClaimRewardsTokenTableRowProps) {
+export default function ClaimRewardsTokenTableRow({
+  reward,
+  checkedState,
+  showCheckbox,
+  ...props
+}: ClaimRewardsTokenTableRowProps) {
   const [open, setOpen] = useState(false);
 
   const unclaimed = useMemo(() => BigInt(reward.amount) - BigInt(reward.claimed), [reward]);
 
   return (
     <ClaimRewardsTokenRow
-      data-look={props?.look ?? "none"}
       {...props}
       onClick={() => setOpen(o => !o)}
       tokenColumn={
-        <Group>
+        <Group className="flex-nowrap">
+          {showCheckbox && <Checkbox look="hype" state={checkedState} className="!m-md" size="sm" />}
           <Tag type="token" value={reward.token} />
           <Icon
             data-state={!open ? "closed" : "opened"}
@@ -48,16 +55,14 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
           price={reward.token.price}
           decimals={reward.token.decimals}
         />
-      }
-      claimColumn={
-        <Group className="items-center justify-center">
-          <Checkbox state={checkedState} className="m-auto" size="sm" />
-        </Group>
       }>
       <Collapsible state={[open, setOpen]}>
         <Space size="md" />
         {reward.breakdowns
-          .sort((a, b) => Number(b.amount - b.claimed - (a.amount - a.claimed)))
+          .sort(
+            (a, b) => Fmt.toPrice(b.amount - b.claimed, reward.token) - Fmt.toPrice(a.amount - a.claimed, reward.token),
+          )
+          .filter(b => b.opportunity !== null)
           .map(b => {
             return (
               <>
@@ -66,7 +71,7 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
                   {...props}
                   key={b.opportunity.identifier}
                   data-look={props?.look ?? "none"}
-                  className="!px-0  !m-0 border-none"
+                  className="!px-0 py-xl  !m-0 border-none bg-main-0"
                   onClick={() => setOpen(o => !o)}
                   tokenColumn={
                     <Group className="flex-col justify-center">
@@ -94,7 +99,6 @@ export default function ClaimRewardsTokenTableRow({ reward, checkedState, ...pro
                       decimals={reward.token.decimals}
                     />
                   }
-                  claimColumn={null}
                 />
               </>
             );

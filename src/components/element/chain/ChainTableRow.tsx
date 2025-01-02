@@ -13,8 +13,6 @@ export type ChainTableRowProps = {
 } & BoxProps;
 
 export default function ChainTableRow({ hideTags, chain, className, ...props }: ChainTableRowProps) {
-  console.log(chain);
-
   return (
     <Link to={`/chains/${chain.name}`}>
       <ChainRow

@@ -1,120 +1,169 @@
-import type { Campaign } from "@merkl/api";
-import { type Component, Group, Hash, Icon, OverrideTheme, Text, Value, mergeClass } from "dappkit";
+import type { Campaign, Chain as ChainType } from "@merkl/api";
+import {
+  Box,
+  type Component,
+  Divider,
+  Dropdown,
+  Group,
+  Hash,
+  Icon,
+  OverrideTheme,
+  PrimitiveTag,
+  Space,
+  Text,
+  mergeClass,
+} from "dappkit";
 import moment from "moment";
+import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
+import Time from "packages/dappkit/src/components/primitives/Time";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
-import { useCallback, useMemo, useState } from "react";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
+import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
 import useCampaign from "src/hooks/resources/useCampaign";
-import { formatUnits, parseUnits } from "viem";
 import Chain from "../chain/Chain";
 import Token from "../token/Token";
 import { CampaignRow } from "./CampaignTable";
-import RestrictionsCollumn from "./tableCollumns/RestrictionsCollumn";
+import CampaignTooltipDates from "./CampaignTooltipDates";
+import Rule from "./rules/Rule";
 
 export type CampaignTableRowProps = Component<{
   campaign: Campaign;
+  opportunity?: Opportunity;
   startsOpen?: boolean;
+  chain: ChainType;
 }>;
 
-export default function CampaignTableRow({ campaign, startsOpen, className, ...props }: CampaignTableRowProps) {
-  const { time, profile, dailyRewards, active } = useCampaign(campaign);
+export default function CampaignTableRow({
+  campaign,
+  opportunity,
+  startsOpen,
+  className,
+  chain,
+  ...props
+}: CampaignTableRowProps) {
+  const { time, dailyRewards, active, amount, rules } = useCampaign(campaign, opportunity);
   const [isOpen, setIsOpen] = useState(startsOpen);
 
   const toggleIsOpen = useCallback(() => setIsOpen(o => !o), []);
 
-  const campaignAmount = useMemo(
-    () => formatUnits(parseUnits(campaign.amount, 0), campaign.rewardToken.decimals),
-    [campaign],
-  );
+  const campaignInformation = useMemo(() => {
+    const columns = [
+      [
+        "Total Distributed",
+        <Token
+          key="token"
+          symbol={false}
+          size="md"
+          token={campaign.rewardToken}
+          amount={amount}
+          format="amount_price"
+        />,
+      ],
+      [
+        "Dates",
+        <Dropdown key="dates" content={<CampaignTooltipDates campaign={campaign} />}>
+          <Text size="sm" className="flex">
+            {moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY")}
+            <Icon remix="RiArrowRightLine" />
+            {moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY")}
+          </Text>
+        </Dropdown>,
+      ],
+      [
+        "Campaign Creator",
+        <Hash key="creator" size="sm" format="short" copy>
+          {campaign.creatorAddress}
+        </Hash>,
+      ],
+      [
+        "Merkl Campaign Id",
+        <Hash key="id" size="sm" format="short" copy>
+          {campaign.campaignId}
+        </Hash>,
+      ],
+      [
+        "Last Snapshot",
+        <Tooltip
+          helper={
+            "Indicates when the campaign has last been processed by the Merkl engine. Once a campaign is processed, its rewards can then be included in the following distribution of the associated chain. Distributions on a chain may easily be delayed, for example by disputers, or by instabilities in Merkl dependencies"
+          }
+          key="computedUntil">
+          <Text>
+            {campaign?.campaignStatus?.computedUntil ? (
+              <Time timestamp={Number(campaign?.campaignStatus?.computedUntil) * 1000} />
+            ) : (
+              "Never"
+            )}
+          </Text>
+        </Tooltip>,
+      ],
+    ] as const satisfies [string, ReactNode][];
+
+    return columns.map(([label, content]) => {
+      return (
+        <Group key={label} className="justify-between">
+          <Text size="sm" look="bold">
+            {label}
+          </Text>
+          {content}
+        </Group>
+      );
+    });
+  }, [campaign, amount]);
+
+  const isCampaignLive = useMemo(() => BigInt(campaign.endTimestamp) * 1000n > moment.now(), [campaign]);
 
   return (
     <CampaignRow
       {...props}
-      className={mergeClass("cursor-pointer", className)}
+      className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
       chainColumn={<Chain chain={campaign.chain} />}
-      identifierColumn={<Hash format="short">{campaign.identifier}</Hash>}
-      restrictionsColumn={<RestrictionsCollumn campaign={campaign} />}
       dailyRewardsColumn={
-        <Group className="align-middle items-center">
+        <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
-            <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" size="xs" />
+            <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
-          <Token token={campaign.rewardToken} amount={dailyRewards} />
+          <Token size="xl" token={campaign.rewardToken} amount={dailyRewards} format="amount_price" chain={chain} />
+          <Icon
+            data-state={!isOpen ? "closed" : "opened"}
+            className="transition duration-150 ease-out data-[state=opened]:rotate-180"
+            remix={"RiArrowDropDownLine"}
+          />
         </Group>
       }
       timeRemainingColumn={
-        <Group className="py-xl">
-          <Text>{time}</Text>
-        </Group>
-      }
-      arrowColumn={<Icon remix={!isOpen ? "RiArrowDownSLine" : "RiArrowUpSLine"} />}>
-      {isOpen && (
-        <div className="animate-drop">
-          <Group className="flex-nowrap" size="lg">
+        <PrimitiveTag look={isCampaignLive ? "bold" : "soft"}>
+          {isCampaignLive && <Icon remix="RiFlashlightFill" />}
+          {time}
+        </PrimitiveTag>
+      }>
+      <Collapsible state={[isOpen, setIsOpen]}>
+        <Space size="md" />
+        <Box size="md" className="p-0 bg-main-4 !rounded-md">
+          <Group className="flex-nowrap p-lg" size="lg">
             <Group className="justify-between flex-col size-full">
-              <Text size="md">Campaign information</Text>
-              <div className="flex justify-between">
-                <Text size="sm">Total</Text>
-                <Value className="text-right" look={campaignAmount === "0" ? "soft" : "base"} format="$0,0.#">
-                  {campaignAmount}
-                </Value>
-              </div>
-              <div className="flex justify-between">
-                <Text size="sm">Dates</Text>
-                <span className="flex">
-                  <Text size="sm">
-                    {moment.unix(Number(campaign.startTimestamp)).format("DD MMMM YYYY")}-
-                    {moment.unix(Number(campaign.endTimestamp)).format("DD MMMM YYYY")}
-                  </Text>
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <Text size="sm">Last snapshot</Text>
-                {/* <Time timestamp={BigInt(campaign.) * BigInt(1000)} /> */}
-              </div>
-              <div className="flex justify-between">
-                <Text size="sm">Campaign creator</Text>
-                <Hash size="sm" format="short">
-                  {campaign.creatorAddress}
-                </Hash>
-              </div>
+              <Text size="sm" look="soft">
+                Campaign Information
+              </Text>
+              {campaignInformation}
             </Group>
+            <Divider look="bold" vertical className="bg-main-6 border-main-6" />
             <Group className="justify-between flex-col size-full">
-              <Text size={"md"}>Conditions</Text>
               <Group className="flex justify-between item-center">
-                <Text size="sm">Incentivized Liquidity</Text>
-                {profile}
+                <Text size="sm" look="soft">
+                  Rules
+                </Text>
               </Group>
-              <span className="flex justify-between">
-                <Text size="sm">Blacklisted for</Text>
-                <Tooltip
-                  helper={
-                    <div>
-                      {campaign.params.blacklist.length > 0
-                        ? campaign.params.blacklist.map((blacklist: string) => blacklist)
-                        : "No address"}
-                    </div>
-                  }>
-                  <Text size="sm">{campaign.params.blacklist.length} address</Text>
-                </Tooltip>
-              </span>
-              <span className="flex justify-between">
-                <Text size="sm">Whitelisted for</Text>
-                <Tooltip
-                  helper={
-                    <div>
-                      {campaign.params.whitelist.length > 0
-                        ? campaign.params.whitelist.map((blacklist: string) => blacklist)
-                        : "No address"}
-                    </div>
-                  }>
-                  <Text size="sm">{campaign.params.whitelist.length} address</Text>
-                </Tooltip>
-              </span>
+              <Group>
+                {rules?.map(rule => (
+                  <Rule size="md" key={crypto.randomUUID()} type={rule.type} value={rule.value} />
+                ))}
+              </Group>
             </Group>
           </Group>
-        </div>
-      )}
+        </Box>
+      </Collapsible>
     </CampaignRow>
   );
 }

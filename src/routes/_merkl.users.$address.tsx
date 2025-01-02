@@ -1,10 +1,14 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Outlet, json, useLoaderData, useNavigate } from "@remix-run/react";
-import { Button, Group, Hash, Icon, Input, Text, Value } from "dappkit";
-import { useMemo, useState } from "react";
+import { Outlet, json, useLoaderData } from "@remix-run/react";
+import { Button, Dropdown, Group, Icon, Text, Value } from "dappkit";
+import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
+import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
+import { useMemo } from "react";
 import { RewardService } from "src/api/services/reward.service";
 import Hero from "src/components/composite/Hero";
-import { formatUnits } from "viem";
+import AddressEdit from "src/components/element/AddressEdit";
+import useReward from "src/hooks/resources/useReward";
+import useRewards from "src/hooks/resources/useRewards";
 
 export async function loader({ params: { address } }: LoaderFunctionArgs) {
   if (!address) throw "";
@@ -17,92 +21,77 @@ export async function loader({ params: { address } }: LoaderFunctionArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
   if (error) return [{ title: error }];
-  return [{ title: `${data?.address?.substring(0, 6)}…${data?.address.substring(data?.address.length - 4)} on Merkl` }];
+  return [
+    {
+      title: `${data?.address?.substring(0, 6)}…${data?.address.substring(data?.address.length - 4)} on Merkl`,
+    },
+  ];
 };
 
+export type OutletContextRewards = ReturnType<typeof useRewards>;
+
 export default function Index() {
-  const { rewards, address } = useLoaderData<typeof loader>();
-  const [inputAddress, setInputAddress] = useState<string>();
-  const [_isEditingAddress, setIsEditingAddress] = useState(false);
-  const navigate = useNavigate();
+  const { rewards: raw, address } = useLoaderData<typeof loader>();
+  const rewards = useRewards(raw);
 
-  const { earned, unclaimed } = useMemo(() => {
-    return rewards.reduce(
-      ({ earned, unclaimed }, chain) => {
-        const valueUnclaimed = chain.rewards.reduce((sum, token) => {
-          const value =
-            Number.parseFloat(formatUnits(token.amount - token.claimed, token.token.decimals)) *
-            (token.token.price ?? 0);
+  const { chainId, chains, address: user } = useWalletContext();
+  const chain = useMemo(() => chains?.find(c => c.id === chainId), [chainId, chains]);
+  const reward = useMemo(() => raw.find(({ chain: { id } }) => id === chainId), [chainId, raw]);
+  const { claimTransaction } = useReward(reward, user);
 
-          return sum + value;
-        }, 0);
-        const valueEarned = chain.rewards.reduce((sum, token) => {
-          const value = Number.parseFloat(formatUnits(token.claimed, token.token.decimals)) * (token.token.price ?? 0);
-
-          return sum + value;
-        }, 0);
-
-        return { earned: earned + valueEarned, unclaimed: unclaimed + valueUnclaimed };
-      },
-      { earned: 0, unclaimed: 0 },
-    );
-  }, [rewards]);
+  const isUserRewards = useMemo(() => user === address, [user, address]);
+  const isAbleToClaim = useMemo(
+    () => isUserRewards && reward && !reward.rewards.every(({ amount, claimed }) => amount === claimed),
+    [isUserRewards, reward],
+  );
 
   return (
     <Hero
       breadcrumbs={[
-        { link: "/", name: "Users" },
-        { link: `/users/${address ?? ""}`, name: address ?? "" },
+        { link: "/users/", name: "Users" },
+        {
+          link: `/users/${address ?? ""}`,
+          component: (
+            <Dropdown size="md" padding="xs" content={<AddressEdit />}>
+              <Button look="soft" size="xs" aria-label="Edit address">
+                <Icon remix="RiArrowRightSLine" />
+                {address}
+                <Icon remix="RiEdit2Line" />
+              </Button>
+            </Dropdown>
+          ),
+        },
       ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={
         <Group className="w-full gap-xl md:gap-xl*4 items-center">
-          {/* TODO: Make it dynamic this */}
+          {/* TODO: Make it dynamic */}
           <Group className="flex-col">
             <Value format="$0,0.0a" size={2} className="text-main-12">
-              {earned}
+              {rewards.earned}
             </Value>
-            <Text size="xl" bold>
+            <Text size="xl" bold className="not-italic">
               Total earned
             </Text>
           </Group>
           <Group className="flex-col">
             <Value format="$0,0.0a" size={2} className="text-main-12">
-              {unclaimed}
+              {rewards.unclaimed}
             </Value>
-            <Text size={"xl"} bold>
+            <Text size={"xl"} bold className="not-italic">
               Claimable
             </Text>
           </Group>
           <Group className="flex-col">
-            <Button look="hype" size="lg">
-              Claim
-            </Button>
+            {isAbleToClaim && (
+              <TransactionButton disabled={!claimTransaction} look="hype" size="lg" tx={claimTransaction}>
+                Claim on {chain?.name}
+              </TransactionButton>
+            )}
           </Group>
         </Group>
       }
-      description={
-        !_isEditingAddress && address !== "" ? (
-          <Group>
-            <Hash size={4} className="text-main-12" format="short" copy>
-              {address}
-            </Hash>
-            <Button look="soft" onClick={() => setIsEditingAddress(true)}>
-              <Icon remix="RiEdit2Line" />
-            </Button>
-          </Group>
-        ) : (
-          <Group>
-            <Input state={[inputAddress, setInputAddress]} look="soft" />
-            <Button
-              onClick={() => (inputAddress ? navigate(`/users/${inputAddress}`) : setIsEditingAddress(false))}
-              size="xl"
-              look="soft">
-              <Icon remix="RiSendPlane2Fill" />
-            </Button>
-          </Group>
-        )
-      }
+      description={"Check your liquidity positions and claim your rewards"}
       tabs={[
         {
           label: (
@@ -112,9 +101,10 @@ export default function Index() {
             </>
           ),
           link: `/users/${address}`,
+          key: crypto.randomUUID(),
         },
       ]}>
-      <Outlet />
+      <Outlet context={rewards} />
     </Hero>
   );
 }

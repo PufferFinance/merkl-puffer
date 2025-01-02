@@ -1,22 +1,33 @@
 import { type LoaderFunctionArgs, type MetaFunction, json } from "@remix-run/node";
-import { Outlet, useLoaderData, useRouteError } from "@remix-run/react";
-import { Group, Title } from "dappkit";
+import { Outlet, useLoaderData } from "@remix-run/react";
+import { Cache } from "src/api/services/cache.service";
 import { ChainService } from "src/api/services/chain.service";
-import Hero from "src/components/composite/Hero";
+import { OpportunityService } from "src/api/services/opportunity/opportunity.service";
+import Hero, { defaultHeroSideDatas } from "src/components/composite/Hero";
 
 export async function loader({ params: { id } }: LoaderFunctionArgs) {
   const chain = await ChainService.get({ search: id });
 
-  return json({ chain });
+  const { opportunities: opportunitiesByApr, count } = await OpportunityService.getMany({
+    chainId: chain.id.toString(),
+    status: "LIVE",
+    sort: "apr",
+    order: "desc",
+  });
+
+  const { sum: dailyRewards } = await OpportunityService.getAggregate({ chainId: chain.id.toString() }, "dailyRewards");
+
+  return json({ chain, count, dailyRewards, maxApr: opportunitiesByApr?.[0]?.apr });
 }
+
+export const clientLoader = Cache.wrap("chain", 300);
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: `${data?.chain?.name} on Merkl` }];
 };
 
 export default function Index() {
-  const { chain } = useLoaderData<typeof loader>();
-  const label = chain.name.toLowerCase();
+  const { chain, count, dailyRewards, maxApr } = useLoaderData<typeof loader>();
 
   return (
     <Hero
@@ -27,32 +38,9 @@ export default function Index() {
       ]}
       navigation={{ label: "Back to opportunities", link: "/" }}
       title={chain.name}
-      description={"Lorem ipsum something cool about the chain"}
-      tabs={[
-        { label: "Opportunities", link: `/chains/${label?.toLowerCase()}` },
-        {
-          label: "Leaderboard",
-          link: `/chains/${label?.toLowerCase()}/leaderboard`,
-        },
-        {
-          label: "Analytics",
-          link: `/chains/${label?.toLowerCase()}/analytics`,
-        },
-      ]}>
+      description={`Earn rewards by supplying liquidity on ${chain.name}`}
+      sideDatas={defaultHeroSideDatas(count, maxApr, dailyRewards)}>
       <Outlet />
     </Hero>
-  );
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-
-  return (
-    <>
-      <Group className="mx-auto my-auto flex-col p-xl*2 [&>*]:text-center max-w-fit justify-center">
-        <Title h={3}>{error?.message ?? "Error"}</Title>
-        {/* <Text h={3}>We don't support this chain</Text> */}
-      </Group>
-    </>
   );
 }
