@@ -41,6 +41,7 @@ export default function Index() {
             </Title>
           </>
         )}
+
         <OpportunityLibrary opportunities={opportunities} chains={chains} count={count} protocols={protocols} />
       </Group>
     </Container>

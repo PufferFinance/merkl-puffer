@@ -66,7 +66,7 @@ export default createConfig({
   },
   supplyCredits: [],
   hero: {
-    bannerOnAllPages: false, // show banner on all pages
+    bannerOnAllPages: true, // show banner on all pages
     invertColors: true, // Light mode: light text on dark background (instead of dark text on light background)
   },
   opportunityFilters: {
@@ -115,7 +115,7 @@ export default createConfig({
   },
   themes: {
     puffer: {
-      base: createColoring(["#2A35BD", "#BFFF37", "#FFFFFF"], ["#2A35BD", "#BFFF37", "#FFFFFF"]),
+      base: createColoring(["#7D85F7", "#0672EE", "#0D1530"], ["#FFFFFF", "#0672EE", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
