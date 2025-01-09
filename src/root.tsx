@@ -47,7 +47,6 @@ const queryClient = new QueryClient();
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
-
   return (
     <QueryClientProvider client={queryClient}>
       <DAppProvider

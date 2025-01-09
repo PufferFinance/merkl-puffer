@@ -188,7 +188,6 @@ export default createConfig({
     github: "https://github.com/PufferFinance",
   },
   links: {
-    docs: "https://docs.merkl.xyz/",
     merkl: "https://merkl.xyz/",
     merklTermsConditions: "https://app.merkl.xyz/merklTerms.pdf",
     merklPrivacy: "https://privacy.angle.money",
@@ -243,7 +242,7 @@ export default createConfig({
     connectors: [
       walletConnect({
         customStoragePrefix: "wagmi",
-        projectId: "26c912aadd2132cd869a5edc00aeea0f",
+        projectId: process.env.WALLET_CONNECT_PROJECT_ID ?? "26c912aadd2132cd869a5edc00aeea0f",
         metadata: {
           name: "Puffer",
           description: "Puffer",

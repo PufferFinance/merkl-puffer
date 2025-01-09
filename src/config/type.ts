@@ -25,6 +25,7 @@ export type MerklConfig<T extends Themes> = {
     spacing: { [Size in (typeof sizeScale)[number]]: number };
     radius: { [Size in (typeof sizeScale)[number]]: number };
   };
+  fonts?: { title: string[]; text: string[]; mono: string[] };
   tags?: string[];
   defaultTheme: keyof T;
   deposit?: boolean;
