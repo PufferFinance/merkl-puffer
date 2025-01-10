@@ -1,7 +1,9 @@
 import { createColoring } from "dappkit";
 import { createConfig } from "src/config/type";
 import hero from "src/customer/assets/images/hero.jpg?url";
+import { v4 as uuidv4 } from "uuid";
 import { http, createClient, custom } from "viem";
+
 import {
   arbitrum,
   astar,
@@ -39,16 +41,81 @@ import {
   zksync,
 } from "viem/chains";
 import { eip712WalletActions } from "viem/zksync";
-import { coinbaseWallet, walletConnect } from "wagmi/connectors";
+import { walletConnect } from "wagmi/connectors";
 
 export default createConfig({
   appName: "Puffer",
   modes: ["light"],
   defaultTheme: "puffer",
   deposit: false,
+  tags: ["puffer"],
+  opportunityNavigationMode: "direct",
+  tokenSymbolPriority: ["ZK", "USDC", "USDC.e", "ETH", "WETH", "WBTC", "wstETH", "USDT", "USDe", "weETH", "DAI"],
+  opportunityCellHideTags: ["token", "action"],
+  rewardsNavigationMode: "opportunity",
+  opportunityLibraryDefaultView: "table",
+  // opportunityLibraryExcludeFilters: ["protocol","action"],
+  opprtunityPercentage: true,
+  opportunityLibrary: {
+    defaultView: "table",
+    views: ["table"], // If you want only one view, this is where you can specify it.
+    cells: {
+      hideTags: ["token", "action"],
+    },
+    excludeFilters: ["protocol", "tvl"],
+  },
+  supplyCredits: [],
+  hero: {
+    bannerOnAllPages: true, // show banner on all pages
+    invertColors: true, // Light mode: light text on dark background (instead of dark text on light background)
+  },
+  opportunityFilters: {
+    minimumTVL: false,
+    protocols: false,
+    displaySelector: false,
+  },
+  walletOptions: {
+    hideInjectedWallets: ["phantom", "coinbase wallet"],
+    sponsorTransactions: true,
+    client(c) {
+      if (c.chain?.id === zksync.id) return c.extend(eip712WalletActions());
+    },
+  },
+  chains: [],
+  opportunity: {
+    featured: {
+      enabled: false,
+      length: 6,
+    },
+    library: {
+      columns: {
+        action: {
+          enabled: true,
+        },
+      },
+    },
+  },
+  bridge: {
+    helperLink: "",
+  },
+  dashboard: {
+    liquidityTab: {
+      enabled: false,
+    },
+  },
+  tagsDetails: {
+    token: {
+      visitOpportunities: {
+        enabled: true,
+      },
+    },
+  },
+  decimalFormat: {
+    dollar: "$0,0.##a",
+  },
   themes: {
     puffer: {
-      base: createColoring(["#2A35BD", "#F5F9FF", "#FFFFFF"], ["#2A35BD", "#F5F9FF", "#FFFFFF"]),
+      base: createColoring(["#7D85F7", "#0672EE", "#0D1530"], ["#FFFFFF", "#0672EE", "#FFFFFF"]),
       info: createColoring(["#2ABDFF", "#2ABDFF", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       good: createColoring(["#40B66B", "#40B66B", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
       warn: createColoring(["#ff9600", "#ff9600", "#131620"], ["#FFFFFF", "#40B66B", "white"]),
@@ -60,6 +127,8 @@ export default createConfig({
     spacing: { xs: 2, sm: 4, md: 8, lg: 12, xl: 16 },
     radius: { xs: 3, sm: 6, md: 9, lg: 12, xl: 15 },
   },
+  alwaysShowTestTokens: true,
+  showCopyOpportunityIdToClipboard: true,
   images: {
     hero: hero,
   },
@@ -67,23 +136,18 @@ export default createConfig({
     home: {
       icon: "RiHomeFill",
       route: "/",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     opportunities: {
       icon: "RiPlanetFill",
       route: "/opportunities",
+      key: uuidv4(),
+    },
+    protocols: {
+      icon: "RiVipCrown2Fill",
+      route: "/protocols",
       key: crypto.randomUUID(),
     },
-    // protocols: {
-    //   icon: "RiVipCrown2Fill",
-    //   route: "/protocols",
-    //   key: crypto.randomUUID(),
-    // },
-    // bridge: {
-    //   icon: "RiCompassesLine",
-    //   route: "/bridge",
-    //   key: crypto.randomUUID(),
-    // },
     docs: {
       icon: "RiFile4Fill",
       external: true,
@@ -105,6 +169,17 @@ export default createConfig({
     //   route: "/privacy",
     //   key: crypto.randomUUID(),
     // },
+  },
+  header: {
+    searchbar: {
+      enabled: false,
+    },
+    opportunities: {
+      enabled: false,
+    },
+    bridge: {
+      enabled: false,
+    },
   },
   socials: {
     discord: "https://discord.com/invite/pufferfi",
@@ -165,7 +240,6 @@ export default createConfig({
     },
     ssr: true,
     connectors: [
-      coinbaseWallet(),
       walletConnect({
         customStoragePrefix: "wagmi",
         projectId: process.env.WALLET_CONNECT_PROJECT_ID ?? "26c912aadd2132cd869a5edc00aeea0f",

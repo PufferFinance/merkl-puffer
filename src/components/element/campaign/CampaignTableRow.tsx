@@ -1,12 +1,14 @@
 import type { Campaign, Chain as ChainType } from "@merkl/api";
 import {
   Box,
+  Button,
   type Component,
   Divider,
   Dropdown,
   Group,
   Hash,
   Icon,
+  Image,
   OverrideTheme,
   PrimitiveTag,
   Space,
@@ -19,8 +21,10 @@ import Time from "packages/dappkit/src/components/primitives/Time";
 import Tooltip from "packages/dappkit/src/components/primitives/Tooltip";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
+import EtherScan from "src/assets/images/etherscan.svg";
 import useCampaign from "src/hooks/resources/useCampaign";
-import Chain from "../chain/Chain";
+import { v4 as uuidv4 } from "uuid";
+import Tag from "../Tag";
 import Token from "../token/Token";
 import { CampaignRow } from "./CampaignTable";
 import CampaignTooltipDates from "./CampaignTooltipDates";
@@ -71,9 +75,14 @@ export default function CampaignTableRow({
       ],
       [
         "Campaign Creator",
-        <Hash key="creator" size="sm" format="short" copy>
-          {campaign.creatorAddress}
-        </Hash>,
+        <Group key="creator" className="gap-xs">
+          <Hash size="sm" format="short" copy>
+            {campaign.creatorAddress}
+          </Hash>
+          <Button to={`${chain.explorers?.[0]?.url}/address/${campaign.creatorAddress}`} external size="xs" look="soft">
+            <Image className="w-3" alt="Merkl Footer logo" src={EtherScan} />
+          </Button>
+        </Group>,
       ],
       [
         "Merkl Campaign Id",
@@ -109,7 +118,7 @@ export default function CampaignTableRow({
         </Group>
       );
     });
-  }, [campaign, amount]);
+  }, [campaign, amount, chain]);
 
   const isCampaignLive = useMemo(() => BigInt(campaign.endTimestamp) * 1000n > moment.now(), [campaign]);
 
@@ -118,13 +127,19 @@ export default function CampaignTableRow({
       {...props}
       className={mergeClass("cursor-pointer py-4", className)}
       onClick={toggleIsOpen}
-      chainColumn={<Chain chain={campaign.chain} />}
+      chainColumn={<Tag type="chain" value={campaign.distributionChain} />}
       dailyRewardsColumn={
         <Group className="align-middle items-center flex-nowrap">
           <OverrideTheme accent={"good"}>
             <Icon className={active ? "text-accent-10" : "text-main-10"} remix="RiCircleFill" />
           </OverrideTheme>
-          <Token size="xl" token={campaign.rewardToken} amount={dailyRewards} format="amount_price" chain={chain} />
+          <Token
+            size="xl"
+            token={campaign.rewardToken}
+            amount={dailyRewards}
+            format="amount_price"
+            chain={campaign.distributionChain}
+          />
           <Icon
             data-state={!isOpen ? "closed" : "opened"}
             className="transition duration-150 ease-out data-[state=opened]:rotate-180"
@@ -142,7 +157,7 @@ export default function CampaignTableRow({
         <Space size="md" />
         <Box size="md" className="p-0 bg-main-4 !rounded-md">
           <Group className="flex-nowrap p-lg" size="lg">
-            <Group className="justify-between flex-col size-full">
+            <Group className="justify-between flex-grow flex-col size-full">
               <Text size="sm" look="soft">
                 Campaign Information
               </Text>
@@ -157,7 +172,7 @@ export default function CampaignTableRow({
               </Group>
               <Group>
                 {rules?.map(rule => (
-                  <Rule size="md" key={crypto.randomUUID()} type={rule.type} value={rule.value} />
+                  <Rule size="md" key={uuidv4()} type={rule.type} value={rule.value} />
                 ))}
               </Group>
             </Group>

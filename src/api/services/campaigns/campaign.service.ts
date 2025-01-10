@@ -1,4 +1,5 @@
 import type { Campaign } from "@merkl/api";
+import config from "merkl.config";
 import { fetchWithLogs } from "src/api/utils";
 import { api } from "../../index.server";
 
@@ -29,13 +30,13 @@ export abstract class CampaignService {
     const action = new URL(request.url).searchParams.get("action");
     const chainId = new URL(request.url).searchParams.get("chain");
     const page = new URL(request.url).searchParams.get("page");
-
+    const test = config.alwaysShowTestTokens ? true : (new URL(request.url).searchParams.get("test") ?? false);
     const items = new URL(request.url).searchParams.get("items");
     const search = new URL(request.url).searchParams.get("search");
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
 
     const filters = Object.assign(
-      { status, action, chainId, items, sort, order, name: search, page },
+      { status, action, chainId, items, sort, order, name: search, page, test },
       override ?? {},
       page !== null && { page: Number(page) - 1 },
     );
@@ -55,8 +56,10 @@ export abstract class CampaignService {
     return data;
   }
 
-  static async getByParams(query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
-    return await CampaignService.#fetch(async () => api.v4.campaigns.index.get({ query }));
+  static async getByOpportunity(request: Request, query: Parameters<typeof api.v4.campaigns.index.get>[0]["query"]) {
+    return await CampaignService.#fetch(async () =>
+      api.v4.campaigns.index.get({ query: CampaignService.#getQueryFromRequest(request, query) }),
+    );
   }
 
   // ------ Fetch a campaign by ID

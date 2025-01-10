@@ -1,3 +1,5 @@
+import config from "merkl.config";
+import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
 import { api } from "../index.server";
 import { fetchWithLogs } from "../utils";
 
@@ -5,15 +7,40 @@ export abstract class ProtocolService {
   // ─── Get Many Protocols ──────────────────────────────────────────────
 
   static async get(query: Parameters<typeof api.v4.protocols.index.get>[0]["query"]) {
-    return await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query }));
+    return await ProtocolService.#fetch(async () =>
+      api.v4.protocols.index.get({
+        query: Object.assign({ ...query }, config.tags?.[0] ? { tags: config.tags?.[0] } : {}),
+      }),
+    );
+  }
+
+  // ─── Get First Protocol ──────────────────────────────────────────────
+
+  static async getById(id: string) {
+    return await ProtocolService.#fetch(async () =>
+      api.v4
+        .protocols({
+          id,
+        })
+        .get(),
+    );
   }
 
   // ─── Get Many Protocols from request ──────────────────────────────────
 
   static async getManyFromRequest(request: Request) {
-    const query = ProtocolService.#getQueryFromRequest(request);
-    const protocols = await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query }));
-    const count = await ProtocolService.#fetch(async () => api.v4.protocols.count.get({ query }));
+    const query: Parameters<typeof api.v4.protocols.index.get>[0]["query"] =
+      ProtocolService.#getQueryFromRequest(request);
+    const protocols = await ProtocolService.#fetch(async () =>
+      api.v4.protocols.index.get({
+        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
+      }),
+    );
+    const count = await ProtocolService.#fetch(async () =>
+      api.v4.protocols.count.get({
+        query: Object.assign({ ...query }, config.tags?.[0] ? { opportunityTag: config.tags?.[0] } : {}),
+      }),
+    );
 
     return { protocols, count };
   }
@@ -41,7 +68,7 @@ export abstract class ProtocolService {
     override?: Parameters<typeof api.v4.opportunities.index.get>[0]["query"],
   ) {
     const page = new URL(request.url).searchParams.get("page");
-    const items = new URL(request.url).searchParams.get("items");
+    const items = new URL(request.url).searchParams.get("items") ?? DEFAULT_ITEMS_PER_PAGE;
     const search = new URL(request.url).searchParams.get("search");
 
     const [sort, order] = new URL(request.url).searchParams.get("sort")?.split("-") ?? [];
@@ -58,12 +85,5 @@ export abstract class ProtocolService {
     );
 
     return query;
-  }
-
-  static async getAll() {
-    const protocols = await ProtocolService.#fetch(async () => api.v4.protocols.index.get({ query: { items: 10000 } }));
-
-    //TODO: add some cache here
-    return protocols;
   }
 }

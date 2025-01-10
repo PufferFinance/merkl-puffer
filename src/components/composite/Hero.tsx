@@ -1,6 +1,5 @@
 import { useLocation } from "@remix-run/react";
 import {
-  Button,
   Container,
   Divider,
   Group,
@@ -12,9 +11,12 @@ import {
   Text,
   Title,
   Value,
+  useTheme,
 } from "dappkit";
+import { Button } from "dappkit";
 import config from "merkl.config";
 import type { PropsWithChildren, ReactNode } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export type HeroProps = PropsWithChildren<{
   icons?: IconProps[];
@@ -45,16 +47,23 @@ export default function Hero({
   children,
 }: HeroProps) {
   const location = useLocation();
+  const { mode } = useTheme();
+
   return (
     <>
-      <OverrideTheme mode="light">
+      <OverrideTheme mode={!!config.hero.invertColors ? (mode === "dark" ? "light" : "dark") : mode}>
         <Group
           className={`${
-            location?.pathname === "/" || location?.pathname === "/opportunities" ? "bg-cover" : "bg-main-6"
+            !!config.hero.bannerOnAllPages
+              ? "bg-cover"
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
+                ? "bg-cover"
+                : "bg-main-6"
           } flex-row justify-between bg-no-repeat xl:aspect-auto xl:min-h-[350px] aspect-[1440/300]`}
           style={{
-            backgroundImage:
-              location?.pathname === "/" || location?.pathname === "/opportunities"
+            backgroundImage: !!config.hero.bannerOnAllPages
+              ? `url('${config.images.hero}')`
+              : location?.pathname === "/" || location?.pathname === "/opportunities"
                 ? `url('${config.images.hero}')`
                 : "none",
           }}>
@@ -75,38 +84,39 @@ export default function Hero({
                 })}
               </Group>
               <Group className="grow items-center justify-between gap-xl lg:gap-xl*4">
-                <Group className="flex-col flex-1 gap-xl lg:gap-lg">
-                  <Group>
-                    <Group className="items-center gap-0 md:gap-lg">
-                      {!!icons && (
-                        <Icons size="lg">
-                          {icons?.length > 1
-                            ? icons?.map(icon => (
-                                <Icon
-                                  className="hidden md:block text-main-12 !w-lg*4 !h-lg*4"
-                                  key={`${Object.values(icon)}`}
-                                  {...icon}
-                                />
-                              ))
-                            : icons?.map(icon => (
-                                <Icon
-                                  className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
-                                  key={`${Object.values(icon)}`}
-                                  {...icon}
-                                />
-                              ))}
-                        </Icons>
-                      )}
-                      <Title h={1} size={2}>
-                        {title}
-                      </Title>
-                    </Group>
+                <Group className="flex-col flex-1 gap-lg">
+                  <Group className="gap-0 md:gap-lg flex-nowrap w-full items-center">
+                    {!!icons && (
+                      <Icons size="lg">
+                        {icons?.length > 1
+                          ? icons?.map(icon => (
+                              <Icon
+                                className="hidden md:block text-main-12 !w-lg*4 !h-lg*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
+                            ))
+                          : icons?.map(icon => (
+                              <Icon
+                                className="hidden md:block text-main-12 !w-xl*4 !h-xl*4"
+                                key={`${Object.values(icon)}`}
+                                {...icon}
+                              />
+                            ))}
+                      </Icons>
+                    )}
+                    <Title h={1} size={2} className="flex-1">
+                      {title}
+                    </Title>
                   </Group>
-                  <Divider look="base" />
+
                   {!!description && (
-                    <Text size="lg" bold>
-                      {description}
-                    </Text>
+                    <>
+                      <Divider look="base" />
+                      <Text size="lg" bold>
+                        {description}
+                      </Text>
+                    </>
                   )}
                   {!!tags && <Group className="mb-lg">{tags}</Group>}
                 </Group>
@@ -130,7 +140,8 @@ export default function Hero({
           </Container>
         </Group>
       </OverrideTheme>
-      {!!tabs && <Tabs tabs={tabs} look="base" size="lg" />}
+
+      {!!tabs?.length && <Tabs tabs={tabs} look="base" size="lg" />}
 
       <div>{children}</div>
     </>
@@ -146,16 +157,16 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Live opportunities",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     !!dailyRewards && {
       data: (
-        <Value format="$0.00a" size={4} className="!text-main-12">
+        <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
           {dailyRewards}
         </Value>
       ),
       label: "Daily rewards",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
     !!maxApr && {
       data: (
@@ -164,7 +175,7 @@ export function defaultHeroSideDatas(count: number, maxApr: number, dailyRewards
         </Value>
       ),
       label: "Max APR",
-      key: crypto.randomUUID(),
+      key: uuidv4(),
     },
   ].filter(data => !!data);
 }

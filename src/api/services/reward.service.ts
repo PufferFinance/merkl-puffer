@@ -1,41 +1,7 @@
-import type { Reward } from "@merkl/api";
+import config from "merkl.config";
+import { DEFAULT_ITEMS_PER_PAGE } from "src/constants/pagination";
 import { api } from "../index.server";
 import { fetchWithLogs } from "../utils";
-
-// Todo: Check how we should type Raw query
-export type IRewards = {
-  amount: string;
-  recipient: string;
-  campaignId: string;
-  reason: string;
-  Token: {
-    id: string;
-    name: string;
-    chainId: number;
-    address: string;
-    decimals: number;
-    symbol: string;
-    icon: string;
-    verified: boolean;
-    price: number;
-  };
-};
-// Todo: Check how we should type Raw query
-export type ITotalRewards = {
-  campaignId: string;
-  totalAmount: string;
-  Token: {
-    id: string;
-    name: string;
-    chainId: number;
-    address: string;
-    decimals: number;
-    symbol: string;
-    icon: string;
-    verified: boolean;
-    price: number;
-  };
-}[];
 
 export abstract class RewardService {
   static async #fetch<R, T extends { data: R; status: number; response: Response }>(
@@ -64,7 +30,7 @@ export abstract class RewardService {
     const filters = Object.assign(
       {
         campaignId,
-        items: items ?? 50,
+        items: items ?? DEFAULT_ITEMS_PER_PAGE,
         page,
       },
       override ?? {},
@@ -79,18 +45,31 @@ export abstract class RewardService {
     return query;
   }
 
-  static async getForUser(address: string): Promise<Reward[]> {
-    const rewards = await RewardService.#fetch(async () => api.v4.users({ address }).rewards.full.get());
+  static async getForUser(request: Request, address: string) {
+    const url = new URL(request.url);
 
-    //TODO: add some cache here
-    return rewards;
+    const chainIds = config.chains?.map(({ id }) => id).join(",");
+
+    // biome-ignore lint/suspicious/noExplicitAny: TODO
+    const query: Record<string, any> = {
+      test: config.alwaysShowTestTokens ? true : (url.searchParams.get("test") ?? false),
+    };
+    if (!!url.searchParams.get("chainId")) query.reloadChainId = url.searchParams.get("chainId");
+    if (chainIds) query.chainIds = chainIds;
+    return await RewardService.#fetch(async () =>
+      api.v4.users({ address }).rewards.breakdowns.get({
+        query,
+      }),
+    );
   }
 
   static async getManyFromRequest(
     request: Request,
     overrides?: Parameters<typeof api.v4.rewards.index.get>[0]["query"],
   ) {
-    return RewardService.getByParams(Object.assign(RewardService.#getQueryFromRequest(request), overrides ?? {}));
+    return RewardService.getByParams(
+      Object.assign(RewardService.#getQueryFromRequest(request), overrides ?? undefined),
+    );
   }
 
   static async getByParams(query: Parameters<typeof api.v4.rewards.index.get>[0]["query"]) {
@@ -106,10 +85,7 @@ export abstract class RewardService {
     return { count, rewards, total: amount };
   }
 
-  static async total(query: {
-    chainId: number;
-    campaignId: string;
-  }): Promise<ITotalRewards> {
+  static async total(query: { chainId: number; campaignId: string }) {
     const total = await RewardService.#fetch(async () =>
       api.v4.rewards.total.get({
         query: {
@@ -119,6 +95,6 @@ export abstract class RewardService {
       }),
     );
 
-    return total as ITotalRewards;
+    return total;
   }
 }

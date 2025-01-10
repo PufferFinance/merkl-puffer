@@ -3,7 +3,7 @@ import { Outlet } from "@remix-run/react";
 import Hero from "src/components/composite/Hero";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Tokens on Merkl" }];
+  return [{ title: "Merkl | Tokens" }];
 };
 
 export default function Index() {
@@ -12,18 +12,7 @@ export default function Index() {
       icons={[{ remix: "RiCoinFill" }]}
       title={"Tokens"}
       breadcrumbs={[{ link: "/tokens", name: "Tokens" }]}
-      description={"Tokens indexed by Merkl"}
-      // TODO: Make this dynamic
-      // sideDatas={[
-      //   {
-      //     data: "25",
-      //     label: "Live opportunities",
-      //     key: crypto.randomUUID(),
-      //   },
-      //   { data: "400%", label: "APR", key: crypto.randomUUID() },
-      //   { data: "$4k", label: "Daily rewards", key: crypto.randomUUID() },
-      // ]}
-    >
+      description={"Tokens indexed by Merkl"}>
       <Outlet />
     </Hero>
   );

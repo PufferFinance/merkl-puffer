@@ -1,6 +1,7 @@
 import type { Reward } from "@merkl/api";
 import { Button, type Component, Icon, Space, Value, mergeClass } from "dappkit";
-import TransactionButton from "packages/dappkit/src/components/dapp/TransactionButton";
+import config from "merkl.config";
+import TransactionButton, { type TransactionButtonProps } from "packages/dappkit/src/components/dapp/TransactionButton";
 import Collapsible from "packages/dappkit/src/components/primitives/Collapsible";
 import EventBlocker from "packages/dappkit/src/components/primitives/EventBlocker";
 import { useWalletContext } from "packages/dappkit/src/context/Wallet.context";
@@ -15,12 +16,14 @@ import ClaimRewardsTokenTableRow from "./ClaimRewardsTokenTableRow";
 export type ClaimRewardsChainTableRowProps = Component<{
   from: string;
   reward: Reward;
+  onClaimSuccess: TransactionButtonProps["onSuccess"];
 }>;
 
 export default function ClaimRewardsChainTableRow({
   from,
   reward,
   className,
+  onClaimSuccess,
   ...props
 }: ClaimRewardsChainTableRowProps) {
   const [open, setOpen] = useState(false);
@@ -92,7 +95,14 @@ export default function ClaimRewardsChainTableRow({
           <EventBlocker>
             {isAbleToClaim &&
               (isOnCorrectChain ? (
-                <TransactionButton disabled={!claimTransaction} className="ml-xl" look="hype" tx={claimTransaction}>
+                <TransactionButton
+                  enableSponsorCheckbox
+                  name="Claim Rewards"
+                  disabled={!claimTransaction}
+                  className="ml-xl"
+                  look="hype"
+                  tx={claimTransaction}
+                  onSuccess={onClaimSuccess}>
                   Claim
                 </TransactionButton>
               ) : (
@@ -105,7 +115,7 @@ export default function ClaimRewardsChainTableRow({
       }
       unclaimedColumn={
         unclaimed === 0 ? undefined : (
-          <Value size="lg" format="$0,0.#" look="bold" className="font-title">
+          <Value size="lg" format={config.decimalFormat.dollar} look="bold" className="font-title">
             {unclaimed}
           </Value>
         )

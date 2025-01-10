@@ -1,10 +1,14 @@
-import type { Chain, Opportunity, Protocol, Token } from "@merkl/api";
+import type { Chain, Opportunity, Protocol } from "@merkl/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "src/api/index.client";
 
-const searchables = ["opportunity", "token", "protocol", "chain"] as const;
+const searchables = ["opportunity", "protocol", "chain"] as const;
 export type Searchable = (typeof searchables)[number];
-export type Results = { chain: Chain[]; protocol: Protocol[]; opportunity: Opportunity[]; token: Token[] };
+export type Results = {
+  chain: Chain[];
+  protocol: Protocol[];
+  opportunity: Opportunity[];
+};
 
 export function useMerklSearch(input: string, include?: Searchable[]) {
   const [resultCache, setResultCache] = useState<{ [input: string]: Results }>({});
@@ -14,11 +18,12 @@ export function useMerklSearch(input: string, include?: Searchable[]) {
     (_input: string) => {
       if (!_input || _input?.replaceAll(" ", "") === "") return;
 
-      const fetchers: { [S in Searchable]: (i: string) => Promise<Results[S] | null> } = {
+      const fetchers: {
+        [S in Searchable]: (i: string) => Promise<Results[S] | null>;
+      } = {
         chain: async i => (await api.v4.chains.index.get({ query: { search: i } }))?.data,
         opportunity: async i => (await api.v4.opportunities.index.get({ query: { name: i } }))?.data,
         protocol: async i => (await api.v4.protocols.index.get({ query: { name: i } }))?.data,
-        token: async i => (await api.v4.tokens.index.get({ query: { symbol: i } }))?.data ?? null,
       };
 
       const promises = (include ?? searchables).map(searchable =>

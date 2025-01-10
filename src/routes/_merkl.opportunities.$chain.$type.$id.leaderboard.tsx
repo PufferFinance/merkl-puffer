@@ -1,7 +1,8 @@
 import type { Campaign } from "@merkl/api";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json, useLoaderData } from "@remix-run/react";
-import { Box, Container, Group, Hash, Icon, OverrideTheme, PrimitiveTag, Select, Space, Title, Value } from "dappkit";
+import { type LoaderFunctionArgs, json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { Box, Container, Group, Icon, OverrideTheme, PrimitiveTag, Select, Space, Title, Value } from "dappkit";
+import config from "merkl.config";
 import moment from "moment";
 import Time from "packages/dappkit/src/components/primitives/Time";
 import { useCallback, useMemo } from "react";
@@ -24,9 +25,10 @@ export type DummyLeaderboard = {
 export async function loader({ params: { id, type, chain: chainId }, request }: LoaderFunctionArgs) {
   if (!chainId || !id || !type) throw "";
 
-  const chain = await ChainService.get({ search: chainId });
+  const chain = await ChainService.get({ name: chainId });
+  const campaignId = new URL(request.url).searchParams.get("campaignId");
 
-  const campaigns = await CampaignService.getByParams({
+  const campaigns = await CampaignService.getByOpportunity(request, {
     chainId: chain.id,
     type: type as Campaign["type"],
     mainParameter: id,
@@ -34,6 +36,7 @@ export async function loader({ params: { id, type, chain: chainId }, request }: 
 
   const { rewards, count, total } = await RewardService.getManyFromRequest(request, {
     chainId: chain.id,
+    campaignId: campaignId ?? campaigns?.[0]?.campaignId,
   });
 
   return json({
@@ -56,16 +59,14 @@ export default function Index() {
   );
 
   const selectedCampaign = useMemo(
-    () => campaigns?.find(campaign => campaign?.campaignId === campaignId),
+    () => campaigns?.find(campaign => campaign?.campaignId === campaignId) ?? campaigns?.[0],
     [campaigns, campaignId],
   );
 
-  const totalRewardsAllCampaigns = useMemo(() => {
-    if (!selectedCampaign) return "0";
-
-    const amountUSD = formatUnits(BigInt(selectedCampaign?.amount ?? "0n"), selectedCampaign?.rewardToken.decimals);
+  const totalRewardsInUsd = useMemo(() => {
+    const amountUSD = formatUnits(total, selectedCampaign?.rewardToken.decimals);
     return Number.parseFloat(amountUSD) * (selectedCampaign?.rewardToken?.price ?? 0);
-  }, [selectedCampaign]);
+  }, [total, selectedCampaign]);
 
   // --------------- Campaign utils ---------------
 
@@ -97,8 +98,6 @@ export default function Index() {
             <Time timestamp={Number(campaign.endTimestamp) * 1000} />
           </PrimitiveTag>
 
-          <Hash format="short">{campaign.campaignId}</Hash>
-
           <Group>
             <Token token={campaign.rewardToken} amount={dailyRewards(campaign)} format="amount_price" value />
           </Group>
@@ -121,8 +120,8 @@ export default function Index() {
           ],
           [
             "Total Rewards Distributed",
-            <Value value key="users" format="$0a">
-              {totalRewardsAllCampaigns}
+            <Value value key="users" format={config.decimalFormat.dollar}>
+              {totalRewardsInUsd}
             </Value>,
           ],
         ] as const
@@ -140,7 +139,7 @@ export default function Index() {
           <Title h={3}>{value}</Title>
         </Box>
       )),
-    [totalRewardsAllCampaigns, count],
+    [totalRewardsInUsd, count],
   );
 
   return (

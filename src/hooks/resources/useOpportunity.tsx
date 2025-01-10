@@ -1,8 +1,10 @@
-import type { Opportunity } from "@merkl/api";
 import type { Token } from "@merkl/api";
 import { Icon, Value } from "dappkit";
+import config from "merkl.config";
 import { useMemo } from "react";
+import type { Opportunity } from "src/api/services/opportunity/opportunity.model";
 import type { TagType } from "src/components/element/Tag";
+import { v4 as uuidv4 } from "uuid";
 
 export default function useOpportunity(opportunity: Opportunity) {
   const tags = useMemo(() => {
@@ -31,12 +33,29 @@ export default function useOpportunity(opportunity: Opportunity) {
   }, [opportunity]);
 
   const link = useMemo(
-    () => `/opportunities/${opportunity.chain?.name?.toLowerCase?.()}/${opportunity.type}/${opportunity.identifier}`,
+    () =>
+      `/opportunities/${opportunity.chain?.name?.toLowerCase?.().replace(" ", "-")}/${opportunity.type}/${opportunity.identifier}`,
     [opportunity],
   );
 
+  const iconTokens = useMemo(() => {
+    // If there is more than 1 icons, remove undefined ones
+    let tokens = opportunity.tokens;
+    if (tokens.length > 1) tokens = tokens.filter(token => !!token.icon);
+    if (tokens.length < 1) tokens = opportunity.tokens;
+    return tokens;
+  }, [opportunity]);
+
   const icons = useMemo(
-    () => opportunity.tokens.map(({ icon, address }) => <Icon key={address} rounded src={icon} />),
+    () => iconTokens.map(({ icon, address }) => <Icon key={address} rounded src={icon} />),
+    [iconTokens],
+  );
+
+  const rewardIcons = useMemo(
+    () =>
+      opportunity.rewardsRecord?.breakdowns?.map(({ token: { icon, address } }) => (
+        <Icon key={address} rounded src={icon} />
+      )) ?? [],
     [opportunity],
   );
 
@@ -72,11 +91,11 @@ export default function useOpportunity(opportunity: Opportunity) {
           !!opportunity.dailyRewards && {
             label: "Daily rewards",
             data: (
-              <Value format="$0.00a" size={4} className="!text-main-12">
+              <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
                 {opportunity.dailyRewards}
               </Value>
             ),
-            key: crypto.randomUUID(),
+            key: uuidv4(),
           },
           !!opportunity.apr && {
             label: "APR",
@@ -85,16 +104,16 @@ export default function useOpportunity(opportunity: Opportunity) {
                 {opportunity.apr / 100}
               </Value>
             ),
-            key: crypto.randomUUID(),
+            key: uuidv4(),
           },
           !!opportunity.tvl && {
             label: "Total value locked",
             data: (
-              <Value format="$0.00a" size={4} className="!text-main-12">
+              <Value format={config.decimalFormat.dollar} size={4} className="!text-main-12">
                 {opportunity.tvl}
               </Value>
             ),
-            key: crypto.randomUUID(),
+            key: uuidv4(),
           },
         ];
     }
@@ -112,9 +131,25 @@ export default function useOpportunity(opportunity: Opportunity) {
       const breakdowns = opportunity.rewardsRecord.breakdowns.filter(({ token: t }) => t.address === address);
       const amount = breakdowns?.reduce((sum, breakdown) => sum + BigInt(breakdown.amount), 0n);
 
-      return { token: breakdowns?.[0]?.token, amount } satisfies { token: Token; amount: bigint };
+      return { token: breakdowns?.[0]?.token, amount } satisfies {
+        token: Token;
+        amount: bigint;
+      };
     });
   }, [opportunity]);
 
-  return { link, icons, description, rewardsBreakdown, ...opportunity, tags, herosData };
+  return {
+    link,
+    icons,
+    iconTokens,
+    rewardIcons,
+    description,
+    rewardsBreakdown,
+    opportunity: {
+      ...opportunity,
+      name: config.opportunityPercentage ? opportunity.name : opportunity.name.replace(/\s*\d+(\.\d+)?%$/, "").trim(),
+    },
+    tags,
+    herosData,
+  };
 }
